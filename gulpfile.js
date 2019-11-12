@@ -12,6 +12,7 @@ var typedoc = require("gulp-typedoc");
 gulp.task( 'compile' , function(){
     return gulp.src( [ './src/txt/build.d.ts' ] )
         .pipe( ts( {
+            module: 'none',
             target: 'ES5',
             out: 'txt.js',
             outDir: './dist',
