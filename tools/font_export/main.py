@@ -215,6 +215,9 @@ def svg_to_txt():
                     else:
                         print( 'CHARS[ "' + unicode_str + '" ] = 1 ' )
                     continue
+
+                if i.has_attr('d'):
+                    i['d'] = i['d'].replace('\n', '')
                 
                 #normal chars
                 if CHARS[ unicode_str ] == 1:
