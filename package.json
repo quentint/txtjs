@@ -1,5 +1,5 @@
 {
-  "name": "txtjs",
+  "name": "@recreatejs/txtjs",
   "version": "0.9.5",
   "description": "A <canvas> font and typesetting engine for @CreateJS",
   "author": "Ted Patrick (http://tedpatrick.com)",
