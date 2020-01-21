@@ -23,7 +23,12 @@ gulp.task( 'compile' , function(){
         .pipe( gulp.dest( './dist' ) );
 });
 
-gulp.task( 'build' , [ 'compile' ] , function() {
+gulp.task('copy-vendor-files', function() {
+    return gulp.src('./node_modules/easeljs/lib/easeljs.js')
+        .pipe(gulp.dest('./dist'))
+});
+
+gulp.task( 'build' , [ 'compile', 'copy-vendor-files' ] , function() {
    gulp.src( ['./dist/txt.js'] )
       .pipe( uglify() )
       .pipe( rename({ suffix: '.min' } ) )
