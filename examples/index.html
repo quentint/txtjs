@@ -5,14 +5,7 @@
     <script src="../../dist/easeljs.js"></script>
     <script type="text/javascript" src="../../dist/pathseg.js"></script>
     <script type="text/javascript" src="../../dist/txt.js"></script>
-    <script>
-        var example = location.search.split('eg=')[1];
-        var addScript = document.createElement('script');
-        addScript.src = example + '.js';
-        var parts = example.split("/").join(" - ");
-        document.title = "txtjs: " + parts;
-        (document.getElementsByTagName('head')[0] || document.documentElement ).appendChild(addScript);
-    </script>
+    <script type="text/javascript" src="examples.js"></script>
     <style>
         input {
             border: 2px solid black; 
