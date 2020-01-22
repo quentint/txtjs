@@ -1,0 +1,106 @@
+var canvas;
+var stage;
+
+var PIXEL_RATIO = (function() {
+  var ctx = document.createElement("canvas").getContext("2d"),
+    dpr = window.devicePixelRatio || 1,
+    bsr =
+      ctx.webkitBackingStorePixelRatio ||
+      ctx.mozBackingStorePixelRatio ||
+      ctx.msBackingStorePixelRatio ||
+      ctx.oBackingStorePixelRatio ||
+      ctx.backingStorePixelRatio ||
+      1;
+  return dpr / bsr;
+})();
+
+createHiDPICanvas = function(w, h, ratio) {
+  if (!ratio) {
+    ratio = PIXEL_RATIO;
+  }
+  var can = document.createElement("canvas");
+  can.width = w * ratio;
+  can.height = h * ratio;
+  can.style.width = w + "px";
+  can.style.height = h + "px";
+  can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+  return can;
+};
+
+function init() {
+  canvas = createHiDPICanvas(1000, 1000, 2);
+  document.body.appendChild(canvas);
+  stage = new createjs.Stage(canvas);
+
+  stage.addChild(
+    new txt.Text({
+      text: "Tracking!          -100",
+      font: "librebaskerville",
+      lineHeight: 300,
+      width: 1900,
+      height: 300,
+      tracking: -100,
+      size: 200,
+      x: 10,
+      y: 10
+    })
+  );
+
+  stage.addChild(
+    new txt.Text({
+      text: "Tracking!      -50",
+      font: "librebaskerville",
+      lineHeight: 300,
+      width: 1900,
+      height: 300,
+      tracking: -50,
+      size: 200,
+      x: 10,
+      y: 210
+    })
+  );
+
+  stage.addChild(
+    new txt.Text({
+      text: "Tracking!     0",
+      font: "librebaskerville",
+      lineHeight: 300,
+      width: 1900,
+      height: 300,
+      tracking: 0,
+      size: 200,
+      x: 10,
+      y: 410
+    })
+  );
+
+  stage.addChild(
+    new txt.Text({
+      text: "Tracking!   50",
+      font: "librebaskerville",
+      lineHeight: 300,
+      width: 1900,
+      height: 300,
+      tracking: 50,
+      size: 200,
+      x: 10,
+      y: 610
+    })
+  );
+
+  stage.addChild(
+    new txt.Text({
+      text: "Tracking! 100",
+      font: "librebaskerville",
+      lineHeight: 300,
+      width: 1900,
+      height: 300,
+      tracking: 100,
+      size: 200,
+      x: 10,
+      y: 810
+    })
+  );
+
+  stage.update();
+}
