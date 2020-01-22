@@ -14,7 +14,9 @@
     "build": "npm run compile && npm run copy",
     "serve": "npm run build && gulp server",
     "browser": "gulp browser",
-    "build:docs": "typedoc --tsconfig"
+    "build:docs": "typedoc --tsconfig",
+    "lint": "prettier --check **/*.js",
+    "lint:fix": "prettier --write **/*.js"
   },
   "devDependencies": {
     "easeljs": "^1.0.2",
@@ -24,6 +26,7 @@
     "gulp-shell": "^0.2.10",
     "gulp-uglify": "^1.1.0",
     "pathseg": "^1.2.0",
+    "prettier": "^1.19.1",
     "typedoc": "^0.16.7",
     "typescript": "^1.4.1"
   },
