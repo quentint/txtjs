@@ -217,6 +217,7 @@ declare module createjs {
          * @deprecated
          */
         snapToPixel: boolean;
+        stage: Stage;
         static suppressCrossDomainErrors: boolean;
         tickEnabled: boolean;
         visible: boolean;
@@ -231,7 +232,6 @@ declare module createjs {
         getCacheDataURL(): string;
         getConcatenatedMatrix(mtx?: Matrix2D): Matrix2D;
         getMatrix(matrix?: Matrix2D): Matrix2D;
-        getStage(): Stage;
         getTransformedBounds(): Rectangle;
         globalToLocal(x: number, y: number): Point;
         hitTest(x: number, y: number): boolean;

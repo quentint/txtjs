@@ -73,7 +73,7 @@ module txt {
         //call stage.update to render canvas
         //overload to support deferred rendering
         render(){
-            this.getStage().update();
+            this.stage.update();
         }
 
         

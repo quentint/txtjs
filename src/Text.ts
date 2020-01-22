@@ -53,7 +53,7 @@ module txt {
         }
 
         render(){
-            this.getStage().update();
+            this.stage.update();
         }
 
         complete(){}
