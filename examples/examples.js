@@ -1,8 +1,12 @@
 var example = location.search.split("eg=")[1];
 var addScript = document.createElement("script");
 addScript.src = example + ".js";
-var parts = example.split("/").join(" - ");
-document.title = "txtjs: " + parts;
+var parts = example
+  .split("_")
+  .join(" ")
+  .split("/")
+  .join(" - ");
+document.title = "txtjs example: " + parts;
 (
   document.getElementsByTagName("head")[0] || document.documentElement
 ).appendChild(addScript);
