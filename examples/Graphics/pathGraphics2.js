@@ -7,10 +7,6 @@ function init() {
   stage = new createjs.Stage(canvas);
 
   var a = new createjs.Shape();
-  //a.graphics.beginFill("#000000");
-  //a.graphics.decodeSVGPath( 'M150 60 L75 200 L225 200 Z m 20 20 l-5 -5 l10 0 Z l5 5 l-10 0' )
-  //a.graphics.endFill()
-  //a.graphics.endStroke()
 
   a.graphics.setStrokeStyle(10);
   a.graphics.beginStroke("#F00");

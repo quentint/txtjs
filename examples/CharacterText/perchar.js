@@ -5,7 +5,6 @@ function init() {
   canvas = createHiDPICanvas(1000, 1000, 2);
   console.log(canvas);
   document.body.appendChild(canvas);
-  //canvas = document.getElementById('canvas');
   stage = new createjs.Stage(canvas);
 
   stage.addChild(

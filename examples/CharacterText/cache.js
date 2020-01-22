@@ -18,7 +18,6 @@ function init() {
   var text = new txt.CharacterText({
     text: "The fox jumped over the log.",
     font: "raleway",
-    //align:txt.Align.TOP_RIGHT,
     tracking: -4,
     lineHeight: 120,
     width: 600,

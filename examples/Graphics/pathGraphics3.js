@@ -8,10 +8,6 @@ function init() {
 
   var a = new createjs.Shape();
 
-  //a.graphics.beginStroke("#F00");
-  //a.graphics.decodeSVGPath( 'M 10 60 Q 90 60 90 140 Q 10 140 10 60 Z M 10 140 Q 10 60 90 60 Q 90 140 10 140 Z M 50 70 L 80 100 50 130 20 100 Z' )
-  //a.graphics.endFill()
-  //a.graphics.endStroke()
   a.graphics.beginFill("#000");
   a.graphics.setStrokeStyle(10);
   a.graphics.beginStroke("#F00");
