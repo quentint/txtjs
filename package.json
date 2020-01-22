@@ -16,7 +16,8 @@
     "browser": "gulp browser",
     "build:docs": "typedoc --tsconfig",
     "lint": "prettier --check **/*.js",
-    "lint:fix": "prettier --write **/*.js"
+    "lint:fix": "prettier --write **/*.js",
+    "test": "npm run lint"
   },
   "devDependencies": {
     "easeljs": "^1.0.2",
