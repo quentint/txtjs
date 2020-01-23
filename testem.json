@@ -7,7 +7,7 @@
   },
   "test_page": "testem.mustache",
   "serve_files": [
-    { "src": "dist/easeljs.js", "attrs": ["foo=bar"] },
+    { "src": "dist/easeljs.js" },
     { "src": "dist/pathseg.js" },
     { "src": "dist/txt.js" },
     { "src": "examples/examples.js" },
