@@ -1,15 +1,17 @@
 var example = location.search.split("eg=")[1];
-var addScript = document.createElement("script");
-addScript.src = example + ".js";
-var parts = example
-  .split("_")
-  .join(" ")
-  .split("/")
-  .join(" - ");
-document.title = "txtjs example: " + parts;
-(
-  document.getElementsByTagName("head")[0] || document.documentElement
-).appendChild(addScript);
+if (example) {
+  var addScript = document.createElement("script");
+  addScript.src = example + ".js";
+  var parts = example
+    .split("_")
+    .join(" ")
+    .split("/")
+    .join(" - ");
+  document.title = "txtjs example: " + parts;
+  (
+    document.getElementsByTagName("head")[0] || document.documentElement
+  ).appendChild(addScript);
+}
 
 var PIXEL_RATIO = (function() {
   var ctx = document.createElement("canvas").getContext("2d"),

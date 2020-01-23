@@ -2,6 +2,7 @@ language: node_js
 # TODO: break out browsers into matrix
 addons:
   chrome: stable
+  firefox: latest
 node_js:
   - 10
 deploy:

@@ -1,0 +1,18 @@
+{
+  "launch_in_dev": ["Chrome", "Firefox"],
+  "launch_in_ci": ["Chrome", "Firefox"],
+  "browser_args": {
+    "Chrome": ["--headless", "--disable-gpu", "--remote-debugging-port=9222"],
+    "Firefox": ["--headless"]
+  },
+  "test_page": "testem.mustache",
+  "serve_files": [
+    { "src": "dist/easeljs.js", "attrs": ["foo=bar"] },
+    { "src": "dist/pathseg.js" },
+    { "src": "dist/txt.js" },
+    { "src": "examples/examples.js" },
+    { "src": "examples/CharacterText/accessibility.js" },
+    { "src": "tests/basic.js" }
+  ],
+  "css_files": []
+}
