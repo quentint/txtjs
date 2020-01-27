@@ -2,7 +2,6 @@
 /// <reference path='../definitions/easeljs/easeljs.d.ts'/>
 /// <reference path='../definitions/tweenjs/tweenjs.d.ts'/>
 
-
 /// <reference path='Interfaces.ts' />
 
 /// <reference path='Accessibility.ts' />
