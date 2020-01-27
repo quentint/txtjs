@@ -11,7 +11,7 @@ describe("Smoke test", function() {
     expect(txt.Info.VERSION).toEqual("0.9.5"); // remember to update all parts of codebase
   });
 
-  xit("Renders", function() {
+  it("Renders", function() {
     init();
   });
 });
