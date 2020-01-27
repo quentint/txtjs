@@ -27,7 +27,7 @@ curl -s -X POST \
   https://api.travis-ci.org/job/${TRAVIS_JOBID}/debug
 ```
 
-Use `tmux` to split terminal into separate views.
+Use `tmux` to split terminal into separate views: <kbd>Ctrl</kbd> + <kbd>B</kbd> then press <kbd>"</kbd>.
 
 ### Debugging Chrome Headless
 
@@ -48,3 +48,5 @@ google-chrome \
   --dump-dom \
   http://localhost:7357/
 ```
+
+Further Chrome headless debugging info: https://developers.google.com/web/updates/2017/04/headless-chrome
