@@ -5,6 +5,8 @@ addons:
   firefox: latest
 node_js:
   - 10
+before_script:
+  - "npm run build"
 deploy:
   provider: npm
   email: jeremy@burnbright.net
