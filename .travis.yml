@@ -6,15 +6,17 @@ addons:
 node_js:
   - 10
 stages:
+  - test
   - deploy
-  - deploy_docs
 before_script:
   - "npm run build"
-  - "npm run build:docs"
 
 jobs:
   include:
+    - stage: test
+      script: npm ci
     - stage: npm release
+      script: "echo releasing package to npm..."
       deploy:
         provider: npm
         email: jeremy@burnbright.net
@@ -23,6 +25,9 @@ jobs:
         on:
           tags: true
     - stage: github pages publish
+      before_script:
+        - "npm run build:docs"
+      script: "echo deploying to GitHub pages..."
       before_deploy:
         - sed -i '/dist/d' .gitignore
         - sed -i '/docs/d' .gitignore
