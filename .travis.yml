@@ -16,7 +16,7 @@ jobs:
         firefox: latest
       script: npm ci
     - stage: npm release
-      script: ""
+      script: "echo releasing npm package..."
       deploy:
         provider: npm
         email: jeremy@burnbright.net
