@@ -4,7 +4,7 @@ A &lt;canvas&gt; font and typesetting engine for @CreateJS.
 
 [![Build Status](https://travis-ci.org/ReCreateJS/txtjs.svg?branch=master)](https://travis-ci.org/ReCreateJS/txtjs)
 
-Site at <http://txtjs.com>.
+![Architecture Diagram](site/architecture.png)
 
 ## Debugging Travis Builds via Docker
 
