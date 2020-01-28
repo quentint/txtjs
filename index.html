@@ -411,6 +411,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         return can;
     }
     
+    var text;
 
     function init() {
         
@@ -420,24 +421,38 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         txt.FontLoader.path = "font/";
         
-        var text = new txt.Text( { 
-            text:'Written to <canvas> with txtjs. Welcome.\nv0.9.5',
+        var renderText = "Yes, this renders the same in every browser!";
+
+        text = new txt.Text( { 
+            text: renderText,
             font:'raleway',
             align:txt.Align.MIDDLE_CENTER,
-            tracking:-5,
-            lineHeight:120,
+            lineHeight:100,
             width:1000,
             height:400,
             size:100,
             x:0,
             y:0,
-            accessibilityText:'Written to canvas with txtjs. Welcome. v0.9.4'
+            accessibilityText: renderText
         } );
         
         stage.addChild( text );
 
-        stage.update();
+        createjs.Ticker.on("tick", tick);
+		createjs.Ticker.setFPS(30);
+    }
 
+    var counter = 0;
+    function tick(event) {
+
+        text.tracking = 50 + Math.sin( counter ) * 100;
+        text.align = Math.sin( counter ) > 0 ? txt.Align.BOTTOM_RIGHT : txt.Align.TOP_LEFT;
+
+        counter = (counter + 0.05) % 7;
+        text.font = counter > 2.5 ? "raleway" : "lobster";
+        
+        text.layout();
+        stage.update(event);
     }
 
 </script>
