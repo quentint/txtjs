@@ -1,8 +1,6 @@
 language: node_js
 # TODO: break out browsers into matrix
-addons:
-  chrome: stable
-  firefox: latest
+
 node_js:
   - 10
 stages:
@@ -10,13 +8,15 @@ stages:
   - deploy
 before_script:
   - "npm run build"
-
 jobs:
   include:
     - stage: test
+      addons:
+        chrome: stable
+        firefox: latest
       script: npm ci
     - stage: npm release
-      script: "echo releasing package to npm..."
+      script: ""
       deploy:
         provider: npm
         email: jeremy@burnbright.net
@@ -25,9 +25,7 @@ jobs:
         on:
           tags: true
     - stage: github pages publish
-      before_script:
-        - "npm run build:docs"
-      script: "echo deploying to GitHub pages..."
+      script: "npm run build:docs"
       before_deploy:
         - sed -i '/dist/d' .gitignore
         - sed -i '/docs/d' .gitignore
