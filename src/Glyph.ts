@@ -1,5 +1,9 @@
 module txt {
+  /**
+   * Represents a single Glyph within a Font.
+   */
   export class Glyph {
+    /** SVG path data */
     path: string = "";
     offset: number;
     kerning: any = {};
