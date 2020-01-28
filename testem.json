@@ -6,13 +6,15 @@
     "Firefox": ["--headless"]
   },
   "test_page": "testem.mustache",
+  "before_tests": "npm run build",
+  "src_files": ["src/*.ts"],
   "serve_files": [
     { "src": "dist/easeljs.js" },
     { "src": "dist/pathseg.js" },
     { "src": "dist/txt.js" },
     { "src": "examples/examples.js" },
     { "src": "examples/CharacterText/accessibility.js" },
-    { "src": "tests/basic.js" }
+    { "src": "tests/*.js" }
   ],
   "css_files": []
 }
