@@ -23,6 +23,9 @@ jobs:
         on:
           tags: true
     - stage: github pages publish
+      before_deploy:
+        - sed -i '/dist/d' .gitignore
+        - sed -i '/docs/d' .gitignore
       deploy:
         provider: pages
         skip_cleanup: true
