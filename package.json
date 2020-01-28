@@ -1,0 +1,46 @@
+{
+  "name": "@recreatejs/txtjs",
+  "repository": "github:ReCreateJS/txtjs",
+  "version": "0.9.5",
+  "description": "A <canvas> font and typesetting engine for @CreateJS",
+  "author": "Ted Patrick (http://tedpatrick.com)",
+  "contributors": [
+    "Jeremy Shipman (https://jeremyshipman.com)"
+  ],
+  "license": "BSD-2-Clause",
+  "scripts": {
+    "compile": "npx tsc",
+    "copy": "gulp copy-vendor-files",
+    "build": "npm run compile && npm run copy",
+    "serve": "npm run build && gulp server",
+    "browser": "gulp browser",
+    "build:docs": "typedoc --tsconfig",
+    "lint": "prettier --check **/*.js",
+    "lint:fix": "prettier --write **/*.js",
+    "test": "npm run lint && npm run test:ci",
+    "test:ci": "testem ci",
+    "test:dev": "testem --launch=none"
+  },
+  "devDependencies": {
+    "easeljs": "^1.0.2",
+    "gulp": "^3.8.10",
+    "gulp-connect": "^2.2.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-shell": "^0.2.10",
+    "gulp-uglify": "^1.1.0",
+    "jasmine-core": "^3.5.0",
+    "pathseg": "^1.2.0",
+    "prettier": "^1.19.1",
+    "testem": "^3.0.2",
+    "typedoc": "^0.16.7",
+    "typescript": "^1.4.1"
+  },
+  "files": [
+    "definitions",
+    "dist",
+    "src",
+    "font",
+    "tools"
+  ],
+  "dependencies": {}
+}

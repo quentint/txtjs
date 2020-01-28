@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outFile": "./dist/txt.js",
+    "outDir": "./dist",
+    "module": "None",
+    "target": "ES5",
+    "declaration": true,
+    "removeComments": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules", "definitions"],
+  "typedocOptions": {
+    "inputFiles": "src",
+    "mode": "file",
+    "out": "docs/",
+    "name": "txtjs"
+  }
+}
