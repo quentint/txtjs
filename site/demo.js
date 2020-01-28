@@ -85,7 +85,7 @@ function tick(event) {
   counter = (counter + 0.05) % 7;
   counter2 = (counter2 + 3) % 500;
   text.width = 100 + counter2;
-  text.x = 250 + counter2 / 2;
+  text.x = 450 - counter2 / 2;
   text.font = counter > 2.5 ? "arimo" : "lobster";
 
   pathText.rotation = pathText.rotation + (1 % 360);
