@@ -4,7 +4,7 @@ module txt {
     characterCode: number = null;
     font: string = null;
     tracking: number = null;
-    characterCase: number = null;
+    characterCase: txt.Case = null;
     characterCaseOffset: number = 0;
     index: number = null;
     size: number = null;
@@ -87,6 +87,7 @@ module txt {
       }
       this.graphics = this._glyph.graphic();
 
+      // scale x
       if (this.characterCase === txt.Case.SMALL_CAPS) {
         if (upperSmall) {
           this.scaleX = (this.size / this._font.units) * 0.8;

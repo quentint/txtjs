@@ -7,7 +7,7 @@ module txt {
         width:number = 100;
         height:number = 20;
         align:number = txt.Align.TOP_LEFT;
-        characterCase:number = txt.Case.NORMAL;
+        characterCase:txt.Case = txt.Case.NORMAL;
         size:number = 12;
         minSize:number = null;
         maxTracking:number = null;

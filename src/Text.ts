@@ -5,7 +5,7 @@ module txt {
     width: number = 100;
     height: number = 20;
     align: number = txt.Align.TOP_LEFT;
-    characterCase: number = txt.Case.NORMAL;
+    characterCase: txt.Case = txt.Case.NORMAL;
     size: number = 12;
     font: string = "belinda";
     tracking: number = 0;
@@ -58,6 +58,12 @@ module txt {
 
     fontLoaded(font) {
       this.layout();
+    }
+
+    getBounds(): createjs.Rectangle {
+      // TODO: obtain intersected bounds of the characters/words in here
+
+      return new createjs.Rectangle(this.x, this.y, this.width, this.height);
     }
 
     layout() {

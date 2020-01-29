@@ -1,8 +1,8 @@
 module txt {
-  export class Case {
-    static NORMAL: number = 0;
-    static UPPER: number = 1;
-    static LOWER: number = 2;
-    static SMALL_CAPS: number = 3;
+  export enum Case {
+    NORMAL = 0,
+    UPPER = 1,
+    LOWER = 2,
+    SMALL_CAPS = 3
   }
 }
