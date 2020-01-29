@@ -202,6 +202,10 @@ small screens.
   margin-top: 0.6em;
 }
 
+.content ul {
+  column-count: 2;
+}
+
 /* -- Responsive Styles (Media Queries) ------------------------------------- */
 
 /*
