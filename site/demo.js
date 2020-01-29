@@ -39,7 +39,7 @@ function init() {
   txt.FontLoader.path = "font/";
 
   text = new txt.Text({
-    text: "This is TextJS",
+    text: "This is TxtJS",
     font: "lobster",
     align: txt.Align.MIDDLE_CENTER,
     width: 500,
@@ -71,7 +71,7 @@ function init() {
   stage.addChild(pathText);
 
   createjs.Ticker.on("tick", tick);
-  createjs.Ticker.setFPS(30);
+  createjs.Ticker.framerate = 30;
 }
 
 var counter = 0;
