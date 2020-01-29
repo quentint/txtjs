@@ -1,3 +1,5 @@
+txt.FontLoader.path = "../font/";
+
 var example = location.search.split("eg=")[1];
 if (example) {
   var addScript = document.createElement("script");
