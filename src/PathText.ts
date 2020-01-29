@@ -12,7 +12,7 @@ module txt {
 
   export class PathText extends createjs.Container {
     text: string = "";
-    characterCase: number = txt.Case.NORMAL;
+    characterCase: txt.Case = txt.Case.NORMAL;
     size: number = 12;
     font: string = "belinda";
     tracking: number = 0;

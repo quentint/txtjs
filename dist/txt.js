@@ -81,16 +81,13 @@ var txt;
 })(txt || (txt = {}));
 var txt;
 (function (txt) {
-    var Case = (function () {
-        function Case() {
-        }
-        Case.NORMAL = 0;
-        Case.UPPER = 1;
-        Case.LOWER = 2;
-        Case.SMALL_CAPS = 3;
-        return Case;
-    }());
-    txt.Case = Case;
+    (function (Case) {
+        Case[Case["NORMAL"] = 0] = "NORMAL";
+        Case[Case["UPPER"] = 1] = "UPPER";
+        Case[Case["LOWER"] = 2] = "LOWER";
+        Case[Case["SMALL_CAPS"] = 3] = "SMALL_CAPS";
+    })(txt.Case || (txt.Case = {}));
+    var Case = txt.Case;
 })(txt || (txt = {}));
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2647,6 +2644,9 @@ var txt;
         Text.prototype.complete = function () { };
         Text.prototype.fontLoaded = function (font) {
             this.layout();
+        };
+        Text.prototype.getBounds = function () {
+            return new createjs.Rectangle(this.x, this.y, this.width, this.height);
         };
         Text.prototype.layout = function () {
             txt.Accessibility.set(this);

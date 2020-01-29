@@ -30,11 +30,11 @@ declare module txt {
     }
 }
 declare module txt {
-    class Case {
-        static NORMAL: number;
-        static UPPER: number;
-        static LOWER: number;
-        static SMALL_CAPS: number;
+    enum Case {
+        NORMAL = 0,
+        UPPER = 1,
+        LOWER = 2,
+        SMALL_CAPS = 3,
     }
 }
 declare module txt {
@@ -43,7 +43,7 @@ declare module txt {
         characterCode: number;
         font: string;
         tracking: number;
-        characterCase: number;
+        characterCase: txt.Case;
         characterCaseOffset: number;
         index: number;
         size: number;
@@ -70,7 +70,7 @@ declare module txt {
         width: number;
         height: number;
         align: number;
-        characterCase: number;
+        characterCase: txt.Case;
         size: number;
         minSize: number;
         maxTracking: number;
@@ -290,7 +290,7 @@ declare module txt {
     }
     class PathText extends createjs.Container {
         text: string;
-        characterCase: number;
+        characterCase: txt.Case;
         size: number;
         font: string;
         tracking: number;
@@ -381,7 +381,7 @@ declare module txt {
         width: number;
         height: number;
         align: number;
-        characterCase: number;
+        characterCase: txt.Case;
         size: number;
         font: string;
         tracking: number;
@@ -405,6 +405,7 @@ declare module txt {
         render(): void;
         complete(): void;
         fontLoaded(font: any): void;
+        getBounds(): createjs.Rectangle;
         layout(): void;
         characterLayout(): boolean;
         wordLayout(): void;
