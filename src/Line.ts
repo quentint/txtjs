@@ -1,20 +1,21 @@
-module txt {
-  export class Line extends createjs.Container {
-    measuredWidth: number;
-    measuredHeight: number;
+import Word from "./Word";
+import Character from "./Character";
 
-    constructor() {
-      super();
-    }
+export default class Line extends createjs.Container {
+  measuredWidth: number;
+  measuredHeight: number;
 
-    //txt.Text support
-    lastWord(): txt.Word {
-      return <txt.Word>this.children[this.children.length - 1];
-    }
+  constructor() {
+    super();
+  }
 
-    //txt.CharacterText support
-    lastCharacter(): txt.Character {
-      return <txt.Character>this.children[this.children.length - 1];
-    }
+  //Text support
+  lastWord(): Word {
+    return <Word>this.children[this.children.length - 1];
+  }
+
+  //CharacterText support
+  lastCharacter(): Character {
+    return <Character>this.children[this.children.length - 1];
   }
 }
