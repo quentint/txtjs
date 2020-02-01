@@ -9,10 +9,14 @@
     "Jeremy Shipman (https://jeremyshipman.com)"
   ],
   "license": "BSD-2-Clause",
+  "main": "dist/txt.cjs.js",
+  "module": "dist/txt.esm.js",
+  "browser": "dist/txt.js",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "compile": "npx tsc",
     "copy": "gulp copy-vendor-files",
-    "build": "npm run compile && npm run copy",
+    "build": "npm run build:types && npm run build:js && npm run copy",
     "dev": "npm run build && tsc --watch",
     "serve": "npm run build && gulp server",
     "browser": "gulp browser",
@@ -21,9 +25,18 @@
     "lint:fix": "prettier --write **/*.js",
     "test": "npm run lint && npm run test:ci",
     "test:ci": "testem ci",
-    "test:dev": "testem --launch=none"
+    "test:dev": "testem --launch=none",
+    "build:esm": "tsc --target es5 --outDir dist/esm",
+    "build:umd": "npm run build:esm && rollup dist/esm/index.js --format umd --name Txt --file dist/umd/txt.js",
+    "build:types": "tsc --emitDeclarationOnly --declarationDir dist/types",
+    "build:js": "rollup -c"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
     "easeljs": "^1.0.2",
     "gulp": "^3.8.10",
     "gulp-connect": "^2.2.0",
@@ -33,9 +46,13 @@
     "jasmine-core": "^3.5.0",
     "pathseg": "^1.2.0",
     "prettier": "^1.19.1",
+    "rollup": "^1.31.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "testem": "^3.0.2",
     "typedoc": "^0.16.7",
-    "typescript": "^1.8.10"
+    "typescript": "^3.7.5"
   },
   "files": [
     "definitions",
