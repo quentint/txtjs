@@ -18,7 +18,7 @@
     "copy": "gulp copy-vendor-files",
     "build": "npm run build:types && npm run build:js && npm run copy",
     "dev": "npm run build && tsc --watch",
-    "serve": "npm run build && gulp server",
+    "serve": "npm run build:js && gulp server",
     "browser": "gulp browser",
     "build:docs": "typedoc --tsconfig",
     "lint": "prettier --check **/*.js",

@@ -1,19 +1,41 @@
 txt.FontLoader.path = "../font/";
 
-var example = location.search.split("eg=")[1];
-if (example) {
-  var addScript = document.createElement("script");
-  addScript.src = example + ".js";
-  var parts = example
-    .split("_")
-    .join(" ")
-    .split("/")
-    .join(" - ");
-  document.title = "txtjs example: " + parts;
-  (
-    document.getElementsByTagName("head")[0] || document.documentElement
-  ).appendChild(addScript);
+function buildExampleInit(examplePath) {
+  var parts = examplePath.split("/");
+  return txtExamples[parts[0]][parts[1]];
 }
+
+function buildExampleTitle(examplePath) {
+  return (
+    "txtjs example: " +
+    examplePath
+      .split("/")
+      .join(" - ")
+      .split("_")
+      .join(" ")
+  );
+}
+
+function clearExample() {
+  var canvas = document.getElementsByTagName("canvas")[0];
+  document.body.removeChild(canvas);
+  canvas = null;
+}
+
+var example = location.hash.replace("#", "");
+if (example) {
+  document.title = buildExampleTitle(example);
+  window.onload = function() {
+    this.buildExampleInit(example)();
+  };
+}
+
+window.onhashchange = function() {
+  var example = location.hash.replace("#", "");
+  clearExample();
+  document.title = buildExampleTitle(example);
+  this.buildExampleInit(example)();
+};
 
 var PIXEL_RATIO = (function() {
   var ctx = document.createElement("canvas").getContext("2d"),
