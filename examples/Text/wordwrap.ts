@@ -1,11 +1,7 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(1000, 1000, 2);
-  console.log(canvas);
+  let canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
 
   stage.addChild(
     new txt.Text({
@@ -52,4 +48,5 @@ export default function init() {
   );
 
   stage.update();
+  return stage;
 }

@@ -16,7 +16,7 @@
   "scripts": {
     "compile": "npx tsc",
     "copy": "gulp copy-vendor-files",
-    "build": "npm run build:types && npm run build:js && npm run copy",
+    "build": "npm run build:js && npm run copy",
     "dev": "npm run build && tsc --watch",
     "serve": "npm run build:js && gulp server",
     "browser": "gulp browser",
@@ -26,8 +26,6 @@
     "test": "npm run lint && npm run test:ci",
     "test:ci": "testem ci",
     "test:dev": "testem --launch=none",
-    "build:esm": "tsc --target es5 --outDir dist/esm",
-    "build:umd": "npm run build:esm && rollup dist/esm/index.js --format umd --name Txt --file dist/umd/txt.js",
     "build:types": "tsc --emitDeclarationOnly --declarationDir dist/types",
     "build:js": "rollup -c"
   },

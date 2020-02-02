@@ -1,12 +1,9 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
 
-  var text = new txt.CharacterText({
+  let text = new txt.CharacterText({
     text: "Chess Onward The big blue file brush Who be dribble flower office",
     font: "lobster",
     tracking: 0,
@@ -24,4 +21,5 @@ export default function init() {
   stage.addChild(text);
 
   stage.update();
+  return stage;
 }

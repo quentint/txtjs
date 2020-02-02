@@ -1,10 +1,7 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
   var i = 1;
   var h = 8;
   while (i < 30) {
@@ -27,4 +24,5 @@ export default function init() {
     i++;
   }
   stage.update();
+  return stage;
 }

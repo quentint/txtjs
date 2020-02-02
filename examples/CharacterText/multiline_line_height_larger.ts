@@ -1,14 +1,9 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
+  let stage = new createjs.Stage(canvas);
 
-  stage = new createjs.Stage(canvas);
-
-  var text;
-  text = new txt.CharacterText({
+  let text = new txt.CharacterText({
     text: "love\n me some\n poiretone",
     font: "poiretone",
     align: txt.Align.TOP_LEFT,
@@ -144,4 +139,5 @@ export default function init() {
   stage.addChild(text);
 
   stage.update();
+  return stage;
 }

@@ -1,12 +1,9 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
 
-  var text = new txt.CharacterText({
+  let text = new txt.CharacterText({
     text: "The fox jumped over the log.",
     font: "raleway",
     align: txt.Align.TOP_RIGHT,
@@ -27,4 +24,6 @@ export default function init() {
     text.font = "lobster";
     text.layout();
   }, 2000);
+
+  return stage;
 }

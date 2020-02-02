@@ -1,10 +1,7 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(1800, 1800, 1);
+  let canvas = createHiDPICanvas(1800, 1800, 1);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
 
   var a = new createjs.Shape();
   a.graphics.setStrokeStyle(4);
@@ -53,4 +50,5 @@ export default function init() {
   stage.addChild(d);
 
   stage.update();
+  return stage;
 }

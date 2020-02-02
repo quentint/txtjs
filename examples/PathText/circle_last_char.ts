@@ -1,37 +1,7 @@
-var canvas;
-var stage;
-
-function circle(x, y, r) {
-  var circle =
-    "M " +
-    x +
-    " " +
-    y +
-    " " +
-    "m " +
-    -r +
-    ",0 " +
-    "a " +
-    r +
-    "," +
-    r +
-    " 0 1,0 " +
-    r * 2 +
-    ",0 " +
-    "a " +
-    r +
-    "," +
-    r +
-    " 0 1,0 " +
-    -r * 2 +
-    ",0 Z";
-  return circle;
-}
-
 export default function init() {
-  canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
   stage.x = 50;
   stage.y = 50;
   stage.scaleX = stage.scaleY = 8;
@@ -67,4 +37,5 @@ export default function init() {
   );
 
   stage.update();
+  return stage;
 }

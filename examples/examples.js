@@ -18,24 +18,10 @@ function buildExampleTitle(examplePath) {
 
 function clearExample() {
   var canvas = document.getElementsByTagName("canvas")[0];
-  document.body.removeChild(canvas);
-  canvas = null;
+  if (canvas) {
+    document.body.removeChild(canvas);
+  }
 }
-
-var example = location.hash.replace("#", "");
-if (example) {
-  document.title = buildExampleTitle(example);
-  window.onload = function() {
-    this.buildExampleInit(example)();
-  };
-}
-
-window.onhashchange = function() {
-  var example = location.hash.replace("#", "");
-  clearExample();
-  document.title = buildExampleTitle(example);
-  this.buildExampleInit(example)();
-};
 
 var PIXEL_RATIO = (function() {
   var ctx = document.createElement("canvas").getContext("2d"),

@@ -1,65 +1,12 @@
-var canvas;
-var stage;
-
-var PIXEL_RATIO = (function() {
-  var ctx = document.createElement("canvas").getContext("2d"),
-    dpr = window.devicePixelRatio || 1,
-    bsr =
-      ctx.webkitBackingStorePixelRatio ||
-      ctx.mozBackingStorePixelRatio ||
-      ctx.msBackingStorePixelRatio ||
-         ctx.oBackingStorePixelRatio ||
-      ctx.backingStorePixelRatio ||
-      1;
-  return dpr / bsr;
-})();
-
-createHiDPICanvas = function(w, h, ratio) {
-  if (!ratio) {
-    ratio = PIXEL_RATIO;
-  }
-  var can = document.createElement("canvas");
-  can.width = w * ratio;
-  can.height = h * ratio;
-  can.style.width = w + "px";
-  can.style.height = h + "px";
-  can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-  return can;
-};
-
-function circle(x, y, r) {
-  var circle =
-    "M " +
-    x +
-    " " +
-    y +
-    " " +
-    "m " +
-    -r +
-    ",0 " +
-    "a " +
-    r +
-    "," +
-    r +
-    " 0 1,0 " +
-    r * 2 +
-    ",0 " +
-    "a " +
-    r +
-    "," +
-    r +
-    " 0 1,0 " +
-    -r * 2 +
-    ",0 Z";
-  return circle;
-}
+import circle from "../circle-path";
 
 export default function init() {
-  canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
   stage.x = 10;
-  stage.scaleX = stage.scaleY = 2;
+  stage.scaleX = 2;
+  stage.scaleY = 2;
 
   stage.addChild(
     new txt.PathText({
@@ -102,4 +49,5 @@ export default function init() {
   );
 
   stage.update();
+  return stage;
 }

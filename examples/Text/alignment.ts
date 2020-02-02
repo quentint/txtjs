@@ -1,10 +1,7 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(1100, 1100, 2);
+  let canvas = createHiDPICanvas(1100, 1100, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
 
   var shape = new createjs.Shape();
   shape.graphics.beginFill("#76d6ff");
@@ -138,4 +135,5 @@ export default function init() {
   );
 
   stage.update();
+  return stage;
 }

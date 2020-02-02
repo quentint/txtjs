@@ -1,10 +1,7 @@
-var canvas;
-var stage;
-
 export default function init() {
-  canvas = createHiDPICanvas(2000, 2000, 2);
+  let canvas = createHiDPICanvas(2000, 2000, 2);
   document.body.appendChild(canvas);
-  stage = new createjs.Stage(canvas);
+  let stage = new createjs.Stage(canvas);
   stage.scaleX = stage.scaleY = 1;
 
   var i = new createjs.Bitmap("/examples/tracking_test.png");
@@ -518,4 +515,6 @@ export default function init() {
   );
 
   stage.update();
+
+  return stage;
 }
