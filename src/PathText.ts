@@ -146,6 +146,7 @@ export default class PathText extends createjs.Container {
       var s = new createjs.Shape();
       s.graphics.beginStroke("#FF0000");
       s.graphics.setStrokeStyle(0.1);
+      // @ts-ignore
       s.graphics.decodeSVGPath(this.path);
       s.graphics.endFill();
       s.graphics.endStroke();

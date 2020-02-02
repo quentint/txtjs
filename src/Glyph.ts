@@ -19,11 +19,17 @@ export default class Glyph {
       //Character instances populate properties before draw
       this._stroke = new createjs.Graphics.Stroke(null, true);
 
-      this._strokeStyle = new createjs.Graphics.StrokeStyle(0);
+      this._strokeStyle = new createjs.Graphics.StrokeStyle(
+        0,
+        null,
+        null,
+        null
+      );
 
       this._fill = new createjs.Graphics.Fill(null);
 
       //convert SVG to drawing paths
+      // @ts-ignore
       this._graphic.decodeSVGPath(this.path);
 
       this._graphic.append(this._fill);
