@@ -1,4 +1,3 @@
-import "./SVGArc";
 import "./decodeSVGPath";
 
 export { default as Accessibility } from "./Accessibility";

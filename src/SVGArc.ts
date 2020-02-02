@@ -1,8 +1,4 @@
-declare module createjs.Graphics {
-  interface SVGArc {}
-}
-
-class SVGArc {
+export default class SVGArc {
   r0: number;
   r1: number;
   cx: number;
@@ -156,5 +152,3 @@ class SVGArc {
     ctx.translate(-this.cx, -this.cy);
   }
 }
-
-createjs.Graphics.SVGArc = SVGArc;

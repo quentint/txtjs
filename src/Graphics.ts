@@ -1,3 +1,5 @@
+import SVGArc from "./SVGArc";
+
 export default class Graphics {
   /**
    * Build up createjs Graphics commands based on path data.
@@ -5,7 +7,6 @@ export default class Graphics {
   static init(target, svgpath: string) {
     var ca = Graphics.parsePathData(svgpath);
     var G = createjs.Graphics;
-    var closedPath = false;
 
     for (var n = 0; n < ca.length; n++) {
       var c = ca[n].command;
@@ -30,7 +31,7 @@ export default class Graphics {
           break;
 
         case "A":
-          target.append(new G.SVGArc(p[0], p[1], p[2], p[3], p[4], p[5], p[6]));
+          target.append(new SVGArc(p[0], p[1], p[2], p[3], p[4], p[5], p[6]));
           break;
 
         case "Z":
