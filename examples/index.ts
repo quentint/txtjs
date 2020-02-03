@@ -1,6 +1,8 @@
+txt.FontLoader.path = "../font/";
+
 export { default as CharacterText } from "./character-text";
 export { default as Graphics } from "./graphics";
 export { default as PathText } from "./path-text";
 export { default as Text } from "./text";
 
-import "./example-loader";
+import "../lib/example-loader";

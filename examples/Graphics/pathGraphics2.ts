@@ -1,3 +1,4 @@
+import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
   let canvas = createHiDPICanvas(1800, 1800, 1);
   document.body.appendChild(canvas);

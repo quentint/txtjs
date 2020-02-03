@@ -13,7 +13,7 @@ export default [
     plugins: [
       resolve({ extensions }),
       commonjs(),
-      babel({ extensions, include: ["examples/**/*"] })
+      babel({ extensions, include: ["examples/**/*", "lib/**/*"] })
     ],
     output: [
       {
