@@ -14,20 +14,19 @@
   "browser": "dist/txt.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "compile": "npx tsc",
     "copy": "gulp copy-vendor-files",
     "build": "npm run build:js && npm run copy",
-    "dev": "npm run build && tsc --watch",
+    "build:js": "rollup -c",
+    "build:js:watch": "npm run build:js -- --watch",
+    "build:types": "tsc --emitDeclarationOnly --declarationDir dist/types",
+    "build:docs": "typedoc --tsconfig",
     "serve": "npm run build:js && gulp server",
     "browser": "gulp browser",
-    "build:docs": "typedoc --tsconfig",
     "lint": "prettier --check **/*.js",
     "lint:fix": "prettier --write **/*.js",
     "test": "npm run lint && npm run test:ci",
     "test:ci": "testem ci",
-    "test:dev": "testem --launch=none",
-    "build:types": "tsc --emitDeclarationOnly --declarationDir dist/types",
-    "build:js": "rollup -c"
+    "test:dev": "testem --launch=none"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
