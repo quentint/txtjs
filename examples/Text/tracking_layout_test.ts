@@ -4,7 +4,7 @@ export default function init() {
   let stage = new createjs.Stage(canvas);
   stage.scaleX = stage.scaleY = 1;
 
-  var i = new createjs.Bitmap("examples/tracking_test.png");
+  var i = new createjs.Bitmap("tracking_test.png");
   i.x = 25;
   i.y = 14;
   i.scaleX = i.scaleY = 1;
