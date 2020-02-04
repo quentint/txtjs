@@ -1,17 +1,17 @@
 import Graphics from "./Graphics";
 import applyMixins from "./applyMixins";
 
-/**
- * decodeSVGPath intended for createjs.Graphics class
- */
-class DecodeSVGPathMixin {
+class GraphicsMixin {
+  /**
+   * decodeSVGPath intended for createjs.Graphics class
+   */
   decodeSVGPath(data: string) {
     Graphics.init(this, data);
     return this;
   }
 }
 
-applyMixins(createjs.Graphics, [DecodeSVGPathMixin]);
+applyMixins(createjs.Graphics, [GraphicsMixin]);
 
 declare global {
   namespace createjs {

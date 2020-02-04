@@ -1,4 +1,4 @@
-import "./createjs.Graphics.decodeSVGPath";
+import "./GraphicsMixin";
 
 export { default as Accessibility } from "./Accessibility";
 export { default as Align } from "./Align";
