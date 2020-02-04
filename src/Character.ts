@@ -3,6 +3,9 @@ import Glyph from "./Glyph";
 import FontLoader from "./FontLoader";
 import Font from "./Font";
 
+/**
+ * Represents a styled character
+ */
 export default class Character extends createjs.Shape {
   character: string = "";
   characterCode: number = null;
