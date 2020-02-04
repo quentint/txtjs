@@ -14,7 +14,7 @@ function buildExampleTitle(examplePath) {
   );
 }
 
-function clearExample() {
+export function clearExample() {
   var canvas = document.getElementsByTagName("canvas")[0];
   if (canvas) {
     document.body.removeChild(canvas);

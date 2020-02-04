@@ -1,6 +1,6 @@
 describe("Smoke test", function() {
   afterEach(function() {
-    clearExample();
+    txtExamples.clearExample();
   });
 
   it("Loads txt.js library and checks version", function() {

@@ -5,4 +5,6 @@ export { default as Graphics } from "./graphics";
 export { default as PathText } from "./path-text";
 export { default as Text } from "./text";
 
-import "../lib/example-loader";
+export { default as createHiDPICanvas } from "../lib/hidpi-canvas";
+
+export { clearExample } from "../lib/example-loader";

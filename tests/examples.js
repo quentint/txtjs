@@ -1,6 +1,6 @@
 describe("Execute all examples", function() {
   afterEach(function() {
-    clearExample();
+    txtExamples.clearExample();
   });
 
   Object.entries(txtExamples.Text).forEach(function(eg) {
