@@ -42,16 +42,4 @@ export default class Graphics {
       }
     }
   }
-
-  static svgPathBoundingBox(svgpath: string) {
-    // TODO: access a cached array?
-    var ca = Graphics.parsePathData(svgpath);
-
-    // TODO: start crude - find min max x and y values
-    // TODO: enhance - look to a bounding box api
-    // https://github.com/fabricjs/fabric.js/blob/a8b7a18043ab22dfd59691ef3c6ede0d425651e8/src/shapes/path.class.js#L547
-  }
-
-  // TODO: search for this in github to find out if it's common code
-  // https://github.com/fabricjs/fabric.js/blob/a8b7a18043ab22dfd59691ef3c6ede0d425651e8/src/shapes/path.class.js#L498
 }
