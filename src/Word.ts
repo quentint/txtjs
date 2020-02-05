@@ -1,19 +1,19 @@
-module txt {
-  export class Word extends createjs.Container {
-    hasNewLine: boolean = false;
-    hasHyphen: boolean = false;
-    hasSpace: boolean = false;
-    measuredWidth: number;
-    measuredHeight: number;
-    spaceOffset: number = 0;
+import Character from "./Character";
 
-    constructor() {
-      super();
-    }
+export default class Word extends createjs.Container {
+  hasNewLine: boolean = false;
+  hasHyphen: boolean = false;
+  hasSpace: boolean = false;
+  measuredWidth: number;
+  measuredHeight: number;
+  spaceOffset: number = 0;
 
-    //txt.CharacterText support
-    lastCharacter(): txt.Character {
-      return <txt.Character>this.children[this.children.length - 1];
-    }
+  constructor() {
+    super();
+  }
+
+  //CharacterText support
+  lastCharacter(): Character {
+    return <Character>this.children[this.children.length - 1];
   }
 }

@@ -1,22 +1,22 @@
-module txt {
-  export class Align {
-    static TOP_LEFT: number = 0;
-    static TOP_CENTER: number = 1;
-    static TOP_RIGHT: number = 2;
-    static MIDDLE_LEFT: number = 3;
-    static MIDDLE_CENTER: number = 4;
-    static MIDDLE_RIGHT: number = 5;
-    static BOTTOM_LEFT: number = 6;
-    static BOTTOM_CENTER: number = 7;
-    static BOTTOM_RIGHT: number = 8;
-    static TL: number = 0;
-    static TC: number = 1;
-    static TR: number = 2;
-    static ML: number = 3;
-    static MC: number = 4;
-    static MR: number = 5;
-    static BL: number = 6;
-    static BC: number = 7;
-    static BR: number = 8;
-  }
+enum Align {
+  TOP_LEFT = 0,
+  TOP_CENTER = 1,
+  TOP_RIGHT = 2,
+  MIDDLE_LEFT = 3,
+  MIDDLE_CENTER = 4,
+  MIDDLE_RIGHT = 5,
+  BOTTOM_LEFT = 6,
+  BOTTOM_CENTER = 7,
+  BOTTOM_RIGHT = 8,
+  TL = 0,
+  TC = 1,
+  TR = 2,
+  ML = 3,
+  MC = 4,
+  MR = 5,
+  BL = 6,
+  BC = 7,
+  BR = 8
 }
+
+export default Align;
