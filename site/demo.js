@@ -33,6 +33,7 @@ function circle(x, y, r) {
 
 function init() {
   canvas = createHiDPICanvas(500, 300, 2);
+  canvas.style.maxWidth = "100%";
   document.getElementById("example").appendChild(canvas);
   stage = new createjs.Stage(canvas);
 
