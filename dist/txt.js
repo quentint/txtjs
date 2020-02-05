@@ -908,7 +908,7 @@ var txt = (function (exports) {
    *
    * Partial example:
    *
-   * ```txt
+   * ```
    * 0|id|Abel-Regular
    * 0|family|Abel
    * 1|33|428|M250 434h-72l-55 1000h182zM137 0v154h154v-154h-154z
