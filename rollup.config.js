@@ -19,7 +19,8 @@ export default [
       {
         file: "dist/examples.js",
         format: "iife",
-        name: "txtExamples"
+        name: "txtExamples",
+        sourcemap: true
       }
     ]
   },
@@ -33,7 +34,8 @@ export default [
     output: [
       {
         file: "dist/demo.js",
-        format: "iife"
+        format: "iife",
+        sourcemap: true
       }
     ]
   },
@@ -47,16 +49,19 @@ export default [
     output: [
       {
         file: pkg.main,
-        format: "cjs"
+        format: "cjs",
+        sourcemap: true
       },
       {
         file: pkg.module,
-        format: "es"
+        format: "es",
+        sourcemap: true
       },
       {
         name,
         file: pkg.browser,
-        format: "iife"
+        format: "iife",
+        sourcemap: true
       }
     ]
   }
