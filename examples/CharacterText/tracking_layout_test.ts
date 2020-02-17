@@ -1,519 +1,74 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(2000, 2000, 2);
+  let canvas = createHiDPICanvas(1100, 700, 2);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
   stage.scaleX = stage.scaleY = 1;
 
-  var i = new createjs.Bitmap("tracking_test.png");
+  var i = new createjs.Bitmap("images/tracking_test.png");
   i.x = 25;
   i.y = 14;
   i.scaleX = i.scaleY = 1;
   stage.addChild(i);
 
-  stage.addChild(
-    new txt.CharacterText({
-      text: "0 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 0,
-      size: 62,
-      x: 100,
-      y: 100
-    })
-  );
+  let alphabetString = "abcdefghijklmnop";
 
-  stage.addChild(
-    new txt.CharacterText({
-      text: "100 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 100,
-      size: 62,
-      x: 100,
-      y: 170
-    })
-  );
+  function addText(font, tracking, xPos, yPos, size) {
+    stage.addChild(
+      new txt.CharacterText({
+        text: tracking + " " + alphabetString,
+        font,
+        width: 1900,
+        height: 300,
+        fillColor: "red",
+        tracking,
+        size,
+        x: xPos,
+        y: yPos
+      })
+    );
+  }
 
-  stage.addChild(
-    new txt.CharacterText({
-      text: "200 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 200,
-      size: 62,
-      x: 100,
-      y: 239
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "300 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 300,
-      size: 62,
-      x: 100,
-      y: 309
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "400 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 400,
-      size: 62,
-      x: 100,
-      y: 378
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "500 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 500,
-      size: 62,
-      x: 100,
-      y: 448
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "0 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 0,
-      size: 62,
-      x: 100,
-      y: 517
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "100 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 100,
-      size: 62,
-      x: 100,
-      y: 586
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "200 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 200,
-      size: 62,
-      x: 100,
-      y: 656
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "300 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 300,
-      size: 62,
-      x: 100,
-      y: 725
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "400 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 400,
-      size: 62,
-      x: 100,
-      y: 794
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "500 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 500,
-      size: 62,
-      x: 100,
-      y: 864
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "0 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 0,
-      size: 62,
-      x: 100,
-      y: 919
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "100 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 100,
-      size: 62,
-      x: 100,
-      y: 988
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "200 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 200,
-      size: 62,
-      x: 100,
-      y: 1058
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "300 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 300,
-      size: 62,
-      x: 100,
-      y: 1127
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "400 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 400,
-      size: 62,
-      x: 100,
-      y: 1197
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "500 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 500,
-      size: 62,
-      x: 100,
-      y: 1266
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "0 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 0,
-      size: 29,
-      x: 1454,
-      y: 95
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "100 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 100,
-      size: 29,
-      x: 1454,
-      y: 164
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "200 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 200,
-      size: 29,
-      x: 1454,
-      y: 233
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "300 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 300,
-      size: 29,
-      x: 1454,
-      y: 303
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "400 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 400,
-      size: 29,
-      x: 1454,
-      y: 372
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "500 abcdefghijklmnop",
-      font: "abel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 500,
-      size: 29,
-      x: 1454,
-      y: 442
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "0 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 0,
-      size: 29,
-      x: 1454,
-      y: 511
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "100 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 100,
-      size: 29,
-      x: 1454,
-      y: 580
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "200 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 200,
-      size: 29,
-      x: 1454,
-      y: 650
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "300 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 300,
-      size: 29,
-      x: 1454,
-      y: 719
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "400 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 400,
-      size: 29,
-      x: 1454,
-      y: 789
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "500 abcdefghijklmnop",
-      font: "cinzel",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 500,
-      size: 29,
-      x: 1454,
-      y: 858
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "0 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 0,
-      size: 29,
-      x: 1454,
-      y: 920
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "100 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 100,
-      size: 29,
-      x: 1454,
-      y: 989
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "200 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 200,
-      size: 29,
-      x: 1454,
-      y: 1060
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "300 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 300,
-      size: 29,
-      x: 1454,
-      y: 1129
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "400 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 400,
-      size: 29,
-      x: 1454,
-      y: 1198
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "500 abcdefghijklmnop",
-      font: "craftygirls",
-      width: 1900,
-      height: 300,
-      fillColor: "red",
-      tracking: 500,
-      size: 29,
-      x: 1454,
-      y: 1268
-    })
-  );
+  const LEFT_XPOS = 100;
+  const LEFT_SIZE = 62;
+  const RIGHT_XPOS = 1454;
+  const RIGHT_SIZE = 29;
+  addText("abel", 0, LEFT_XPOS, 100, LEFT_SIZE);
+  addText("abel", 100, LEFT_XPOS, 170, LEFT_SIZE);
+  addText("abel", 200, LEFT_XPOS, 239, LEFT_SIZE);
+  addText("abel", 300, LEFT_XPOS, 309, LEFT_SIZE);
+  addText("abel", 400, LEFT_XPOS, 378, LEFT_SIZE);
+  addText("abel", 500, LEFT_XPOS, 448, LEFT_SIZE);
+  addText("cinzel", 0, LEFT_XPOS, 517, LEFT_SIZE);
+  addText("cinzel", 100, LEFT_XPOS, 586, LEFT_SIZE);
+  addText("cinzel", 200, LEFT_XPOS, 656, LEFT_SIZE);
+  addText("cinzel", 300, LEFT_XPOS, 725, LEFT_SIZE);
+  addText("cinzel", 400, LEFT_XPOS, 794, LEFT_SIZE);
+  addText("cinzel", 500, LEFT_XPOS, 864, LEFT_SIZE);
+  addText("craftygirls", 0, LEFT_XPOS, 919, LEFT_SIZE);
+  addText("craftygirls", 100, LEFT_XPOS, 988, LEFT_SIZE);
+  addText("craftygirls", 200, LEFT_XPOS, 1058, LEFT_SIZE);
+  addText("craftygirls", 300, LEFT_XPOS, 1127, LEFT_SIZE);
+  addText("craftygirls", 400, LEFT_XPOS, 1197, LEFT_SIZE);
+  addText("craftygirls", 500, LEFT_XPOS, 1266, LEFT_SIZE);
+  addText("abel", 0, RIGHT_XPOS, 95, RIGHT_SIZE);
+  addText("abel", 100, RIGHT_XPOS, 164, RIGHT_SIZE);
+  addText("abel", 200, RIGHT_XPOS, 233, RIGHT_SIZE);
+  addText("abel", 300, RIGHT_XPOS, 303, RIGHT_SIZE);
+  addText("abel", 400, RIGHT_XPOS, 372, RIGHT_SIZE);
+  addText("abel", 500, RIGHT_XPOS, 442, RIGHT_SIZE);
+  addText("cinzel", 0, RIGHT_XPOS, 511, RIGHT_SIZE);
+  addText("cinzel", 100, RIGHT_XPOS, 580, RIGHT_SIZE);
+  addText("cinzel", 200, RIGHT_XPOS, 650, RIGHT_SIZE);
+  addText("cinzel", 300, RIGHT_XPOS, 719, RIGHT_SIZE);
+  addText("cinzel", 400, RIGHT_XPOS, 789, RIGHT_SIZE);
+  addText("cinzel", 500, RIGHT_XPOS, 858, RIGHT_SIZE);
+  addText("craftygirls", 0, RIGHT_XPOS, 920, RIGHT_SIZE);
+  addText("craftygirls", 100, RIGHT_XPOS, 989, RIGHT_SIZE);
+  addText("craftygirls", 200, RIGHT_XPOS, 1060, RIGHT_SIZE);
+  addText("craftygirls", 300, RIGHT_XPOS, 1129, RIGHT_SIZE);
+  addText("craftygirls", 400, RIGHT_XPOS, 1198, RIGHT_SIZE);
+  addText("craftygirls", 500, RIGHT_XPOS, 1268, RIGHT_SIZE);
 
   stage.update();
 

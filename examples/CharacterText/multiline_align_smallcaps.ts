@@ -1,152 +1,35 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(610, 610, 2);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
-  let text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.TOP_LEFT,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 0,
-    y: 0,
-    debug: true
-  });
+  function addText(align, xPos, yPos) {
+    let text = new txt.CharacterText({
+      text: "Love me some poiretone",
+      font: "poiretone",
+      align,
+      characterCase: txt.Case.SMALL_CAPS,
+      lineHeight: 50,
+      width: 400,
+      height: 400,
+      size: 100,
+      x: xPos,
+      y: yPos,
+      debug: true
+    });
+    stage.addChild(text);
+  }
 
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.TOP_CENTER,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 410,
-    y: 0,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.TOP_RIGHT,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 820,
-    y: 0,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.MIDDLE_LEFT,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 0,
-    y: 410,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.MIDDLE_CENTER,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 410,
-    y: 410,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.MIDDLE_RIGHT,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 820,
-    y: 410,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.BOTTOM_LEFT,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 0,
-    y: 820,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.BOTTOM_CENTER,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 410,
-    y: 820,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.CharacterText({
-    text: "Love me some poiretone",
-    font: "poiretone",
-    align: txt.Align.BOTTOM_RIGHT,
-    characterCase: txt.Case.SMALL_CAPS,
-    lineHeight: 50,
-    width: 400,
-    height: 400,
-    size: 100,
-    x: 820,
-    y: 820,
-    debug: true
-  });
-
-  stage.addChild(text);
+  addText(txt.Align.TOP_LEFT, 0, 0);
+  addText(txt.Align.TOP_CENTER, 410, 0);
+  addText(txt.Align.TOP_RIGHT, 820, 0);
+  addText(txt.Align.MIDDLE_LEFT, 0, 410);
+  addText(txt.Align.MIDDLE_CENTER, 410, 410);
+  addText(txt.Align.MIDDLE_RIGHT, 820, 410);
+  addText(txt.Align.BOTTOM_LEFT, 0, 820);
+  addText(txt.Align.BOTTOM_CENTER, 410, 820);
+  addText(txt.Align.BOTTOM_RIGHT, 820, 820);
 
   stage.update();
 

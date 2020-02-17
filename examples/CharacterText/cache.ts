@@ -1,6 +1,6 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(850, 500, 1);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
@@ -17,12 +17,12 @@ export default function init() {
     text: "The fox jumped over the log.",
     font: "raleway",
     tracking: -4,
-    lineHeight: 120,
-    width: 600,
-    height: 360,
-    size: 120,
-    x: 10,
-    y: 10,
+    lineHeight: 60,
+    width: 300,
+    height: 180,
+    size: 60,
+    x: 5,
+    y: 5,
     debug: true
   });
 
@@ -33,12 +33,12 @@ export default function init() {
     font: "raleway",
     singleLine: true,
     tracking: -4,
-    lineHeight: 120,
-    width: 1600,
-    height: 360,
-    size: 120,
-    x: 10,
-    y: 500,
+    lineHeight: 60,
+    width: 800,
+    height: 180,
+    size: 60,
+    x: 5,
+    y: 250,
     debug: true
   });
 
