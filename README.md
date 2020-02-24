@@ -6,6 +6,12 @@ A &lt;canvas&gt; font and typesetting engine for @CreateJS.
 
 ![Architecture Diagram](/site/architecture.png)
 
+## Visual tests
+
+We need to test with anti-aliasing disabled because our TravisCI environment runs tests on Chrome headless. So saved reference images are saved with antialiasing disabled.
+
+This means running tests locally needs to be done with the right chrome flags.
+
 ## Debugging Travis Builds via Docker
 
 As per https://docs.travis-ci.com/user/running-build-in-debug-mode/#restarting-a-job-in-debug-mode-via-api:

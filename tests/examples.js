@@ -1,33 +1,73 @@
-describe("Execute all examples", function() {
+describe("Examples non-visual", function() {
+  const TEST_TIMEOUT = 2000;
+
   afterEach(function() {
     txtExamples.clearExample();
   });
 
-  Object.entries(txtExamples.Text).forEach(function(eg) {
-    it("Text - " + eg[0], function() {
-      var stage = eg[1]();
-      expect(stage.children.length).toBeGreaterThan(0);
+  describe("Text", function() {
+    Object.entries(txtExamples.nonVisualExamples.Text).forEach(function(eg) {
+      let exampleName = eg[0];
+      let runExample = eg[1];
+      it(
+        exampleName,
+        function() {
+          var stage = runExample();
+          expect(stage.children.length).toBeGreaterThan(0);
+        },
+        TEST_TIMEOUT
+      );
     });
   });
 
-  Object.entries(txtExamples.CharacterText).forEach(function(eg) {
-    it("CharacterText - " + eg[0], function() {
-      var stage = eg[1]();
-      expect(stage.children.length).toBeGreaterThan(0);
+  describe("CharacterText", function() {
+    Object.entries(txtExamples.nonVisualExamples.CharacterText).forEach(
+      function(eg) {
+        let exampleName = eg[0];
+        let runExample = eg[1];
+        it(
+          exampleName,
+          function() {
+            var stage = runExample();
+            expect(stage.children.length).toBeGreaterThan(0);
+          },
+          TEST_TIMEOUT
+        );
+      }
+    );
+  });
+
+  describe("PathText", function() {
+    Object.entries(txtExamples.nonVisualExamples.PathText).forEach(function(
+      eg
+    ) {
+      let exampleName = eg[0];
+      let runExample = eg[1];
+      it(
+        exampleName,
+        function() {
+          var stage = runExample();
+          expect(stage.children.length).toBeGreaterThan(0);
+        },
+        TEST_TIMEOUT
+      );
     });
   });
 
-  Object.entries(txtExamples.PathText).forEach(function(eg) {
-    it("PathText - " + eg[0], function() {
-      var stage = eg[1]();
-      expect(stage.children.length).toBeGreaterThan(0);
-    });
-  });
-
-  Object.entries(txtExamples.Graphics).forEach(function(eg) {
-    it("Graphics - " + eg[0], function() {
-      var stage = eg[1]();
-      expect(stage.children.length).toBeGreaterThan(0);
+  describe("Graphics", function() {
+    Object.entries(txtExamples.nonVisualExamples.Graphics).forEach(function(
+      eg
+    ) {
+      let exampleName = eg[0];
+      let runExample = eg[1];
+      it(
+        exampleName,
+        function() {
+          var stage = runExample();
+          expect(stage.children.length).toBeGreaterThan(0);
+        },
+        TEST_TIMEOUT
+      );
     });
   });
 });
