@@ -8,7 +8,8 @@ if (process.env.HEADLESS) {
 
 let serve_files = [
   {
-    src: "packages/jasmine-pixelmatch/dist/jasmine-pixelmatch.js"
+    src:
+      "node_modules/@recreatejs/jasmine-pixelmatch/dist/jasmine-pixelmatch.js"
   },
   { src: "dist/easeljs.js" },
   { src: "dist/pathseg.js" },
