@@ -55,7 +55,6 @@ export const visual = {
   stroke,
   text,
   tracking,
-  tracking_layout_test,
   wordwrap,
   wordwrap_calc,
   wordwrap_natural_lineheight,
@@ -70,7 +69,8 @@ export const nonVisual = {
   child_events,
   loadtest,
   moon,
-  text_change_font
+  text_change_font,
+  tracking_layout_test
 };
 
 export default { ...visual, ...nonVisual };
