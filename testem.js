@@ -2,8 +2,8 @@ let chromeArgs = ["--disable-gpu", "--remote-debugging-port=9222"];
 let firefoxArgs = [];
 
 if (process.env.HEADLESS) {
-  chromeArgs.push("--headless");
-  firefoxArgs.push("--headless");
+  chromeArgs.unshift("--headless");
+  firefoxArgs.unshift("--headless");
 }
 
 let serve_files = [
@@ -32,8 +32,6 @@ module.exports = {
   },
   test_page: "testem.mustache",
   before_tests: "npm run build",
-
-  // TODO: split out visual tests
   src_files: ["src/*.ts", "examples/**/*.ts"],
   serve_files,
   css_files: [],
