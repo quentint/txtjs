@@ -3,6 +3,8 @@
 A &lt;canvas&gt; font and typesetting engine for @CreateJS.
 
 [![Build Status](https://travis-ci.org/ReCreateJS/txtjs.svg?branch=master)](https://travis-ci.org/ReCreateJS/txtjs)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c9984f438fa6078a0356/maintainability)](https://codeclimate.com/github/ReCreateJS/txtjs/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c9984f438fa6078a0356/test_coverage)](https://codeclimate.com/github/ReCreateJS/txtjs/test_coverage)
 
 ![Architecture Diagram](/site/architecture.png)
 
