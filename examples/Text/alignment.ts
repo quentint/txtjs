@@ -1,139 +1,39 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1100, 1100, 2);
+  let canvas = createHiDPICanvas(520, 320, 1);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
   var shape = new createjs.Shape();
-  shape.graphics.beginFill("#76d6ff");
-  shape.graphics.drawRect(10, 10, 1000, 1000);
+  shape.graphics.beginStroke("green");
+  shape.graphics.drawRect(10, 10, 500, 300);
   stage.addChild(shape);
 
-  stage.addChild(
-    new txt.Text({
-      text: "< Align.TOP_LEFT",
-      font: "cantarell",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.TOP_LEFT,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
+  function addText(text, font, align) {
+    stage.addChild(
+      new txt.Text({
+        text,
+        font,
+        align,
+        lineHeight: 50,
+        width: 500,
+        height: 300,
+        size: 19,
+        x: 10,
+        y: 10
+      })
+    );
+  }
 
-  stage.addChild(
-    new txt.Text({
-      text: "Align.TOP_RIGHT >",
-      font: "amaticsc",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.TOP_RIGHT,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "< Align.TOP_CENTER >",
-      font: "glegoo",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.TOP_CENTER,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "< Align.MIDDLE_LEFT",
-      font: "indieflower",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.MIDDLE_LEFT,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "Align.MIDDLE_RIGHT >",
-      font: "lato",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.MIDDLE_RIGHT,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "< Align.MIDDLE_CENTER >",
-      font: "luckiestguy",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.MIDDLE_CENTER,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "< Align.BOTTOM_LEFT",
-      font: "opensans",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.BOTTOM_LEFT,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "Align.BOTTOM_RIGHT >",
-      font: "nixieone",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.BOTTOM_RIGHT,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "< Align.BOTTOM_CENTER >",
-      font: "pacifico",
-      lineHeight: 50,
-      width: 1000,
-      height: 1000,
-      align: txt.Align.BOTTOM_CENTER,
-      size: 25,
-      x: 10,
-      y: 10
-    })
-  );
+  addText("TOP_LEFT", "cantarell", txt.Align.TOP_LEFT);
+  addText("TOP_CENTER", "glegoo", txt.Align.TOP_CENTER);
+  addText("TOP_RIGHT", "amaticsc", txt.Align.TOP_RIGHT);
+  addText("MIDDLE_LEFT", "indieflower", txt.Align.MIDDLE_LEFT);
+  addText("MIDDLE_CENTER", "pacifico", txt.Align.MIDDLE_CENTER);
+  addText("MIDDLE_RIGHT", "lato", txt.Align.MIDDLE_RIGHT);
+  addText("BOTTOM_LEFT", "opensans", txt.Align.BOTTOM_LEFT);
+  addText("BOTTOM_CENTER", "luckiestguy", txt.Align.BOTTOM_CENTER);
+  addText("BOTTOM_RIGHT", "nixieone", txt.Align.BOTTOM_RIGHT);
 
   stage.update();
   return stage;

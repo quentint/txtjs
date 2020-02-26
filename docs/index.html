@@ -70,6 +70,11 @@
 				<p>A &lt;canvas&gt; font and typesetting engine for @CreateJS.</p>
 				<p><a href="https://travis-ci.org/ReCreateJS/txtjs"><img src="https://travis-ci.org/ReCreateJS/txtjs.svg?branch=master" alt="Build Status"></a></p>
 				<p><img src="/site/architecture.png" alt="Architecture Diagram"></p>
+				<a href="#visual-tests" id="visual-tests" style="color: inherit; text-decoration: none;">
+					<h2>Visual tests</h2>
+				</a>
+				<p>We need to test with anti-aliasing disabled because our TravisCI environment runs tests on Chrome headless. So saved reference images are saved with antialiasing disabled.</p>
+				<p>This means running tests locally needs to be done with the right chrome flags.</p>
 				<a href="#debugging-travis-builds-via-docker" id="debugging-travis-builds-via-docker" style="color: inherit; text-decoration: none;">
 					<h2>Debugging Travis Builds via Docker</h2>
 				</a>

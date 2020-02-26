@@ -29,17 +29,11 @@ import { default as wordwrap_natural_lineheight } from "./Text/wordwrap_natural_
 import { default as wordwrap_natural_newline } from "./Text/wordwrap_natural_newline";
 import { default as wordwrap_newline_error } from "./Text/wordwrap_newline_error";
 
-export default {
-  accessibility,
+export const visual = {
   alignment,
-  cache,
   card_test,
   case: text_case,
-  child_events,
-  complete,
   ligatures,
-  loadtest,
-  moon,
   multiline_align,
   multiline_align_breaks,
   multiline_align_smallcaps,
@@ -52,12 +46,23 @@ export default {
   single_word_oneline,
   stroke,
   text,
-  text_change_font,
   tracking,
-  tracking_layout_test,
   wordwrap,
   wordwrap_calc,
   wordwrap_natural_lineheight,
   wordwrap_natural_newline,
   wordwrap_newline_error
 };
+
+export const nonVisual = {
+  accessibility,
+  cache,
+  child_events,
+  complete,
+  loadtest,
+  moon,
+  text_change_font,
+  tracking_layout_test
+};
+
+export default { ...visual, ...nonVisual };

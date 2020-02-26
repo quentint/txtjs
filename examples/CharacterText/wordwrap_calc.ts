@@ -1,229 +1,38 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 2000, 1);
+  let canvas = createHiDPICanvas(300, 1800, 1);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 260,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 0,
-      debug: true
-    })
-  );
+  let text = "Weekday, Month Day at Time\nLocation\nAddress - City, ST";
 
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 250,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 100,
-      debug: true
-    })
-  );
+  function addText(width, yPos, height) {
+    stage.addChild(
+      new txt.CharacterText({
+        text,
+        font: "lato",
+        width,
+        height,
+        size: 20,
+        x: 10,
+        y: yPos,
+        debug: true
+      })
+    );
+  }
 
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 240,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 200,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 230,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 300,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 220,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 400,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 210,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 500,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 200,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 600,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 190,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 700,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 180,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 800,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 170,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 900,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 160,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 1000,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 150,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 1100,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 140,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 1200,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 130,
-      height: 100,
-      size: 20,
-      x: 10,
-      y: 1300,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 120,
-      height: 120,
-      size: 20,
-      x: 10,
-      y: 1400,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 110,
-      height: 120,
-      size: 20,
-      x: 10,
-      y: 1520,
-      debug: true
-    })
-  );
-
-  stage.addChild(
-    new txt.CharacterText({
-      text: "Weekday, Month Day at Time\nLocation\nAddress - City, ST",
-      font: "lato",
-      width: 100,
-      height: 120,
-      size: 20,
-      x: 10,
-      y: 1640,
-      debug: true
-    })
-  );
+  for (let i = 0; i < 17; i++) {
+    let y = i * 100;
+    let height = 100;
+    // add more space for examples that use 4 lines:
+    if (i > 13) {
+      height += 20;
+    }
+    if (i > 14) {
+      y += (i - 14) * 20;
+    }
+    addText(260 - i * 10, y, height);
+  }
 
   stage.update();
   return stage;

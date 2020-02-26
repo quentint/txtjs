@@ -1,134 +1,33 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(500, 500, 2);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
-  var text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.TOP_LEFT,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 0,
-    y: 0,
-    debug: true
-  });
+  function addText(align, xPos, yPos) {
+    let text = new txt.Text({
+      text: "Save",
+      font: "lato",
+      align,
+      width: 115,
+      height: 73,
+      size: 52,
+      x: xPos,
+      y: yPos,
+      debug: true
+    });
+    stage.addChild(text);
+  }
 
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.TOP_CENTER,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 410,
-    y: 0,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.TOP_RIGHT,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 820,
-    y: 0,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.MIDDLE_LEFT,
-    width: 115.2541,
-    height: 73,
-    size: 52,
-    x: 0,
-    y: 410,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.MIDDLE_CENTER,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 410,
-    y: 410,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.MIDDLE_RIGHT,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 820,
-    y: 410,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.BOTTOM_LEFT,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 0,
-    y: 820,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.BOTTOM_CENTER,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 410,
-    y: 820,
-    debug: true
-  });
-
-  stage.addChild(text);
-
-  text = new txt.Text({
-    text: "Save",
-    font: "lato",
-    align: txt.Align.BOTTOM_RIGHT,
-    width: 115,
-    height: 73,
-    size: 52,
-    x: 820,
-    y: 820,
-    debug: true
-  });
-
-  stage.addChild(text);
+  addText(txt.Align.TOP_LEFT, 0, 0);
+  addText(txt.Align.TOP_CENTER, 410, 0);
+  addText(txt.Align.TOP_RIGHT, 820, 0);
+  addText(txt.Align.MIDDLE_LEFT, 0, 410);
+  addText(txt.Align.MIDDLE_CENTER, 410, 410);
+  addText(txt.Align.MIDDLE_RIGHT, 820, 410);
+  addText(txt.Align.BOTTOM_LEFT, 0, 820);
+  addText(txt.Align.BOTTOM_CENTER, 410, 820);
+  addText(txt.Align.BOTTOM_RIGHT, 820, 820);
 
   stage.update();
   return stage;

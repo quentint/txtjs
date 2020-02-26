@@ -1,7 +1,7 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 import svgPath from "../fixtures/svg-glyph";
 export default function init() {
-  let canvas = createHiDPICanvas(1800, 1800, 1);
+  let canvas = createHiDPICanvas(500, 300, 1);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 

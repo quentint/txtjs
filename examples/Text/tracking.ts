@@ -1,79 +1,32 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(850, 530, 1);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
-  stage.addChild(
-    new txt.Text({
-      text: "Tracking!          -100",
-      font: "librebaskerville",
-      lineHeight: 300,
-      width: 1900,
-      height: 300,
-      tracking: -100,
-      size: 200,
-      x: 10,
-      y: 10
-    })
-  );
+  function addText(text, tracking, yPos) {
+    stage.addChild(
+      new txt.Text({
+        text,
+        font: "librebaskerville",
+        lineHeight: 150,
+        width: 950,
+        height: 150,
+        tracking,
+        size: 100,
+        x: 5,
+        y: yPos
+      })
+    );
+  }
 
-  stage.addChild(
-    new txt.Text({
-      text: "Tracking!      -50",
-      font: "librebaskerville",
-      lineHeight: 300,
-      width: 1900,
-      height: 300,
-      tracking: -50,
-      size: 200,
-      x: 10,
-      y: 210
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "Tracking!     0",
-      font: "librebaskerville",
-      lineHeight: 300,
-      width: 1900,
-      height: 300,
-      tracking: 0,
-      size: 200,
-      x: 10,
-      y: 410
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "Tracking!   50",
-      font: "librebaskerville",
-      lineHeight: 300,
-      width: 1900,
-      height: 300,
-      tracking: 50,
-      size: 200,
-      x: 10,
-      y: 610
-    })
-  );
-
-  stage.addChild(
-    new txt.Text({
-      text: "Tracking! 100",
-      font: "librebaskerville",
-      lineHeight: 300,
-      width: 1900,
-      height: 300,
-      tracking: 100,
-      size: 200,
-      x: 10,
-      y: 810
-    })
-  );
+  addText("Tracking!          -100", -100, 5);
+  addText("Tracking!      -50", -50, 105);
+  addText("Tracking!     0", 0, 205);
+  addText("Tracking!   50", 50, 305);
+  addText("Tracking! 100", 100, 405);
 
   stage.update();
+
   return stage;
 }

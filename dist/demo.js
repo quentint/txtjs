@@ -2,29 +2,13 @@
   'use strict';
 
   function circle(x, y, r) {
+    // prettier-ignore
     return (
-      "M " +
-      x +
-      " " +
-      y +
-      " " +
-      "m " +
-      -r +
-      ",0 " +
-      "a " +
-      r +
-      "," +
-      r +
-      " 0 1,0 " +
-      r * 2 +
-      ",0 " +
-      "a " +
-      r +
-      "," +
-      r +
-      " 0 1,0 " +
-      -r * 2 +
-      ",0"
+      "M " + x + " " + y + " " +
+      "m " + -r + ",0 " +
+      "a " + r + "," + r + " 0 1,0 " + (r * 2) + ",0 " +
+      "a " + r + "," + r + " 0 1,0 " + (-r * 2) +
+      ",0 Z"
     );
   }
 
@@ -65,6 +49,15 @@
       text: "This is TxtJS",
       font: "lobster",
       align: txt.Align.MIDDLE_CENTER,
+      style: Array.from(Array(14).keys()).map(function (val) {
+        var hex = val.toString(16);
+        var unhex = (14 - val).toString(16);
+        return {
+          fillColor: val % 2 == 0 ? "#FF" + hex + hex + unhex + unhex : "#" + hex + hex + unhex + unhex + "FF"
+        };
+      }),
+      strokeWidth: 1,
+      strokeColor: "#000",
       width: 500,
       height: 300,
       size: 100,
@@ -103,7 +96,7 @@
     counter2 = (counter2 + 3) % 500;
     text.width = 100 + counter2;
     text.x = 450 - counter2 / 2;
-    text.font = counter > 2.5 ? "arimo" : "lobster";
+    pathText.font = counter > 2.5 ? "arimo" : "lobster";
     pathText.rotation = pathText.rotation + 1 % 360;
     text.layout();
     pathText.layout();
