@@ -1,6 +1,6 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(400, 900, 1);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
@@ -18,7 +18,8 @@ export default function init() {
     x: 50,
     y: 50
   });
-  text.scaleX = text.scaleY = 10;
+  text.scaleX = 5;
+  text.scaleY = 5;
 
   stage.addChild(text);
 

@@ -33,21 +33,15 @@ import wordwrap_natural_lineheight from "./CharacterText/wordwrap_natural_linehe
 import wordwrap_natural_newline from "./CharacterText/wordwrap_natural_newline";
 import wordwrap_newline_error from "./CharacterText/wordwrap_newline_error";
 
-export default {
-  accessibility,
+export const visual = {
   alignment,
   autosize_expand,
   autosize_reduce,
   autosize_reduce_expand,
   autosize_reduce_layout,
-  cache,
   case: character_case,
-  child_events,
   column,
-  complete,
   ligatures,
-  loadtest,
-  moon,
   multiline_align,
   multiline_align_breaks,
   multiline_align_smallcaps,
@@ -60,12 +54,23 @@ export default {
   single_word_oneline,
   stroke,
   text,
-  text_change_font,
   tracking,
-  tracking_layout_test,
   wordwrap,
   wordwrap_calc,
   wordwrap_natural_lineheight,
   wordwrap_natural_newline,
   wordwrap_newline_error
 };
+
+export const nonVisual = {
+  accessibility,
+  cache,
+  complete,
+  child_events,
+  loadtest,
+  moon,
+  text_change_font,
+  tracking_layout_test
+};
+
+export default { ...visual, ...nonVisual };

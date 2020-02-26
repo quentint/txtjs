@@ -1,16 +1,14 @@
 import circle from "../../lib/circle-path";
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(420, 420, 2);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
-  stage.x = 10;
-  stage.scaleX = stage.scaleY = 2;
 
   stage.addChild(
     new txt.PathText({
-      x: 500,
-      y: 500,
+      x: 420,
+      y: 420,
       flipped: true,
       text: "Yoda, Jedi Master",
       fillColor: "#111",
@@ -31,8 +29,8 @@ export default function init() {
 
   stage.addChild(
     new txt.PathText({
-      x: 500,
-      y: 500,
+      x: 420,
+      y: 420,
       flipped: false,
       text: '"Try not. Do or do not. There is no try."',
       fillColor: "#111",

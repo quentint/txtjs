@@ -11,12 +11,9 @@ import text from "./PathText/text";
 import vertical_alignment from "./PathText/vertical_alignment";
 import vertical_alignment_layout from "./PathText/vertical_alignment_layout";
 
-export default {
-  accessibility,
+export const visual = {
   alignment,
-  cache,
   character_limit,
-  child_events,
   circle_last_char,
   flipped,
   initial,
@@ -25,3 +22,11 @@ export default {
   vertical_alignment,
   vertical_alignment_layout
 };
+
+export const nonVisual = {
+  accessibility,
+  cache,
+  child_events
+};
+
+export default { ...visual, ...nonVisual };

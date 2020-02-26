@@ -2,17 +2,14 @@ import circle from "../../lib/circle-path";
 
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(500, 500, 2);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
-  stage.x = 10;
-  stage.scaleX = 2;
-  stage.scaleY = 2;
 
   stage.addChild(
     new txt.PathText({
       x: 500,
-      y: 600,
+      y: 550,
       flipped: false,
       text: "Path Alignment",
       fillColor: "#111",
@@ -32,11 +29,12 @@ export default function init() {
   stage.addChild(
     new txt.PathText({
       x: 500,
-      y: 600,
-      flipped: false,
-      text: "Victory",
-      fillColor: "#111",
+      y: 550,
+      text: "Victory!",
       font: "lobster",
+      strokeWidth: 5,
+      strokeColor: "black",
+      fillColor: "gold",
       start: 2500,
       align: txt.PathAlign.Center,
       valign: txt.VerticalAlign.Percent,

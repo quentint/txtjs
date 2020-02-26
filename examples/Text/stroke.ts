@@ -1,69 +1,70 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  let canvas = createHiDPICanvas(1000, 500, 1);
   document.body.appendChild(canvas);
   let stage = new createjs.Stage(canvas);
 
+  let label = "Harland Clarke";
+
   stage.addChild(
     new txt.Text({
-      text: "Harland Clarke",
+      text: label,
       font: "lobster",
-      lineHeight: 300,
-      width: 1900,
-      height: 300,
+      lineHeight: 250,
+      width: 950,
+      height: 150,
       strokeColor: "#444",
-      fillColor: null,
-      style: [
-        { strokeWidth: 1 },
-        { strokeWidth: 2, fillColor: "#FF0000" },
-        { strokeWidth: 3 },
-        { strokeWidth: 4, fillColor: "#FF0000" },
-        { strokeWidth: 5 },
-        { strokeWidth: 6, fillColor: "#FF0000" },
-        { strokeWidth: 7 },
-        { strokeWidth: 8, fillColor: "#FF0000" },
-        { strokeWidth: 9 },
-        { strokeWidth: 10, fillColor: "#FF0000" },
-        { strokeWidth: 11 },
-        { strokeWidth: 12, fillColor: "#FF0000" },
-        { strokeWidth: 13 },
-        { strokeWidth: 14, fillColor: "#FF0000" }
-      ],
-      size: 300,
-      x: 10,
-      y: 10
+      strokeWidth: 2,
+      style: Array.from(Array(14).keys()).map(val => {
+        let hex = val.toString(16);
+        let unhex = (14 - val).toString(16);
+        return {
+          fillColor:
+            val % 2 == 0
+              ? "#FF" + hex + hex + unhex + unhex
+              : "#" + hex + hex + unhex + unhex + "FF"
+        };
+      }),
+      size: 150,
+      x: 5,
+      y: 5
     })
   );
 
   stage.addChild(
     new txt.Text({
-      text: "Harland Clarke",
+      text: label,
       font: "lobster",
-      lineHeight: 300,
-      height: 300,
-      width: 1900,
+      lineHeight: 150,
+      height: 150,
+      width: 950,
       strokeColor: "#00aa00",
-      strokeWidth: 6,
+      strokeWidth: 3,
+      style: Array.from(Array(label.length).keys()).map(val => {
+        return {
+          strokeWidth: (1 - Math.sin((val / label.length) * Math.PI)) * 10
+        };
+      }),
       fillColor: null,
-      size: 300,
-      x: 10,
-      y: 300
+      size: 150,
+      x: 5,
+      y: 150
     })
   );
 
   stage.addChild(
     new txt.Text({
-      text: "Harland Clarke",
+      text: label,
       font: "lobster",
-      lineHeight: 300,
-      height: 300,
-      width: 1900,
+      lineHeight: 150,
+      height: 150,
+      width: 950,
       fillColor: null,
       strokeColor: "#f00",
       strokeWidth: 1,
-      size: 300,
-      x: 10,
-      y: 600
+      size: 150,
+      x: 5,
+      y: 300
     })
   );
 
