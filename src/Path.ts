@@ -19,23 +19,23 @@ export enum PathAlign {
 export default class Path {
   private pathElement: SVGPathElement = null;
   path: string = null;
-  start: number = 0;
+  start = 0;
   center: number = null;
   end: number = null;
   angles: any[] = null;
-  flipped: boolean = false;
+  flipped = false;
   fit: PathFit = PathFit.Rainbow;
   align: PathAlign = PathAlign.Center;
   length: number = null;
   realLength: number = null;
-  closed: boolean = false;
-  clockwise: boolean = true;
+  closed = false;
+  clockwise = true;
 
   constructor(
     path: string,
-    start: number = 0,
+    start = 0,
     end: number = null,
-    flipped: boolean = false,
+    flipped = false,
     fit: PathFit = PathFit.Rainbow,
     align: PathAlign = PathAlign.Center
   ) {
@@ -49,16 +49,16 @@ export default class Path {
   }
 
   update() {
-    this.pathElement = <SVGPathElement>(
-      document.createElementNS("http://www.w3.org/2000/svg", "path")
-    );
+    this.pathElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    ) as SVGPathElement;
     this.pathElement.setAttributeNS(null, "d", this.path);
     this.length = this.pathElement.getTotalLength();
     this.closed = this.path.toLowerCase().indexOf("z") != -1;
-    var pointlength = this.length / 10;
-    var points = [];
+    const pointlength = this.length / 10;
+    const points = [];
 
-    //console.log( this.pathElement );
     points.push(this.getRealPathPoint(0));
     points.push(this.getRealPathPoint(pointlength));
     points.push(this.getRealPathPoint(pointlength * 2));
@@ -71,7 +71,7 @@ export default class Path {
     points.push(this.getRealPathPoint(pointlength * 9));
     points.push(this.getRealPathPoint(pointlength * 10));
 
-    var clock =
+    const clock =
       (points[1].x - points[0].x) * (points[1].y + points[0].y) +
       (points[2].x - points[1].x) * (points[2].y + points[1].y) +
       (points[3].x - points[2].x) * (points[3].y + points[2].y) +
@@ -82,7 +82,6 @@ export default class Path {
       (points[8].x - points[7].x) * (points[8].y + points[7].y) +
       (points[9].x - points[8].x) * (points[9].y + points[8].y) +
       (points[10].x - points[9].x) * (points[10].y + points[9].y);
-    //console.log( clock );
     if (clock > 0) {
       this.clockwise = false;
     } else {
@@ -173,19 +172,17 @@ export default class Path {
 
   getPathPoint(
     distance: number,
-    characterLength: number = 0,
-    charOffset: number = 0
+    characterLength = 0,
+    charOffset = 0
   ): PathPoint {
     distance = distance * 0.99;
     characterLength = characterLength * 0.99;
 
-    //console.log( characterLength );
-    var point0: PathPoint;
-    var point1: PathPoint;
-    var point2: PathPoint;
-    var position: number;
-    var direction: boolean = true;
-    var realStart: number = 0;
+    let point1: PathPoint;
+    let point2: PathPoint;
+    let position: number;
+    let direction = true;
+    let realStart = 0;
 
     if (this.closed == false) {
       if (this.flipped == false) {
@@ -347,69 +344,64 @@ export default class Path {
     }
 
     point1 = this.getRealPathPoint(position);
-    var segment = this.pathElement.pathSegList.getItem(
+    const segment = this.pathElement.pathSegList.getItem(
       this.pathElement.getPathSegAtLength(position)
     ).pathSegType;
 
-    if (segment == 4) {
-      if (direction) {
-      } else {
-        if (
-          this.pathElement.getPathSegAtLength(position) !=
-          this.pathElement.getPathSegAtLength(position - charOffset)
-        ) {
-          var pp0 = this.getRealPathPoint(position);
-          var pp1 = this.getRealPathPoint(position - charOffset);
-          var ppc = this.pathElement.pathSegList.getItem(
-            this.pathElement.getPathSegAtLength(position) - 1
-          );
-          var d0 = Math.sqrt(
-            Math.pow(pp0.x - ppc["x"], 2) + Math.pow(pp0.y - ppc["y"], 2)
-          );
+    if (
+      segment == 4 &&
+      !direction &&
+      this.pathElement.getPathSegAtLength(position) !=
+        this.pathElement.getPathSegAtLength(position - charOffset)
+    ) {
+      const pp0 = this.getRealPathPoint(position);
+      const pp1 = this.getRealPathPoint(position - charOffset);
+      const ppc = this.pathElement.pathSegList.getItem(
+        this.pathElement.getPathSegAtLength(position) - 1
+      );
+      const d0 = Math.sqrt(
+        Math.pow(pp0.x - ppc["x"], 2) + Math.pow(pp0.y - ppc["y"], 2)
+      );
 
-          var d1 = Math.sqrt(
-            Math.pow(pp1.x - ppc["x"], 2) + Math.pow(pp1.y - ppc["y"], 2)
-          );
+      const d1 = Math.sqrt(
+        Math.pow(pp1.x - ppc["x"], 2) + Math.pow(pp1.y - ppc["y"], 2)
+      );
 
-          if (d0 > d1) {
-            point1 = pp0;
-            point2 = { x: ppc["x"], y: ppc["y"] };
+      if (d0 > d1) {
+        point1 = pp0;
+        point2 = { x: ppc["x"], y: ppc["y"] };
 
-            var rot12 =
-              (Math.atan((point2.y - point1.y) / (point2.x - point1.x)) * 180) /
-              Math.PI;
-            if (point1.x > point2.x) {
-              rot12 = rot12 + 180;
-            }
-
-            if (rot12 < 0) {
-              rot12 = rot12 + 360;
-            }
-            if (rot12 > 360) {
-              rot12 = rot12 - 360;
-            }
-
-            point1.rotation = rot12;
-            return point1;
-          } else {
-            point1 = { x: ppc["x"], y: ppc["y"] };
-            point1.offsetX = -d0;
-            point1["next"] = true;
-            return point1;
-          }
+        let rot12 =
+          (Math.atan((point2.y - point1.y) / (point2.x - point1.x)) * 180) /
+          Math.PI;
+        if (point1.x > point2.x) {
+          rot12 = rot12 + 180;
         }
+
+        if (rot12 < 0) {
+          rot12 = rot12 + 360;
+        }
+        if (rot12 > 360) {
+          rot12 = rot12 - 360;
+        }
+
+        point1.rotation = rot12;
+        return point1;
+      } else {
+        point1 = { x: ppc["x"], y: ppc["y"] };
+        point1.offsetX = -d0;
+        point1["next"] = true;
+        return point1;
       }
     }
 
     if (direction) {
       point2 = this.getRealPathPoint(position + charOffset);
-      //console.log( direction , position + charOffset , this.realLength );
     } else {
       point2 = this.getRealPathPoint(position - charOffset);
-      //console.log( direction , position - charOffset , this.realLength );
     }
 
-    var rot12 =
+    let rot12 =
       (Math.atan((point2.y - point1.y) / (point2.x - point1.x)) * 180) /
       Math.PI;
 

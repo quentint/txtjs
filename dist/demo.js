@@ -12,9 +12,9 @@
     );
   }
 
-  var context = document.createElement("canvas").getContext("2d");
-  let devicePixelRatio = window.devicePixelRatio || 1;
-  let backingStorePixelRatio =
+  const context = document.createElement("canvas").getContext("2d");
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const backingStorePixelRatio =
     context.webkitBackingStorePixelRatio ||
     context.mozBackingStorePixelRatio ||
     context.msBackingStorePixelRatio ||
@@ -28,7 +28,7 @@
     if (!ratio) {
       ratio = PIXEL_RATIO;
     }
-    var canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas");
     canvas.width = w * ratio;
     canvas.height = h * ratio;
     canvas.style.width = w + "px";

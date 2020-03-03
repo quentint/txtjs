@@ -519,18 +519,26 @@ var txtExamples = (function (exports) {
     return stage;
   }
 
+  var EventNames = ["click", "dblclick", "mousedown", "mouseout", "mouseover", "pressmove", "pressup", "rollout", "rollover", "added", "removed", "tick"];
   function init$8() {
     var canvas = createHiDPICanvas(300, 200, 2);
     document.body.appendChild(canvas);
-    var stage = new createjs.Stage(canvas);
+    var output = document.createElement("p");
+    document.body.appendChild(output);
+    var stage = new createjs.Stage(canvas); // attach all event types for demoing
+
+    var events = EventNames.reduce(function (prev, cur) {
+      prev[cur] = function () {
+        console.log(cur);
+        output.innerHTML = cur;
+      };
+
+      return prev;
+    }, {});
     var text = new txt.CharacterText({
       text: "The fox jumped over the log.",
       font: "arimo",
-      character: {
-        click: function click(event) {
-          console.log("click");
-        }
-      },
+      character: events,
       tracking: -4,
       lineHeight: 120,
       width: 600,
@@ -1773,7 +1781,7 @@ var txtExamples = (function (exports) {
       text: "The fox jumped over the log.",
       font: "raleway",
       character: {
-        click: function click(event) {
+        click: function click() {
           console.log("click");
         }
       },
@@ -3250,7 +3258,7 @@ var txtExamples = (function (exports) {
       path: "m258.09999999999997,178a48.416000000000004,48.416000000000004 0 0 0 48.416000000000004,48.416000000000004a78.32000000000001,78.32000000000001 0 0 0 78.32000000000001,-78.32000000000001a126.73600000000002,126.73600000000002 0 0 0 -126.73600000000002,-126.73600000000002a205.056,205.056 0 0 0 -205.056,205.056a331.79200000000003,331.79200000000003 0 0 0 331.79200000000003,331.79200000000003a536.8480000000001,536.8480000000001 0 0 0 536.8480000000001,-536.8480000000001",
       tracking: 0,
       character: {
-        click: function click(event) {
+        click: function click() {
           console.log("click");
         }
       },
@@ -3712,7 +3720,7 @@ var txtExamples = (function (exports) {
     return stage;
   }
 
-  var Graphics = {
+  var GraphicsNonVisual = {
     pathGraphics: init$1c,
     pathGraphics2: init$1d,
     pathGraphics3: init$1e
@@ -3756,17 +3764,17 @@ var txtExamples = (function (exports) {
     CharacterText: visual,
     Text: visual$1,
     PathText: visual$2,
-    Graphics: Graphics
+    Graphics: GraphicsNonVisual
   };
   var nonVisualExamples = {
     CharacterText: nonVisual,
     Text: nonVisual$1,
     PathText: nonVisual$2,
-    Graphics: Graphics
+    Graphics: GraphicsNonVisual
   };
 
   exports.CharacterText = characterText;
-  exports.Graphics = Graphics;
+  exports.Graphics = GraphicsNonVisual;
   exports.PathText = pathText;
   exports.Text = text;
   exports.clearExample = clearExample;

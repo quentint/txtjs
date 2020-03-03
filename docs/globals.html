@@ -100,6 +100,7 @@
 								<li class="tsd-kind-class"><a href="classes/pathtext.html" class="tsd-kind-icon">Path<wbr>Text</a></li>
 								<li class="tsd-kind-class"><a href="classes/svgarc.html" class="tsd-kind-icon">SVGArc</a></li>
 								<li class="tsd-kind-class"><a href="classes/text.html" class="tsd-kind-icon">Text</a></li>
+								<li class="tsd-kind-class"><a href="classes/textcontainer.html" class="tsd-kind-icon">Text<wbr>Container</a></li>
 								<li class="tsd-kind-class"><a href="classes/word.html" class="tsd-kind-icon">Word</a></li>
 							</ul>
 						</section>
@@ -108,22 +109,46 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface"><a href="interfaces/constructobj.html" class="tsd-kind-icon">Construct<wbr>Obj</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/eventcallback.html" class="tsd-kind-icon">Event<wbr>Callback</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/lineevents.html" class="tsd-kind-icon">Line<wbr>Events</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/pathpoint.html" class="tsd-kind-icon">Path<wbr>Point</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/point.html" class="tsd-kind-icon">Point</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/shapeevents.html" class="tsd-kind-icon">Shape<wbr>Events</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/style.html" class="tsd-kind-icon">Style</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/wordevents.html" class="tsd-kind-icon">Word<wbr>Events</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Variables</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable"><a href="globals.html#eventnames" class="tsd-kind-icon">Event<wbr>Names</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="globals.html#applymixins" class="tsd-kind-icon">apply<wbr>Mixins</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#default" class="tsd-kind-icon">default</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#parsepathdata" class="tsd-kind-icon">parse<wbr>Path<wbr>Data</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section ">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal"><a href="globals.html#util" class="tsd-kind-icon">Util</a></li>
+							</ul>
+						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="eventnames" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Event<wbr>Names</h3>
+					<div class="tsd-signature tsd-kind-icon">Event<wbr>Names<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&quot;click&quot;,&quot;dblclick&quot;,&quot;mousedown&quot;,&quot;mouseout&quot;,&quot;mouseover&quot;,&quot;pressmove&quot;,&quot;pressup&quot;,&quot;rollout&quot;,&quot;rollover&quot;,&quot;added&quot;,&quot;removed&quot;,&quot;tick&quot;]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/0a49266/src/utils/apply-shape-event-listeners.ts#L3">src/utils/apply-shape-event-listeners.ts:3</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -138,7 +163,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/4f1ea2e/src/applyMixins.ts#L1">src/applyMixins.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/0a49266/src/applyMixins.ts#L1">src/applyMixins.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -155,6 +180,41 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="default" class="tsd-anchor"></a>
+					<h3>default</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span>original<span class="tsd-signature-symbol">: </span><a href="interfaces/shapeevents.html" class="tsd-signature-type">ShapeEvents</a>, shape<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventDispatcher</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/0a49266/src/utils/apply-shape-event-listeners.ts#L16">src/utils/apply-shape-event-listeners.ts:16</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>todo:</dt>
+									<dd><p>simplify with a loop</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>original: <a href="interfaces/shapeevents.html" class="tsd-signature-type">ShapeEvents</a></h5>
+								</li>
+								<li>
+									<h5>shape: <span class="tsd-signature-type">EventDispatcher</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="parsepathdata" class="tsd-anchor"></a>
 					<h3>parse<wbr>Path<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -164,7 +224,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/4f1ea2e/src/SVGPath.ts#L1">src/SVGPath.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/0a49266/src/SVGPath.ts#L1">src/SVGPath.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -176,6 +236,29 @@
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal">
+					<a name="util" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Util</h3>
+					<div class="tsd-signature tsd-kind-icon">Util<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/0a49266/src/index.ts#L22">src/index.ts:22</a></li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="util.copyeventlisteners" class="tsd-anchor"></a>
+						<h3>copy<wbr>Event<wbr>Listeners</h3>
+						<div class="tsd-signature tsd-kind-icon">copy<wbr>Event<wbr>Listeners<span class="tsd-signature-symbol">:</span> <a href="globals.html#default" class="tsd-signature-type">default</a></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/ReCreateJS/txtjs/blob/0a49266/src/index.ts#L23">src/index.ts:23</a></li>
+							</ul>
+						</aside>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -253,6 +336,9 @@
 						<a href="classes/text.html" class="tsd-kind-icon">Text</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/textcontainer.html" class="tsd-kind-icon">Text<wbr>Container</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/word.html" class="tsd-kind-icon">Word</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -260,9 +346,6 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/eventcallback.html" class="tsd-kind-icon">Event<wbr>Callback</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/lineevents.html" class="tsd-kind-icon">Line<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/pathpoint.html" class="tsd-kind-icon">Path<wbr>Point</a>
@@ -276,14 +359,20 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/style.html" class="tsd-kind-icon">Style</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/wordevents.html" class="tsd-kind-icon">Word<wbr>Events</a>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#eventnames" class="tsd-kind-icon">Event<wbr>Names</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#applymixins" class="tsd-kind-icon">apply<wbr>Mixins</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#default" class="tsd-kind-icon">default</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#parsepathdata" class="tsd-kind-icon">parse<wbr>Path<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#util" class="tsd-kind-icon">Util</a>
 					</li>
 				</ul>
 			</nav>

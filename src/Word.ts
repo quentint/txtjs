@@ -1,12 +1,12 @@
 import Character from "./Character";
 
 export default class Word extends createjs.Container {
-  hasNewLine: boolean = false;
-  hasHyphen: boolean = false;
-  hasSpace: boolean = false;
+  hasNewLine = false;
+  hasHyphen = false;
+  hasSpace = false;
   measuredWidth: number;
   measuredHeight: number;
-  spaceOffset: number = 0;
+  spaceOffset = 0;
 
   constructor() {
     super();
@@ -14,6 +14,6 @@ export default class Word extends createjs.Container {
 
   //CharacterText support
   lastCharacter(): Character {
-    return <Character>this.children[this.children.length - 1];
+    return this.children[this.children.length - 1] as Character;
   }
 }

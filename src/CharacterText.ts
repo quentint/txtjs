@@ -1,48 +1,38 @@
+import TextContainer from "./TextContainer";
 import Align from "./Align";
-import Case from "./Case";
 import FontLoader from "./FontLoader";
-import { ConstructObj, Style } from "./Interfaces";
-import Accessibility from "./Accessibility";
+import { ConstructObj } from "./Interfaces";
 import Font from "./Font";
 import Character from "./Character";
 import Line from "./Line";
+import applyShapeEventListeners from "./utils/apply-shape-event-listeners";
 
-export default class CharacterText extends createjs.Container {
-  text: string = "";
+export default class CharacterText extends TextContainer {
   lineHeight: number = null;
-  width: number = 100;
-  height: number = 20;
+  width = 100;
+  height = 20;
   align: number = Align.TOP_LEFT;
-  characterCase: Case = Case.NORMAL;
-  size: number = 12;
+  size = 12;
   minSize: number = null;
   maxTracking: number = null;
-  font: string = "belinda";
-  tracking: number = 0;
-  ligatures: boolean = false;
-  fillColor: string = "#000";
+  tracking = 0;
+  ligatures = false;
+  fillColor = "#000";
   strokeColor: string = null;
   strokeWidth: number = null;
-  singleLine: boolean = false;
-  autoExpand: boolean = false;
-  autoReduce: boolean = false;
-  overset: boolean = false;
+  singleLine = false;
+  autoExpand = false;
+  autoReduce = false;
+  overset = false;
   oversetIndex: number = null;
   loaderId: number = null;
-  style: Style[] = null;
-  debug: boolean = false;
-  original: ConstructObj = null;
+  debug = false;
   lines: Line[] = [];
   block: createjs.Container;
   missingGlyphs: any[] = null;
-  renderCycle: boolean = true;
-  measured: boolean = false;
-  oversetPotential: boolean = false;
-
-  //accessibility
-  accessibilityText: string = null;
-  accessibilityPriority: number = 2;
-  accessibilityId: number = null;
+  renderCycle = true;
+  measured = false;
+  oversetPotential = false;
 
   constructor(props: ConstructObj = null) {
     super();
@@ -52,40 +42,12 @@ export default class CharacterText extends createjs.Container {
       this.set(props);
       this.original.tracking = this.tracking;
     }
-    if (this.style == null) {
-      FontLoader.load(this, [this.font]);
-    } else {
-      var fonts = [this.font];
-      var styleLength = this.style.length;
-      for (var i = 0; i < styleLength; ++i) {
-        if (this.style[i] != undefined) {
-          if (this.style[i].font != undefined) {
-            fonts.push(this.style[i].font);
-          }
-        }
-      }
-      FontLoader.load(this, fonts);
-    }
-  }
-
-  //called when text is rendered
-  complete() {}
-
-  //called when font has loaded
-  fontLoaded() {
-    this.layout();
-  }
-
-  //call stage.update to render canvas
-  //overload to support deferred rendering
-  render() {
-    this.stage.update();
+    this.loadFonts();
   }
 
   //layout text
   layout() {
-    //accessibility api
-    Accessibility.set(this);
+    this.addAccessibility();
 
     this.overset = false;
     this.measured = false;
@@ -117,45 +79,8 @@ export default class CharacterText extends createjs.Container {
     this.block = new createjs.Container();
     this.addChild(this.block);
 
-    //debug
-    //draw baseline, ascent, ascender, descender lines
     if (this.debug == true) {
-      var font: Font = FontLoader.getFont(this.font);
-      //outline
-      var s = new createjs.Shape();
-      s.graphics.beginStroke("#FF0000");
-      s.graphics.setStrokeStyle(1.2);
-      s.graphics.drawRect(0, 0, this.width, this.height);
-      this.addChild(s);
-
-      //baseline
-      s = new createjs.Shape();
-      s.graphics.beginFill("#000");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = 0;
-      this.block.addChild(s);
-
-      s = new createjs.Shape();
-      s.graphics.beginFill("#F00");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = (-font["cap-height"] / font.units) * this.size;
-      this.block.addChild(s);
-
-      s = new createjs.Shape();
-      s.graphics.beginFill("#0F0");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = (-font.ascent / font.units) * this.size;
-      this.block.addChild(s);
-
-      s = new createjs.Shape();
-      s.graphics.beginFill("#00F");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = (-font.descent / font.units) * this.size;
-      this.block.addChild(s);
+      this.addDebugLayout();
     }
     if (
       this.singleLine === true &&
@@ -179,29 +104,63 @@ export default class CharacterText extends createjs.Container {
     this.complete();
   }
 
+  /**
+   * Draw baseline, ascent, ascender, and descender lines
+   */
+  private addDebugLayout() {
+    const font: Font = FontLoader.getFont(this.font);
+    //outline
+    let s = new createjs.Shape();
+    s.graphics.beginStroke("#FF0000");
+    s.graphics.setStrokeStyle(1.2);
+    s.graphics.drawRect(0, 0, this.width, this.height);
+    this.addChild(s);
+    //baseline
+    s = new createjs.Shape();
+    s.graphics.beginFill("#000");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = 0;
+    this.block.addChild(s);
+    s = new createjs.Shape();
+    s.graphics.beginFill("#F00");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = (-font["cap-height"] / font.units) * this.size;
+    this.block.addChild(s);
+    s = new createjs.Shape();
+    s.graphics.beginFill("#0F0");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = (-font.ascent / font.units) * this.size;
+    this.block.addChild(s);
+    s = new createjs.Shape();
+    s.graphics.beginFill("#00F");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = (-font.descent / font.units) * this.size;
+    this.block.addChild(s);
+  }
+
   measure(): boolean {
     this.measured = true;
     //Extract origin sizing from this.original to preserve
     //metrics. autoMeasure will change style properties
     //directly. Change this.original to re-render.
 
-    var size = this.original.size;
-    var len = this.text.length;
-    var width = this.getWidth();
-    var defaultStyle = {
+    let len = this.text.length;
+    const defaultStyle = {
       size: this.original.size,
       font: this.original.font,
       tracking: this.original.tracking,
       characterCase: this.original.characterCase
     };
-    var currentStyle: any;
-    var charCode: number = null;
-    var font: Font;
-    var charMetrics = [];
-    var largestFontSize = defaultStyle.size;
-    //console.log( "LOOPCHAR===============" );
-    //console.log( " len: " + len );
-    for (var i = 0; i < len; i++) {
+    let currentStyle: any;
+    let charCode: number = null;
+    let font: Font;
+    const charMetrics = [];
+    let largestFontSize = defaultStyle.size;
+    for (let i = 0; i < len; i++) {
       charCode = this.text.charCodeAt(i);
 
       currentStyle = defaultStyle;
@@ -223,8 +182,6 @@ export default class CharacterText extends createjs.Container {
       }
       font = FontLoader.fonts[currentStyle.font];
 
-      //console.log( currentStyle.tracking , font.units );
-
       charMetrics.push({
         char: this.text[i],
         size: currentStyle.size,
@@ -239,11 +196,10 @@ export default class CharacterText extends createjs.Container {
         ),
         kerning: font.glyphs[charCode].getKerning(this.getCharCodeAt(i + 1), 1)
       });
-      //console.log( this.text[i] );
     }
 
     //save space char using last known width/height
-    var space: any = {
+    const space: any = {
       char: " ",
       size: currentStyle.size,
       charCode: 32,
@@ -260,16 +216,14 @@ export default class CharacterText extends createjs.Container {
     len = charMetrics.length;
 
     //measured without size
-    var metricBaseWidth = 0;
+    let metricBaseWidth = 0;
     //measured at size
-    var metricRealWidth = 0;
+    let metricRealWidth = 0;
     //measured at size with tracking
-    var metricRealWidthTracking = 0;
+    let metricRealWidthTracking = 0;
 
-    var current = null;
-    //console.log( " len: " + len );
-    //console.log( "LOOPMETRICS===============" );
-    for (var i = 0; i < len; i++) {
+    let current = null;
+    for (let i = 0; i < len; i++) {
       current = charMetrics[i];
       metricBaseWidth = metricBaseWidth + current.offset + current.kerning;
       metricRealWidth =
@@ -277,7 +231,6 @@ export default class CharacterText extends createjs.Container {
       metricRealWidthTracking =
         metricRealWidthTracking +
         (current.offset + current.kerning + current.tracking) * current.size;
-      //console.log( current.char );
     }
 
     //size cases
@@ -291,12 +244,11 @@ export default class CharacterText extends createjs.Container {
           this.size = this.minSize;
           this.oversetPotential = true;
         }
-        //console.log( "REDUCE SIZE")
         return true;
       }
       //tracking cases
     } else {
-      var trackMetric = this.offsetTracking(
+      let trackMetric = this.offsetTracking(
         (this.width - metricRealWidth) / len,
         current.size,
         current.units
@@ -312,7 +264,6 @@ export default class CharacterText extends createjs.Container {
           this.tracking = trackMetric;
         }
         this.size = this.original.size;
-        //console.log( "EXPAND TRACKING")
         return true;
       }
       //auto reduce tracking case
@@ -323,7 +274,6 @@ export default class CharacterText extends createjs.Container {
           this.tracking = trackMetric;
         }
         this.size = this.original.size;
-        //console.log( "REDUCE TRACKING")
         return true;
       }
     }
@@ -348,9 +298,9 @@ export default class CharacterText extends createjs.Container {
    */
   characterLayout(): boolean {
     //char layout
-    var len = this.text.length;
-    var char: Character;
-    var defaultStyle = {
+    const len = this.text.length;
+    let char: Character;
+    const defaultStyle = {
       size: this.size,
       font: this.font,
       tracking: this.tracking,
@@ -359,22 +309,20 @@ export default class CharacterText extends createjs.Container {
       strokeColor: this.strokeColor,
       strokeWidth: this.strokeWidth
     };
-    var currentStyle = defaultStyle;
-    var hPosition: number = 0;
-    var vPosition: number = 0;
-    var charKern: number;
-    var tracking: number;
-    var lineY: number = 0;
-    var firstLine = true;
+    let currentStyle = defaultStyle;
+    let hPosition = 0;
+    let vPosition = 0;
+    let lineY = 0;
+    let firstLine = true;
 
-    var currentLine: Line = new Line();
+    let currentLine: Line = new Line();
 
     this.lines.push(currentLine);
     this.block.addChild(currentLine);
 
     // loop over characters
     // place into lines
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       if (this.style !== null && this.style[i] !== undefined) {
         currentStyle = this.style[i];
         // make sure style contains properties needed.
@@ -448,42 +396,7 @@ export default class CharacterText extends createjs.Container {
       char = new Character(this.text.charAt(i), currentStyle, i);
 
       if (this.original.character) {
-        if (this.original.character.added) {
-          char.on("added", this.original.character.added);
-        }
-        if (this.original.character.click) {
-          char.on("click", this.original.character.click);
-        }
-        if (this.original.character.dblclick) {
-          char.on("dblclick", this.original.character.dblclick);
-        }
-        if (this.original.character.mousedown) {
-          char.on("mousedown", this.original.character.mousedown);
-        }
-        if (this.original.character.mouseout) {
-          char.on("mouseout", this.original.character.mouseout);
-        }
-        if (this.original.character.mouseover) {
-          char.on("mouseover", this.original.character.mouseover);
-        }
-        if (this.original.character.pressmove) {
-          char.on("pressmove", this.original.character.pressmove);
-        }
-        if (this.original.character.pressup) {
-          char.on("pressup", this.original.character.pressup);
-        }
-        if (this.original.character.removed) {
-          char.on("removed", this.original.character.removed);
-        }
-        if (this.original.character.rollout) {
-          char.on("rollout", this.original.character.rollout);
-        }
-        if (this.original.character.rollover) {
-          char.on("rollover", this.original.character.rollover);
-        }
-        if (this.original.character.tick) {
-          char.on("tick", this.original.character.tick);
-        }
+        applyShapeEventListeners(this.original.character, char);
       }
 
       if (char.missing) {
@@ -513,7 +426,7 @@ export default class CharacterText extends createjs.Container {
       //ligatures removed if tracking or this.ligatures is false
       if (currentStyle.tracking == 0 && this.ligatures == true) {
         //1 char match
-        var ligTarget = this.text.substr(i, 4);
+        const ligTarget = this.text.substr(i, 4);
         if (char._font.ligatures[ligTarget.charAt(0)]) {
           //2 char match
           if (char._font.ligatures[ligTarget.charAt(0)][ligTarget.charAt(1)]) {
@@ -563,9 +476,9 @@ export default class CharacterText extends createjs.Container {
         this.singleLine === false &&
         hPosition + char.measuredWidth > this.width
       ) {
-        var lastchar: Character = <Character>(
-          currentLine.children[currentLine.children.length - 1]
-        );
+        const lastchar: Character = currentLine.children[
+          currentLine.children.length - 1
+        ] as Character;
         if (lastchar.characterCode == 32) {
           currentLine.measuredWidth =
             hPosition -
@@ -643,7 +556,6 @@ export default class CharacterText extends createjs.Container {
     }
     //case of empty word at end.
     if (currentLine.children.length == 0) {
-      var lw = this.lines.pop();
       currentLine = this.lines[this.lines.length - 1];
       hPosition = currentLine.measuredWidth;
       vPosition = currentLine.measuredHeight;
@@ -667,45 +579,16 @@ export default class CharacterText extends createjs.Container {
     return true;
   }
 
-  getCharCodeAt(index: number): number {
-    if (this.characterCase == Case.NORMAL) {
-      return this.text.charAt(index).charCodeAt(0);
-    } else if (this.characterCase == Case.UPPER) {
-      return this.text
-        .charAt(index)
-        .toUpperCase()
-        .charCodeAt(0);
-    } else if (this.characterCase == Case.LOWER) {
-      return this.text
-        .charAt(index)
-        .toLowerCase()
-        .charCodeAt(0);
-    } else if (this.characterCase == Case.SMALL_CAPS) {
-      return this.text
-        .charAt(index)
-        .toUpperCase()
-        .charCodeAt(0);
-    } else {
-      return this.text.charAt(index).charCodeAt(0);
-    }
-  }
-
   lineLayout() {
     // loop over lines
     // place into text
-    var blockHeight = 0;
-    var measuredWidth = 0;
-    var measuredHeight = 0;
-    var line;
-    var a = Align;
-    var fnt: Font = FontLoader.getFont(this.font);
-    var aHeight = (this.size * fnt.ascent) / fnt.units;
-    var cHeight = (this.size * fnt["cap-height"]) / fnt.units;
-    var xHeight = (this.size * fnt["x-height"]) / fnt.units;
-    var dHeight = (this.size * fnt.descent) / fnt.units;
+    let measuredHeight = 0;
+    let line;
+    const a = Align;
+    const fnt: Font = FontLoader.getFont(this.font);
 
-    var len = this.lines.length;
-    for (var i = 0; i < len; i++) {
+    const len = this.lines.length;
+    for (let i = 0; i < len; i++) {
       line = this.lines[i];
 
       //correct measuredWidth if last line character contains tracking
@@ -714,42 +597,7 @@ export default class CharacterText extends createjs.Container {
       }
 
       if (this.original.line) {
-        if (this.original.line.added) {
-          line.on("added", this.original.line.added);
-        }
-        if (this.original.line.click) {
-          line.on("click", this.original.line.click);
-        }
-        if (this.original.line.dblclick) {
-          line.on("dblclick", this.original.line.dblclick);
-        }
-        if (this.original.line.mousedown) {
-          line.on("mousedown", this.original.line.mousedown);
-        }
-        if (this.original.line.mouseout) {
-          line.on("mouseout", this.original.line.mouseout);
-        }
-        if (this.original.line.mouseover) {
-          line.on("mouseover", this.original.line.mouseover);
-        }
-        if (this.original.line.pressmove) {
-          line.on("pressmove", this.original.line.pressmove);
-        }
-        if (this.original.line.pressup) {
-          line.on("pressup", this.original.line.pressup);
-        }
-        if (this.original.line.removed) {
-          line.on("removed", this.original.line.removed);
-        }
-        if (this.original.line.rollout) {
-          line.on("rollout", this.original.line.rollout);
-        }
-        if (this.original.line.rollover) {
-          line.on("rollover", this.original.line.rollover);
-        }
-        if (this.original.line.tick) {
-          line.on("tick", this.original.line.tick);
-        }
+        applyShapeEventListeners(this.original.line, line);
       }
 
       measuredHeight += line.measuredHeight;
@@ -813,42 +661,7 @@ export default class CharacterText extends createjs.Container {
     }
 
     if (this.original.block) {
-      if (this.original.block.added) {
-        this.block.on("added", this.original.block.added);
-      }
-      if (this.original.block.click) {
-        this.block.on("click", this.original.block.click);
-      }
-      if (this.original.block.dblclick) {
-        this.block.on("dblclick", this.original.block.dblclick);
-      }
-      if (this.original.block.mousedown) {
-        this.block.on("mousedown", this.original.block.mousedown);
-      }
-      if (this.original.block.mouseout) {
-        this.block.on("mouseout", this.original.block.mouseout);
-      }
-      if (this.original.block.mouseover) {
-        this.block.on("mouseover", this.original.block.mouseover);
-      }
-      if (this.original.block.pressmove) {
-        this.block.on("pressmove", this.original.block.pressmove);
-      }
-      if (this.original.block.pressup) {
-        this.block.on("pressup", this.original.block.pressup);
-      }
-      if (this.original.block.removed) {
-        this.block.on("removed", this.original.block.removed);
-      }
-      if (this.original.block.rollout) {
-        this.block.on("rollout", this.original.block.rollout);
-      }
-      if (this.original.block.rollover) {
-        this.block.on("rollover", this.original.block.rollover);
-      }
-      if (this.original.block.tick) {
-        this.block.on("tick", this.original.block.tick);
-      }
+      applyShapeEventListeners(this.original.block, this.block);
     }
   }
 }

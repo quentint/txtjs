@@ -1,8 +1,8 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(320, 280, 2);
+  const canvas = createHiDPICanvas(320, 280, 2);
   document.body.appendChild(canvas);
-  let stage = new createjs.Stage(canvas);
+  const stage = new createjs.Stage(canvas);
 
   //set cache to true
   // defaults to false
@@ -13,7 +13,7 @@ export default function init() {
   //version is stored with the font locally.
   txt.FontLoader.version = 4;
 
-  var text = new txt.Text({
+  const text = new txt.Text({
     text: "The fox jumped over the log.",
     font: "raleway",
     align: txt.Align.TOP_RIGHT,

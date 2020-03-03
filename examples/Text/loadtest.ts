@@ -1,10 +1,10 @@
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
-  let canvas = createHiDPICanvas(1000, 1000, 2);
+  const canvas = createHiDPICanvas(1000, 1000, 2);
   document.body.appendChild(canvas);
-  let stage = new createjs.Stage(canvas);
-  var i = 1;
-  var h = 8;
+  const stage = new createjs.Stage(canvas);
+  let i = 1;
+  let h = 8;
   while (i < 30) {
     h = h + 5 * i;
     stage.addChild(

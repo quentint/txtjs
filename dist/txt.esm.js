@@ -152,7 +152,7 @@ function () {
     }
   }]);
 
-  function SVGArc(x1, rx, ry, phi, fA, fS, x2) {
+  function SVGArc(x1, rx, ry, phiarg, fA, fS, x2) {
     _classCallCheck(this, SVGArc);
 
     _defineProperty(this, "r0", void 0);
@@ -185,7 +185,7 @@ function () {
       return;
     }
 
-    var phi = phi * (Math.PI / 180.0);
+    var phi = phiarg * (Math.PI / 180.0);
     rx = Math.abs(rx);
     ry = Math.abs(ry);
     var xPrime = this.rotClockwise(this.midPoint(x1, x2), phi); // F.6.5.1
@@ -284,8 +284,8 @@ function parsePathData(data) {
   var arrLength = arr.length;
   var startPoint = null;
 
-  for (n = 1; n < arrLength; n++) {
-    var str = arr[n];
+  for (var _n = 1; _n < arrLength; _n++) {
+    var str = arr[_n];
     var c = str.charAt(0);
     str = str.slice(1);
     str = str.replace(new RegExp(",-", "g"), "-");
@@ -316,8 +316,18 @@ function parsePathData(data) {
       var points = [];
       var startX = cpx,
           startY = cpy;
-      var prevCmd, ctlPtx, ctlPty;
-      var rx, ry, psi, fa, fs, x1, y1;
+      var prevCmd = void 0,
+          ctlPtx = void 0,
+          ctlPty = void 0;
+      var rx = void 0,
+          ry = void 0,
+          psi = void 0,
+          fa = void 0,
+          fs = void 0,
+          x1 = void 0,
+          y1 = void 0;
+      var dx = void 0,
+          dy = void 0;
 
       switch (c) {
         case "l":
@@ -334,8 +344,8 @@ function parsePathData(data) {
           break;
 
         case "m":
-          var dx = p.shift();
-          var dy = p.shift();
+          dx = p.shift();
+          dy = p.shift();
           cpx += dx;
           cpy += dy;
 
@@ -1040,6 +1050,7 @@ function () {
           var i = 0;
           var line;
           var glyph;
+          var lineLen;
 
           while (i < len) {
             line = lines[i].split("|");
@@ -1082,7 +1093,7 @@ function () {
 
               case "3":
                 line.shift();
-                var lineLen = line.length;
+                lineLen = line.length;
 
                 for (var j = 0; j < lineLen; j++) {
                   var path = line[j].split("");
@@ -1218,7 +1229,8 @@ function (_createjs$Shape) {
 
     _this.set(style);
 
-    _this.index = index; // flip case depending on characterCase property
+    _this.index = index;
+    var upperSmall; // flip case depending on characterCase property
 
     if (_this.characterCase == Case$1.NORMAL) {
       _this.character = character;
@@ -1228,7 +1240,7 @@ function (_createjs$Shape) {
       _this.character = character.toLowerCase();
     } else if (_this.characterCase == Case$1.SMALL_CAPS) {
       _this.character = character.toUpperCase();
-      var upperSmall = !(character === _this.character);
+      upperSmall = !(character === _this.character);
     } else {
       //fallback case for unknown.
       _this.character = character;
@@ -1304,6 +1316,112 @@ function (_createjs$Shape) {
   return Character;
 }(createjs.Shape);
 
+/**
+ * Common aspects of top-level Text classes
+ */
+
+var TextContainer =
+/*#__PURE__*/
+function (_createjs$Container) {
+  _inherits(TextContainer, _createjs$Container);
+
+  function TextContainer() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, TextContainer);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(TextContainer)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_this), "text", "");
+
+    _defineProperty(_assertThisInitialized(_this), "original", null);
+
+    _defineProperty(_assertThisInitialized(_this), "style", null);
+
+    _defineProperty(_assertThisInitialized(_this), "font", "belinda");
+
+    _defineProperty(_assertThisInitialized(_this), "characterCase", Case$1.NORMAL);
+
+    _defineProperty(_assertThisInitialized(_this), "accessibilityText", null);
+
+    _defineProperty(_assertThisInitialized(_this), "accessibilityPriority", 2);
+
+    _defineProperty(_assertThisInitialized(_this), "accessibilityId", null);
+
+    return _this;
+  }
+
+  _createClass(TextContainer, [{
+    key: "loadFonts",
+    value: function loadFonts() {
+      var fonts = [this.font].concat(this.fontsFromCharacterStyles(this.style));
+      FontLoader.load(this, fonts);
+    } //called when text is rendered
+
+  }, {
+    key: "complete",
+    value: function complete() {} //placeholder
+    //called when font has loaded
+
+  }, {
+    key: "fontLoaded",
+    value: function fontLoaded() {
+      this.layout();
+    } //call stage.update to render canvas
+    //overload to support deferred rendering
+
+  }, {
+    key: "render",
+    value: function render() {
+      this.stage.update();
+    }
+  }, {
+    key: "addAccessibility",
+    value: function addAccessibility() {
+      Accessibility.set(this);
+    }
+  }, {
+    key: "fontsFromCharacterStyles",
+    value: function fontsFromCharacterStyles(styles) {
+      var styleFonts = [];
+
+      if (styles) {
+        for (var i = 0; i < styles.length; ++i) {
+          if (styles[i] != undefined && styles[i].font != undefined) {
+            styleFonts.push(styles[i].font);
+          }
+        }
+      }
+
+      return styleFonts;
+    }
+  }, {
+    key: "getCharCodeAt",
+    value: function getCharCodeAt(index) {
+      if (this.characterCase == Case$1.NORMAL) {
+        return this.text.charAt(index).charCodeAt(0);
+      } else if (this.characterCase == Case$1.UPPER) {
+        return this.text.charAt(index).toUpperCase().charCodeAt(0);
+      } else if (this.characterCase == Case$1.LOWER) {
+        return this.text.charAt(index).toLowerCase().charCodeAt(0);
+      } else if (this.characterCase == Case$1.SMALL_CAPS) {
+        return this.text.charAt(index).toUpperCase().charCodeAt(0);
+      } else {
+        //fallback case for unknown.
+        return this.text.charAt(index).charCodeAt(0);
+      }
+    }
+  }]);
+
+  return TextContainer;
+}(createjs.Container);
+
 var Line =
 /*#__PURE__*/
 function (_createjs$Container) {
@@ -1340,12 +1458,28 @@ function (_createjs$Container) {
   return Line;
 }(createjs.Container);
 
+var EventNames = ["click", "dblclick", "mousedown", "mouseout", "mouseover", "pressmove", "pressup", "rollout", "rollover", "added", "removed", "tick"];
+/**
+ *
+ * @param source
+ * @param shape
+ *
+ * @todo: simplify with a loop
+ */
+
+function copyEventListeners (original, shape) {
+  EventNames.forEach(function (eventName) {
+    if (original[eventName]) {
+      shape.on(eventName, original[eventName]);
+    }
+  });
+}
+
 var CharacterText =
 /*#__PURE__*/
-function (_createjs$Container) {
-  _inherits(CharacterText, _createjs$Container);
+function (_TextContainer) {
+  _inherits(CharacterText, _TextContainer);
 
-  //accessibility
   function CharacterText() {
     var _this;
 
@@ -1355,8 +1489,6 @@ function (_createjs$Container) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(CharacterText).call(this));
 
-    _defineProperty(_assertThisInitialized(_this), "text", "");
-
     _defineProperty(_assertThisInitialized(_this), "lineHeight", null);
 
     _defineProperty(_assertThisInitialized(_this), "width", 100);
@@ -1365,15 +1497,11 @@ function (_createjs$Container) {
 
     _defineProperty(_assertThisInitialized(_this), "align", Align$1.TOP_LEFT);
 
-    _defineProperty(_assertThisInitialized(_this), "characterCase", Case$1.NORMAL);
-
     _defineProperty(_assertThisInitialized(_this), "size", 12);
 
     _defineProperty(_assertThisInitialized(_this), "minSize", null);
 
     _defineProperty(_assertThisInitialized(_this), "maxTracking", null);
-
-    _defineProperty(_assertThisInitialized(_this), "font", "belinda");
 
     _defineProperty(_assertThisInitialized(_this), "tracking", 0);
 
@@ -1397,11 +1525,7 @@ function (_createjs$Container) {
 
     _defineProperty(_assertThisInitialized(_this), "loaderId", null);
 
-    _defineProperty(_assertThisInitialized(_this), "style", null);
-
     _defineProperty(_assertThisInitialized(_this), "debug", false);
-
-    _defineProperty(_assertThisInitialized(_this), "original", null);
 
     _defineProperty(_assertThisInitialized(_this), "lines", []);
 
@@ -1415,12 +1539,6 @@ function (_createjs$Container) {
 
     _defineProperty(_assertThisInitialized(_this), "oversetPotential", false);
 
-    _defineProperty(_assertThisInitialized(_this), "accessibilityText", null);
-
-    _defineProperty(_assertThisInitialized(_this), "accessibilityPriority", 2);
-
-    _defineProperty(_assertThisInitialized(_this), "accessibilityId", null);
-
     if (props) {
       _this.original = props;
 
@@ -1429,49 +1547,16 @@ function (_createjs$Container) {
       _this.original.tracking = _this.tracking;
     }
 
-    if (_this.style == null) {
-      FontLoader.load(_assertThisInitialized(_this), [_this.font]);
-    } else {
-      var fonts = [_this.font];
-      var styleLength = _this.style.length;
-
-      for (var i = 0; i < styleLength; ++i) {
-        if (_this.style[i] != undefined) {
-          if (_this.style[i].font != undefined) {
-            fonts.push(_this.style[i].font);
-          }
-        }
-      }
-
-      FontLoader.load(_assertThisInitialized(_this), fonts);
-    }
+    _this.loadFonts();
 
     return _this;
-  } //called when text is rendered
+  } //layout text
 
 
   _createClass(CharacterText, [{
-    key: "complete",
-    value: function complete() {} //called when font has loaded
-
-  }, {
-    key: "fontLoaded",
-    value: function fontLoaded() {
-      this.layout();
-    } //call stage.update to render canvas
-    //overload to support deferred rendering
-
-  }, {
-    key: "render",
-    value: function render() {
-      this.stage.update();
-    } //layout text
-
-  }, {
     key: "layout",
     value: function layout() {
-      //accessibility api
-      Accessibility.set(this);
+      this.addAccessibility();
       this.overset = false;
       this.measured = false;
       this.oversetPotential = false;
@@ -1502,42 +1587,10 @@ function (_createjs$Container) {
       }
 
       this.block = new createjs.Container();
-      this.addChild(this.block); //debug
-      //draw baseline, ascent, ascender, descender lines
+      this.addChild(this.block);
 
       if (this.debug == true) {
-        var font = FontLoader.getFont(this.font); //outline
-
-        var s = new createjs.Shape();
-        s.graphics.beginStroke("#FF0000");
-        s.graphics.setStrokeStyle(1.2);
-        s.graphics.drawRect(0, 0, this.width, this.height);
-        this.addChild(s); //baseline
-
-        s = new createjs.Shape();
-        s.graphics.beginFill("#000");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = 0;
-        this.block.addChild(s);
-        s = new createjs.Shape();
-        s.graphics.beginFill("#F00");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = -font["cap-height"] / font.units * this.size;
-        this.block.addChild(s);
-        s = new createjs.Shape();
-        s.graphics.beginFill("#0F0");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = -font.ascent / font.units * this.size;
-        this.block.addChild(s);
-        s = new createjs.Shape();
-        s.graphics.beginFill("#00F");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = -font.descent / font.units * this.size;
-        this.block.addChild(s);
+        this.addDebugLayout();
       }
 
       if (this.singleLine === true && (this.autoExpand === true || this.autoReduce === true)) {
@@ -1559,6 +1612,46 @@ function (_createjs$Container) {
       this.render();
       this.complete();
     }
+    /**
+     * Draw baseline, ascent, ascender, and descender lines
+     */
+
+  }, {
+    key: "addDebugLayout",
+    value: function addDebugLayout() {
+      var font = FontLoader.getFont(this.font); //outline
+
+      var s = new createjs.Shape();
+      s.graphics.beginStroke("#FF0000");
+      s.graphics.setStrokeStyle(1.2);
+      s.graphics.drawRect(0, 0, this.width, this.height);
+      this.addChild(s); //baseline
+
+      s = new createjs.Shape();
+      s.graphics.beginFill("#000");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = 0;
+      this.block.addChild(s);
+      s = new createjs.Shape();
+      s.graphics.beginFill("#F00");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = -font["cap-height"] / font.units * this.size;
+      this.block.addChild(s);
+      s = new createjs.Shape();
+      s.graphics.beginFill("#0F0");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = -font.ascent / font.units * this.size;
+      this.block.addChild(s);
+      s = new createjs.Shape();
+      s.graphics.beginFill("#00F");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = -font.descent / font.units * this.size;
+      this.block.addChild(s);
+    }
   }, {
     key: "measure",
     value: function measure() {
@@ -1566,9 +1659,7 @@ function (_createjs$Container) {
       //metrics. autoMeasure will change style properties
       //directly. Change this.original to re-render.
 
-      var size = this.original.size;
       var len = this.text.length;
-      var width = this.getWidth();
       var defaultStyle = {
         size: this.original.size,
         font: this.original.font,
@@ -1579,8 +1670,7 @@ function (_createjs$Container) {
       var charCode = null;
       var font;
       var charMetrics = [];
-      var largestFontSize = defaultStyle.size; //console.log( "LOOPCHAR===============" );
-      //console.log( " len: " + len );
+      var largestFontSize = defaultStyle.size;
 
       for (var i = 0; i < len; i++) {
         charCode = this.text.charCodeAt(i);
@@ -1598,8 +1688,7 @@ function (_createjs$Container) {
           largestFontSize = currentStyle.size;
         }
 
-        font = FontLoader.fonts[currentStyle.font]; //console.log( currentStyle.tracking , font.units );
-
+        font = FontLoader.fonts[currentStyle.font];
         charMetrics.push({
           "char": this.text[i],
           size: currentStyle.size,
@@ -1609,7 +1698,7 @@ function (_createjs$Container) {
           units: font.units,
           tracking: this.trackingOffset(currentStyle.tracking, currentStyle.size, font.units),
           kerning: font.glyphs[charCode].getKerning(this.getCharCodeAt(i + 1), 1)
-        }); //console.log( this.text[i] );
+        });
       } //save space char using last known width/height
 
 
@@ -1632,14 +1721,13 @@ function (_createjs$Container) {
       var metricRealWidth = 0; //measured at size with tracking
 
       var metricRealWidthTracking = 0;
-      var current = null; //console.log( " len: " + len );
-      //console.log( "LOOPMETRICS===============" );
+      var current = null;
 
-      for (var i = 0; i < len; i++) {
-        current = charMetrics[i];
+      for (var _i = 0; _i < len; _i++) {
+        current = charMetrics[_i];
         metricBaseWidth = metricBaseWidth + current.offset + current.kerning;
         metricRealWidth = metricRealWidth + (current.offset + current.kerning) * current.size;
-        metricRealWidthTracking = metricRealWidthTracking + (current.offset + current.kerning + current.tracking) * current.size; //console.log( current.char );
+        metricRealWidthTracking = metricRealWidthTracking + (current.offset + current.kerning + current.tracking) * current.size;
       } //size cases
 
 
@@ -1651,8 +1739,7 @@ function (_createjs$Container) {
           if (this.minSize != null && this.size < this.minSize) {
             this.size = this.minSize;
             this.oversetPotential = true;
-          } //console.log( "REDUCE SIZE")
-
+          }
 
           return true;
         } //tracking cases
@@ -1672,8 +1759,7 @@ function (_createjs$Container) {
             this.tracking = trackMetric;
           }
 
-          this.size = this.original.size; //console.log( "EXPAND TRACKING")
-
+          this.size = this.original.size;
           return true;
         } //auto reduce tracking case
 
@@ -1685,8 +1771,7 @@ function (_createjs$Container) {
             this.tracking = trackMetric;
           }
 
-          this.size = this.original.size; //console.log( "REDUCE TRACKING")
-
+          this.size = this.original.size;
           return true;
         }
       }
@@ -1807,53 +1892,7 @@ function (_createjs$Container) {
         _char = new Character(this.text.charAt(i), currentStyle, i);
 
         if (this.original.character) {
-          if (this.original.character.added) {
-            _char.on("added", this.original.character.added);
-          }
-
-          if (this.original.character.click) {
-            _char.on("click", this.original.character.click);
-          }
-
-          if (this.original.character.dblclick) {
-            _char.on("dblclick", this.original.character.dblclick);
-          }
-
-          if (this.original.character.mousedown) {
-            _char.on("mousedown", this.original.character.mousedown);
-          }
-
-          if (this.original.character.mouseout) {
-            _char.on("mouseout", this.original.character.mouseout);
-          }
-
-          if (this.original.character.mouseover) {
-            _char.on("mouseover", this.original.character.mouseover);
-          }
-
-          if (this.original.character.pressmove) {
-            _char.on("pressmove", this.original.character.pressmove);
-          }
-
-          if (this.original.character.pressup) {
-            _char.on("pressup", this.original.character.pressup);
-          }
-
-          if (this.original.character.removed) {
-            _char.on("removed", this.original.character.removed);
-          }
-
-          if (this.original.character.rollout) {
-            _char.on("rollout", this.original.character.rollout);
-          }
-
-          if (this.original.character.rollover) {
-            _char.on("rollover", this.original.character.rollover);
-          }
-
-          if (this.original.character.tick) {
-            _char.on("tick", this.original.character.tick);
-          }
+          copyEventListeners(this.original.character, _char);
         }
 
         if (_char.missing) {
@@ -1968,7 +2007,6 @@ function (_createjs$Container) {
 
 
       if (currentLine.children.length == 0) {
-        var lw = this.lines.pop();
         currentLine = this.lines[this.lines.length - 1];
         hPosition = currentLine.measuredWidth;
         vPosition = currentLine.measuredHeight;
@@ -1996,31 +2034,14 @@ function (_createjs$Container) {
       return true;
     }
   }, {
-    key: "getCharCodeAt",
-    value: function getCharCodeAt(index) {
-      if (this.characterCase == Case$1.NORMAL) {
-        return this.text.charAt(index).charCodeAt(0);
-      } else if (this.characterCase == Case$1.UPPER) {
-        return this.text.charAt(index).toUpperCase().charCodeAt(0);
-      } else if (this.characterCase == Case$1.LOWER) {
-        return this.text.charAt(index).toLowerCase().charCodeAt(0);
-      } else if (this.characterCase == Case$1.SMALL_CAPS) {
-        return this.text.charAt(index).toUpperCase().charCodeAt(0);
-      } else {
-        return this.text.charAt(index).charCodeAt(0);
-      }
-    }
-  }, {
     key: "lineLayout",
     value: function lineLayout() {
+      // loop over lines
+      // place into text
       var measuredHeight = 0;
       var line;
       var a = Align$1;
       var fnt = FontLoader.getFont(this.font);
-      var aHeight = this.size * fnt.ascent / fnt.units;
-      var cHeight = this.size * fnt["cap-height"] / fnt.units;
-      var xHeight = this.size * fnt["x-height"] / fnt.units;
-      var dHeight = this.size * fnt.descent / fnt.units;
       var len = this.lines.length;
 
       for (var i = 0; i < len; i++) {
@@ -2031,53 +2052,7 @@ function (_createjs$Container) {
         }
 
         if (this.original.line) {
-          if (this.original.line.added) {
-            line.on("added", this.original.line.added);
-          }
-
-          if (this.original.line.click) {
-            line.on("click", this.original.line.click);
-          }
-
-          if (this.original.line.dblclick) {
-            line.on("dblclick", this.original.line.dblclick);
-          }
-
-          if (this.original.line.mousedown) {
-            line.on("mousedown", this.original.line.mousedown);
-          }
-
-          if (this.original.line.mouseout) {
-            line.on("mouseout", this.original.line.mouseout);
-          }
-
-          if (this.original.line.mouseover) {
-            line.on("mouseover", this.original.line.mouseover);
-          }
-
-          if (this.original.line.pressmove) {
-            line.on("pressmove", this.original.line.pressmove);
-          }
-
-          if (this.original.line.pressup) {
-            line.on("pressup", this.original.line.pressup);
-          }
-
-          if (this.original.line.removed) {
-            line.on("removed", this.original.line.removed);
-          }
-
-          if (this.original.line.rollout) {
-            line.on("rollout", this.original.line.rollout);
-          }
-
-          if (this.original.line.rollover) {
-            line.on("rollover", this.original.line.rollover);
-          }
-
-          if (this.original.line.tick) {
-            line.on("tick", this.original.line.tick);
-          }
+          copyEventListeners(this.original.line, line);
         }
 
         measuredHeight += line.measuredHeight;
@@ -2118,59 +2093,13 @@ function (_createjs$Container) {
       }
 
       if (this.original.block) {
-        if (this.original.block.added) {
-          this.block.on("added", this.original.block.added);
-        }
-
-        if (this.original.block.click) {
-          this.block.on("click", this.original.block.click);
-        }
-
-        if (this.original.block.dblclick) {
-          this.block.on("dblclick", this.original.block.dblclick);
-        }
-
-        if (this.original.block.mousedown) {
-          this.block.on("mousedown", this.original.block.mousedown);
-        }
-
-        if (this.original.block.mouseout) {
-          this.block.on("mouseout", this.original.block.mouseout);
-        }
-
-        if (this.original.block.mouseover) {
-          this.block.on("mouseover", this.original.block.mouseover);
-        }
-
-        if (this.original.block.pressmove) {
-          this.block.on("pressmove", this.original.block.pressmove);
-        }
-
-        if (this.original.block.pressup) {
-          this.block.on("pressup", this.original.block.pressup);
-        }
-
-        if (this.original.block.removed) {
-          this.block.on("removed", this.original.block.removed);
-        }
-
-        if (this.original.block.rollout) {
-          this.block.on("rollout", this.original.block.rollout);
-        }
-
-        if (this.original.block.rollover) {
-          this.block.on("rollover", this.original.block.rollover);
-        }
-
-        if (this.original.block.tick) {
-          this.block.on("tick", this.original.block.tick);
-        }
+        copyEventListeners(this.original.block, this.block);
       }
     }
   }]);
 
   return CharacterText;
-}(createjs.Container);
+}(TextContainer);
 
 var Info = function Info() {
   _classCallCheck(this, Info);
@@ -2222,10 +2151,9 @@ function (_createjs$Container) {
 
 var Text =
 /*#__PURE__*/
-function (_createjs$Container) {
-  _inherits(Text, _createjs$Container);
+function (_TextContainer) {
+  _inherits(Text, _TextContainer);
 
-  //accessibility
   function Text() {
     var _this;
 
@@ -2235,8 +2163,6 @@ function (_createjs$Container) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Text).call(this));
 
-    _defineProperty(_assertThisInitialized(_this), "text", "");
-
     _defineProperty(_assertThisInitialized(_this), "lineHeight", null);
 
     _defineProperty(_assertThisInitialized(_this), "width", 100);
@@ -2245,11 +2171,7 @@ function (_createjs$Container) {
 
     _defineProperty(_assertThisInitialized(_this), "align", Align$1.TOP_LEFT);
 
-    _defineProperty(_assertThisInitialized(_this), "characterCase", Case$1.NORMAL);
-
     _defineProperty(_assertThisInitialized(_this), "size", 12);
-
-    _defineProperty(_assertThisInitialized(_this), "font", "belinda");
 
     _defineProperty(_assertThisInitialized(_this), "tracking", 0);
 
@@ -2263,11 +2185,7 @@ function (_createjs$Container) {
 
     _defineProperty(_assertThisInitialized(_this), "loaderId", null);
 
-    _defineProperty(_assertThisInitialized(_this), "style", null);
-
     _defineProperty(_assertThisInitialized(_this), "debug", false);
-
-    _defineProperty(_assertThisInitialized(_this), "original", null);
 
     _defineProperty(_assertThisInitialized(_this), "words", []);
 
@@ -2279,52 +2197,18 @@ function (_createjs$Container) {
 
     _defineProperty(_assertThisInitialized(_this), "renderCycle", true);
 
-    _defineProperty(_assertThisInitialized(_this), "accessibilityText", null);
-
-    _defineProperty(_assertThisInitialized(_this), "accessibilityPriority", 2);
-
-    _defineProperty(_assertThisInitialized(_this), "accessibilityId", null);
-
     if (props) {
       _this.original = props;
 
       _this.set(props);
     }
 
-    if (_this.style == null) {
-      FontLoader.load(_assertThisInitialized(_this), [_this.font]);
-    } else {
-      var fonts = [_this.font];
-      var styleLength = _this.style.length;
-
-      for (var i = 0; i < styleLength; ++i) {
-        if (_this.style[i] != undefined) {
-          if (_this.style[i].font != undefined) {
-            fonts.push(_this.style[i].font);
-          }
-        }
-      }
-
-      FontLoader.load(_assertThisInitialized(_this), fonts);
-    }
+    _this.loadFonts();
 
     return _this;
   }
 
   _createClass(Text, [{
-    key: "render",
-    value: function render() {
-      this.stage.update();
-    }
-  }, {
-    key: "complete",
-    value: function complete() {}
-  }, {
-    key: "fontLoaded",
-    value: function fontLoaded(font) {
-      this.layout();
-    }
-  }, {
     key: "getBounds",
     value: function getBounds() {
       // TODO: obtain intersected bounds of the characters/words in here
@@ -2333,8 +2217,7 @@ function (_createjs$Container) {
   }, {
     key: "layout",
     value: function layout() {
-      //accessibility api
-      Accessibility.set(this);
+      this.addAccessibility();
       this.text = this.text.replace(/([\n][ \t]+)/g, "\n");
       this.words = [];
       this.lines = [];
@@ -2342,42 +2225,10 @@ function (_createjs$Container) {
 
       this.removeAllChildren();
       this.block = new createjs.Container();
-      this.addChild(this.block); //debug
-      //draw baseline, ascent, ascender, descender lines
+      this.addChild(this.block);
 
       if (this.debug == true) {
-        var font = FontLoader.getFont(this.font); //outline
-
-        var s = new createjs.Shape();
-        s.graphics.beginStroke("#FF0000");
-        s.graphics.setStrokeStyle(1.2);
-        s.graphics.drawRect(0, 0, this.width, this.height);
-        this.addChild(s); //baseline
-
-        s = new createjs.Shape();
-        s.graphics.beginFill("#000");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = 0;
-        this.block.addChild(s);
-        s = new createjs.Shape();
-        s.graphics.beginFill("#F00");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = -font["cap-height"] / font.units * this.size;
-        this.block.addChild(s);
-        s = new createjs.Shape();
-        s.graphics.beginFill("#0F0");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = -font.ascent / font.units * this.size;
-        this.block.addChild(s);
-        s = new createjs.Shape();
-        s.graphics.beginFill("#00F");
-        s.graphics.drawRect(0, 0, this.width, 0.2);
-        s.x = 0;
-        s.y = -font.descent / font.units * this.size;
-        this.block.addChild(s);
+        this.addDebugLayout();
       }
 
       if (this.text === "" || this.text === undefined) {
@@ -2401,6 +2252,46 @@ function (_createjs$Container) {
       this.lineLayout();
       this.render();
       this.complete();
+    }
+    /**
+     * Draw baseline, ascent, ascender, and descender lines
+     */
+
+  }, {
+    key: "addDebugLayout",
+    value: function addDebugLayout() {
+      var font = FontLoader.getFont(this.font); //outline
+
+      var s = new createjs.Shape();
+      s.graphics.beginStroke("#FF0000");
+      s.graphics.setStrokeStyle(1.2);
+      s.graphics.drawRect(0, 0, this.width, this.height);
+      this.addChild(s); //baseline
+
+      s = new createjs.Shape();
+      s.graphics.beginFill("#000");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = 0;
+      this.block.addChild(s);
+      s = new createjs.Shape();
+      s.graphics.beginFill("#F00");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = -font["cap-height"] / font.units * this.size;
+      this.block.addChild(s);
+      s = new createjs.Shape();
+      s.graphics.beginFill("#0F0");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = -font.ascent / font.units * this.size;
+      this.block.addChild(s);
+      s = new createjs.Shape();
+      s.graphics.beginFill("#00F");
+      s.graphics.drawRect(0, 0, this.width, 0.2);
+      s.x = 0;
+      s.y = -font.descent / font.units * this.size;
+      this.block.addChild(s);
     } //place characters in words
 
   }, {
@@ -2476,53 +2367,7 @@ function (_createjs$Container) {
         _char = new Character(this.text.charAt(i), currentStyle, i);
 
         if (this.original.character) {
-          if (this.original.character.added) {
-            _char.on("added", this.original.character.added);
-          }
-
-          if (this.original.character.click) {
-            _char.on("click", this.original.character.click);
-          }
-
-          if (this.original.character.dblclick) {
-            _char.on("dblclick", this.original.character.dblclick);
-          }
-
-          if (this.original.character.mousedown) {
-            _char.on("mousedown", this.original.character.mousedown);
-          }
-
-          if (this.original.character.mouseout) {
-            _char.on("mouseout", this.original.character.mouseout);
-          }
-
-          if (this.original.character.mouseover) {
-            _char.on("mouseover", this.original.character.mouseover);
-          }
-
-          if (this.original.character.pressmove) {
-            _char.on("pressmove", this.original.character.pressmove);
-          }
-
-          if (this.original.character.pressup) {
-            _char.on("pressup", this.original.character.pressup);
-          }
-
-          if (this.original.character.removed) {
-            _char.on("removed", this.original.character.removed);
-          }
-
-          if (this.original.character.rollout) {
-            _char.on("rollout", this.original.character.rollout);
-          }
-
-          if (this.original.character.rollover) {
-            _char.on("rollover", this.original.character.rollover);
-          }
-
-          if (this.original.character.tick) {
-            _char.on("tick", this.original.character.tick);
-          }
+          copyEventListeners(this.original.character, _char);
         }
 
         if (_char.missing) {
@@ -2607,7 +2452,6 @@ function (_createjs$Container) {
 
 
       if (currentWord.children.length == 0) {
-        var lw = this.words.pop();
         currentWord = this.words[this.words.length - 1];
         hPosition = currentWord.measuredWidth;
         vPosition = currentWord.measuredHeight;
@@ -2640,53 +2484,7 @@ function (_createjs$Container) {
         currentWord.x = hPosition;
 
         if (this.original.word) {
-          if (this.original.word.added) {
-            currentWord.on("added", this.original.word.added);
-          }
-
-          if (this.original.word.click) {
-            currentWord.on("click", this.original.word.click);
-          }
-
-          if (this.original.word.dblclick) {
-            currentWord.on("dblclick", this.original.word.dblclick);
-          }
-
-          if (this.original.word.mousedown) {
-            currentWord.on("mousedown", this.original.word.mousedown);
-          }
-
-          if (this.original.word.mouseout) {
-            currentWord.on("mouseout", this.original.word.mouseout);
-          }
-
-          if (this.original.word.mouseover) {
-            currentWord.on("mouseover", this.original.word.mouseover);
-          }
-
-          if (this.original.word.pressmove) {
-            currentWord.on("pressmove", this.original.word.pressmove);
-          }
-
-          if (this.original.word.pressup) {
-            currentWord.on("pressup", this.original.word.pressup);
-          }
-
-          if (this.original.word.removed) {
-            currentWord.on("removed", this.original.word.removed);
-          }
-
-          if (this.original.word.rollout) {
-            currentWord.on("rollout", this.original.word.rollout);
-          }
-
-          if (this.original.word.rollover) {
-            currentWord.on("rollover", this.original.word.rollover);
-          }
-
-          if (this.original.word.tick) {
-            currentWord.on("tick", this.original.word.tick);
-          }
+          copyEventListeners(this.original.word, currentWord);
         }
 
         if (firstLine) {
@@ -2823,7 +2621,6 @@ function (_createjs$Container) {
 
 
       if (currentLine.children.length == 0) {
-        var lw = this.lines.pop();
         currentLine = this.lines[this.lines.length - 1];
       }
 
@@ -2833,67 +2630,19 @@ function (_createjs$Container) {
   }, {
     key: "lineLayout",
     value: function lineLayout() {
+      // loop over lines
+      // place into text
       var measuredHeight = 0;
       var line;
       var a = Align$1;
       var fnt = FontLoader.getFont(this.font);
-      var aHeight = this.size * fnt.ascent / fnt.units;
-      var cHeight = this.size * fnt["cap-height"] / fnt.units;
-      var xHeight = this.size * fnt["x-height"] / fnt.units;
-      var dHeight = this.size * fnt.descent / fnt.units;
       var len = this.lines.length;
 
       for (var i = 0; i < len; i++) {
         line = this.lines[i];
 
         if (this.original.line) {
-          if (this.original.line.added) {
-            line.on("added", this.original.line.added);
-          }
-
-          if (this.original.line.click) {
-            line.on("click", this.original.line.click);
-          }
-
-          if (this.original.line.dblclick) {
-            line.on("dblclick", this.original.line.dblclick);
-          }
-
-          if (this.original.line.mousedown) {
-            line.on("mousedown", this.original.line.mousedown);
-          }
-
-          if (this.original.line.mouseout) {
-            line.on("mouseout", this.original.line.mouseout);
-          }
-
-          if (this.original.line.mouseover) {
-            line.on("mouseover", this.original.line.mouseover);
-          }
-
-          if (this.original.line.pressmove) {
-            line.on("pressmove", this.original.line.pressmove);
-          }
-
-          if (this.original.line.pressup) {
-            line.on("pressup", this.original.line.pressup);
-          }
-
-          if (this.original.line.removed) {
-            line.on("removed", this.original.line.removed);
-          }
-
-          if (this.original.line.rollout) {
-            line.on("rollout", this.original.line.rollout);
-          }
-
-          if (this.original.line.rollover) {
-            line.on("rollover", this.original.line.rollover);
-          }
-
-          if (this.original.line.tick) {
-            line.on("tick", this.original.line.tick);
-          }
+          copyEventListeners(this.original.line, line);
         } //correct measuredWidth if last line character contains tracking
 
 
@@ -2934,59 +2683,13 @@ function (_createjs$Container) {
       }
 
       if (this.original.block) {
-        if (this.original.block.added) {
-          this.block.on("added", this.original.block.added);
-        }
-
-        if (this.original.block.click) {
-          this.block.on("click", this.original.block.click);
-        }
-
-        if (this.original.block.dblclick) {
-          this.block.on("dblclick", this.original.block.dblclick);
-        }
-
-        if (this.original.block.mousedown) {
-          this.block.on("mousedown", this.original.block.mousedown);
-        }
-
-        if (this.original.block.mouseout) {
-          this.block.on("mouseout", this.original.block.mouseout);
-        }
-
-        if (this.original.block.mouseover) {
-          this.block.on("mouseover", this.original.block.mouseover);
-        }
-
-        if (this.original.block.pressmove) {
-          this.block.on("pressmove", this.original.block.pressmove);
-        }
-
-        if (this.original.block.pressup) {
-          this.block.on("pressup", this.original.block.pressup);
-        }
-
-        if (this.original.block.removed) {
-          this.block.on("removed", this.original.block.removed);
-        }
-
-        if (this.original.block.rollout) {
-          this.block.on("rollout", this.original.block.rollout);
-        }
-
-        if (this.original.block.rollover) {
-          this.block.on("rollover", this.original.block.rollover);
-        }
-
-        if (this.original.block.tick) {
-          this.block.on("tick", this.original.block.tick);
-        }
+        copyEventListeners(this.original.block, this.block);
       }
     }
   }]);
 
   return Text;
-}(createjs.Container);
+}(TextContainer);
 
 var PathFit;
 
@@ -3058,8 +2761,7 @@ function () {
       this.length = this.pathElement.getTotalLength();
       this.closed = this.path.toLowerCase().indexOf("z") != -1;
       var pointlength = this.length / 10;
-      var points = []; //console.log( this.pathElement );
-
+      var points = [];
       points.push(this.getRealPathPoint(0));
       points.push(this.getRealPathPoint(pointlength));
       points.push(this.getRealPathPoint(pointlength * 2));
@@ -3071,7 +2773,7 @@ function () {
       points.push(this.getRealPathPoint(pointlength * 8));
       points.push(this.getRealPathPoint(pointlength * 9));
       points.push(this.getRealPathPoint(pointlength * 10));
-      var clock = (points[1].x - points[0].x) * (points[1].y + points[0].y) + (points[2].x - points[1].x) * (points[2].y + points[1].y) + (points[3].x - points[2].x) * (points[3].y + points[2].y) + (points[4].x - points[3].x) * (points[4].y + points[3].y) + (points[5].x - points[4].x) * (points[5].y + points[4].y) + (points[6].x - points[5].x) * (points[6].y + points[5].y) + (points[7].x - points[6].x) * (points[7].y + points[6].y) + (points[8].x - points[7].x) * (points[8].y + points[7].y) + (points[9].x - points[8].x) * (points[9].y + points[8].y) + (points[10].x - points[9].x) * (points[10].y + points[9].y); //console.log( clock );
+      var clock = (points[1].x - points[0].x) * (points[1].y + points[0].y) + (points[2].x - points[1].x) * (points[2].y + points[1].y) + (points[3].x - points[2].x) * (points[3].y + points[2].y) + (points[4].x - points[3].x) * (points[4].y + points[3].y) + (points[5].x - points[4].x) * (points[5].y + points[4].y) + (points[6].x - points[5].x) * (points[6].y + points[5].y) + (points[7].x - points[6].x) * (points[7].y + points[6].y) + (points[8].x - points[7].x) * (points[8].y + points[7].y) + (points[9].x - points[8].x) * (points[9].y + points[8].y) + (points[10].x - points[9].x) * (points[10].y + points[9].y);
 
       if (clock > 0) {
         this.clockwise = false;
@@ -3172,7 +2874,7 @@ function () {
       var characterLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       var charOffset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
       distance = distance * 0.99;
-      characterLength = characterLength * 0.99; //console.log( characterLength );
+      characterLength = characterLength * 0.99;
       var point1;
       var point2;
       var position;
@@ -3350,54 +3052,51 @@ function () {
       point1 = this.getRealPathPoint(position);
       var segment = this.pathElement.pathSegList.getItem(this.pathElement.getPathSegAtLength(position)).pathSegType;
 
-      if (segment == 4) {
-        if (direction) ; else {
-          if (this.pathElement.getPathSegAtLength(position) != this.pathElement.getPathSegAtLength(position - charOffset)) {
-            var pp0 = this.getRealPathPoint(position);
-            var pp1 = this.getRealPathPoint(position - charOffset);
-            var ppc = this.pathElement.pathSegList.getItem(this.pathElement.getPathSegAtLength(position) - 1);
-            var d0 = Math.sqrt(Math.pow(pp0.x - ppc["x"], 2) + Math.pow(pp0.y - ppc["y"], 2));
-            var d1 = Math.sqrt(Math.pow(pp1.x - ppc["x"], 2) + Math.pow(pp1.y - ppc["y"], 2));
+      if (segment == 4 && !direction && this.pathElement.getPathSegAtLength(position) != this.pathElement.getPathSegAtLength(position - charOffset)) {
+        var pp0 = this.getRealPathPoint(position);
+        var pp1 = this.getRealPathPoint(position - charOffset);
+        var ppc = this.pathElement.pathSegList.getItem(this.pathElement.getPathSegAtLength(position) - 1);
+        var d0 = Math.sqrt(Math.pow(pp0.x - ppc["x"], 2) + Math.pow(pp0.y - ppc["y"], 2));
+        var d1 = Math.sqrt(Math.pow(pp1.x - ppc["x"], 2) + Math.pow(pp1.y - ppc["y"], 2));
 
-            if (d0 > d1) {
-              point1 = pp0;
-              point2 = {
-                x: ppc["x"],
-                y: ppc["y"]
-              };
-              var rot12 = Math.atan((point2.y - point1.y) / (point2.x - point1.x)) * 180 / Math.PI;
+        if (d0 > d1) {
+          point1 = pp0;
+          point2 = {
+            x: ppc["x"],
+            y: ppc["y"]
+          };
 
-              if (point1.x > point2.x) {
-                rot12 = rot12 + 180;
-              }
+          var _rot = Math.atan((point2.y - point1.y) / (point2.x - point1.x)) * 180 / Math.PI;
 
-              if (rot12 < 0) {
-                rot12 = rot12 + 360;
-              }
-
-              if (rot12 > 360) {
-                rot12 = rot12 - 360;
-              }
-
-              point1.rotation = rot12;
-              return point1;
-            } else {
-              point1 = {
-                x: ppc["x"],
-                y: ppc["y"]
-              };
-              point1.offsetX = -d0;
-              point1["next"] = true;
-              return point1;
-            }
+          if (point1.x > point2.x) {
+            _rot = _rot + 180;
           }
+
+          if (_rot < 0) {
+            _rot = _rot + 360;
+          }
+
+          if (_rot > 360) {
+            _rot = _rot - 360;
+          }
+
+          point1.rotation = _rot;
+          return point1;
+        } else {
+          point1 = {
+            x: ppc["x"],
+            y: ppc["y"]
+          };
+          point1.offsetX = -d0;
+          point1["next"] = true;
+          return point1;
         }
       }
 
       if (direction) {
-        point2 = this.getRealPathPoint(position + charOffset); //console.log( direction , position + charOffset , this.realLength );
+        point2 = this.getRealPathPoint(position + charOffset);
       } else {
-        point2 = this.getRealPathPoint(position - charOffset); //console.log( direction , position - charOffset , this.realLength );
+        point2 = this.getRealPathPoint(position - charOffset);
       }
 
       var rot12 = Math.atan((point2.y - point1.y) / (point2.x - point1.x)) * 180 / Math.PI;
@@ -3439,10 +3138,9 @@ var VerticalAlign$1 = VerticalAlign;
 
 var PathText =
 /*#__PURE__*/
-function (_createjs$Container) {
-  _inherits(PathText, _createjs$Container);
+function (_TextContainer) {
+  _inherits(PathText, _TextContainer);
 
-  //accessibility
   function PathText() {
     var _this;
 
@@ -3452,13 +3150,7 @@ function (_createjs$Container) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(PathText).call(this));
 
-    _defineProperty(_assertThisInitialized(_this), "text", "");
-
-    _defineProperty(_assertThisInitialized(_this), "characterCase", Case$1.NORMAL);
-
     _defineProperty(_assertThisInitialized(_this), "size", 12);
-
-    _defineProperty(_assertThisInitialized(_this), "font", "belinda");
 
     _defineProperty(_assertThisInitialized(_this), "tracking", 0);
 
@@ -3473,8 +3165,6 @@ function (_createjs$Container) {
     _defineProperty(_assertThisInitialized(_this), "strokeColor", null);
 
     _defineProperty(_assertThisInitialized(_this), "strokeWidth", null);
-
-    _defineProperty(_assertThisInitialized(_this), "style", null);
 
     _defineProperty(_assertThisInitialized(_this), "debug", false);
 
@@ -3522,12 +3212,6 @@ function (_createjs$Container) {
 
     _defineProperty(_assertThisInitialized(_this), "oversetPotential", false);
 
-    _defineProperty(_assertThisInitialized(_this), "accessibilityText", null);
-
-    _defineProperty(_assertThisInitialized(_this), "accessibilityPriority", 2);
-
-    _defineProperty(_assertThisInitialized(_this), "accessibilityId", null);
-
     if (props) {
       _this.original = props;
 
@@ -3536,32 +3220,13 @@ function (_createjs$Container) {
       _this.original.tracking = _this.tracking;
     }
 
-    if (_this.style == null) {
-      FontLoader.load(_assertThisInitialized(_this), [_this.font]);
-    } else {
-      var fonts = [_this.font];
-      var styleLength = _this.style.length;
+    _this.loadFonts();
 
-      for (var i = 0; i < styleLength; ++i) {
-        if (_this.style[i] != undefined) {
-          if (_this.style[i].font != undefined) {
-            fonts.push(_this.style[i].font);
-          }
-        }
-      }
-
-      FontLoader.load(_assertThisInitialized(_this), fonts);
-    }
-
-    _this.pathPoints = new Path(_this.path, _this.start, _this.end, _this.flipped, _this.fit, _this.align); //console.log( this );
-
+    _this.pathPoints = new Path(_this.path, _this.start, _this.end, _this.flipped, _this.fit, _this.align);
     return _this;
   }
 
   _createClass(PathText, [{
-    key: "complete",
-    value: function complete() {}
-  }, {
     key: "setPath",
     value: function setPath(path) {
       this.path = path;
@@ -3606,16 +3271,6 @@ function (_createjs$Container) {
       this.pathPoints.update();
     }
   }, {
-    key: "fontLoaded",
-    value: function fontLoaded() {
-      this.layout();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      this.stage.update();
-    }
-  }, {
     key: "getWidth",
     value: function getWidth() {
       return this.pathPoints.realLength;
@@ -3623,8 +3278,7 @@ function (_createjs$Container) {
   }, {
     key: "layout",
     value: function layout() {
-      //accessibility api
-      Accessibility.set(this);
+      this.addAccessibility();
       this.overset = false;
       this.oversetIndex = null;
       this.removeAllChildren();
@@ -3634,41 +3288,7 @@ function (_createjs$Container) {
       this.oversetPotential = false;
 
       if (this.debug == true) {
-        var s = new createjs.Shape();
-        s.graphics.beginStroke("#FF0000");
-        s.graphics.setStrokeStyle(0.1);
-        s.graphics.decodeSVGPath(this.path);
-        s.graphics.endFill();
-        s.graphics.endStroke();
-        this.addChild(s);
-        s = new createjs.Shape();
-        var pp = this.pathPoints.getRealPathPoint(0);
-        s.x = pp.x;
-        s.y = pp.y;
-        s.graphics.beginFill("black");
-        s.graphics.drawCircle(0, 0, 2);
-        this.addChild(s);
-        s = new createjs.Shape();
-        var pp = this.pathPoints.getRealPathPoint(this.pathPoints.start);
-        s.x = pp.x;
-        s.y = pp.y;
-        s.graphics.beginFill("green");
-        s.graphics.drawCircle(0, 0, 2);
-        this.addChild(s);
-        s = new createjs.Shape();
-        pp = this.pathPoints.getRealPathPoint(this.pathPoints.end);
-        s.x = pp.x;
-        s.y = pp.y;
-        s.graphics.beginFill("red");
-        s.graphics.drawCircle(0, 0, 2);
-        this.addChild(s);
-        s = new createjs.Shape();
-        pp = this.pathPoints.getRealPathPoint(this.pathPoints.center);
-        s.x = pp.x;
-        s.y = pp.y;
-        s.graphics.beginFill("blue");
-        s.graphics.drawCircle(0, 0, 2);
-        this.addChild(s);
+        this.addDebugLayout();
       }
 
       if (this.text === "" || this.text === undefined) {
@@ -3701,13 +3321,51 @@ function (_createjs$Container) {
       this.complete();
     }
   }, {
+    key: "addDebugLayout",
+    value: function addDebugLayout() {
+      var s = new createjs.Shape();
+      s.graphics.beginStroke("#FF0000");
+      s.graphics.setStrokeStyle(0.1);
+      s.graphics.decodeSVGPath(this.path);
+      s.graphics.endFill();
+      s.graphics.endStroke();
+      this.addChild(s);
+      s = new createjs.Shape();
+      var pp = this.pathPoints.getRealPathPoint(0);
+      s.x = pp.x;
+      s.y = pp.y;
+      s.graphics.beginFill("black");
+      s.graphics.drawCircle(0, 0, 2);
+      this.addChild(s);
+      s = new createjs.Shape();
+      pp = this.pathPoints.getRealPathPoint(this.pathPoints.start);
+      s.x = pp.x;
+      s.y = pp.y;
+      s.graphics.beginFill("green");
+      s.graphics.drawCircle(0, 0, 2);
+      this.addChild(s);
+      s = new createjs.Shape();
+      pp = this.pathPoints.getRealPathPoint(this.pathPoints.end);
+      s.x = pp.x;
+      s.y = pp.y;
+      s.graphics.beginFill("red");
+      s.graphics.drawCircle(0, 0, 2);
+      this.addChild(s);
+      s = new createjs.Shape();
+      pp = this.pathPoints.getRealPathPoint(this.pathPoints.center);
+      s.x = pp.x;
+      s.y = pp.y;
+      s.graphics.beginFill("blue");
+      s.graphics.drawCircle(0, 0, 2);
+      this.addChild(s);
+    }
+  }, {
     key: "measure",
     value: function measure() {
       this.measured = true; //Extract orgin sizing from this.original to preserve
       //metrics. autoMeasure will change style properties
       //directly. Change this.original to rerender.
 
-      var size = this.original.size;
       var len = this.text.length;
       var width = this.getWidth();
       var defaultStyle = {
@@ -3720,8 +3378,7 @@ function (_createjs$Container) {
       var charCode = null;
       var font;
       var charMetrics = [];
-      var largestFontSize = defaultStyle.size; //console.log( "LOOPCHAR===============" );
-      //console.log( " len: " + len );
+      var largestFontSize = defaultStyle.size;
 
       for (var i = 0; i < len; i++) {
         charCode = this.text.charCodeAt(i);
@@ -3739,8 +3396,7 @@ function (_createjs$Container) {
           largestFontSize = currentStyle.size;
         }
 
-        font = FontLoader.fonts[currentStyle.font]; //console.log( currentStyle.tracking , font.units );
-
+        font = FontLoader.fonts[currentStyle.font];
         charMetrics.push({
           "char": this.text[i],
           size: currentStyle.size,
@@ -3750,7 +3406,7 @@ function (_createjs$Container) {
           units: font.units,
           tracking: this.trackingOffset(currentStyle.tracking, currentStyle.size, font.units),
           kerning: font.glyphs[charCode].getKerning(this.getCharCodeAt(i + 1), 1)
-        }); //console.log( this.text[i] );
+        });
       } //save space char using last known width/height
 
 
@@ -3773,23 +3429,14 @@ function (_createjs$Container) {
       var metricRealWidth = 0; //measured at size with tracking
 
       var metricRealWidthTracking = 0;
-      var current = null; //console.log( " len: " + len );
-      //console.log( "LOOPMETRICS===============" );
+      var current = null;
 
-      for (var i = 0; i < len; i++) {
-        current = charMetrics[i];
+      for (var _i = 0; _i < len; _i++) {
+        current = charMetrics[_i];
         metricBaseWidth = metricBaseWidth + current.offset + current.kerning;
         metricRealWidth = metricRealWidth + (current.offset + current.kerning) * current.size;
-        metricRealWidthTracking = metricRealWidthTracking + (current.offset + current.kerning + current.tracking) * current.size; //console.log( current.char );
-      } //console.log( "METRICS===============" );
-      //console.log( "mbw:  " + metricBaseWidth );
-      //console.log( "mrw:  " + metricRealWidth );
-      //console.log( "mrwt: " + metricRealWidthTracking );
-      //console.log( "widt4: " + this.getWidth() );
-      //console.log( " len: " + len );
-      //console.log( charMetrics );
-      //console.log( "======================" );
-      //size cases
+        metricRealWidthTracking = metricRealWidthTracking + (current.offset + current.kerning + current.tracking) * current.size;
+      } //size cases
 
 
       if (metricRealWidth > width) {
@@ -3805,8 +3452,7 @@ function (_createjs$Container) {
             } else {
               this.oversetPotential = true;
             }
-          } //console.log( "REDUCE SIZE")
-
+          }
 
           return true;
         } //tracking cases
@@ -3826,8 +3472,7 @@ function (_createjs$Container) {
             this.tracking = trackMetric;
           }
 
-          this.size = this.original.size; //console.log( "EXPAND TRACKING")
-
+          this.size = this.original.size;
           return true;
         } //autoreduce tracking case
 
@@ -3839,8 +3484,7 @@ function (_createjs$Container) {
             this.tracking = trackMetric;
           }
 
-          this.size = this.original.size; //console.log( "REDUCE TRACKING")
-
+          this.size = this.original.size;
           return true;
         }
       }
@@ -3866,7 +3510,7 @@ function (_createjs$Container) {
         strokeWidth: this.strokeWidth
       };
       var currentStyle = defaultStyle;
-      var hPosition = 0;
+      var hPosition = 0; // loop over characters
       // place into lines
 
       for (var i = 0; i < len; i++) {
@@ -3902,53 +3546,7 @@ function (_createjs$Container) {
         _char = new Character(this.text.charAt(i), currentStyle, i);
 
         if (this.original.character) {
-          if (this.original.character.added) {
-            _char.on("added", this.original.character.added);
-          }
-
-          if (this.original.character.click) {
-            _char.on("click", this.original.character.click);
-          }
-
-          if (this.original.character.dblclick) {
-            _char.on("dblclick", this.original.character.dblclick);
-          }
-
-          if (this.original.character.mousedown) {
-            _char.on("mousedown", this.original.character.mousedown);
-          }
-
-          if (this.original.character.mouseout) {
-            _char.on("mouseout", this.original.character.mouseout);
-          }
-
-          if (this.original.character.mouseover) {
-            _char.on("mouseover", this.original.character.mouseover);
-          }
-
-          if (this.original.character.pressmove) {
-            _char.on("pressmove", this.original.character.pressmove);
-          }
-
-          if (this.original.character.pressup) {
-            _char.on("pressup", this.original.character.pressup);
-          }
-
-          if (this.original.character.removed) {
-            _char.on("removed", this.original.character.removed);
-          }
-
-          if (this.original.character.rollout) {
-            _char.on("rollout", this.original.character.rollout);
-          }
-
-          if (this.original.character.rollover) {
-            _char.on("rollover", this.original.character.rollover);
-          }
-
-          if (this.original.character.tick) {
-            _char.on("tick", this.original.character.tick);
-          }
+          copyEventListeners(this.original.character, _char);
         }
 
         if (_char.missing) {
@@ -4032,14 +3630,12 @@ function (_createjs$Container) {
       var pathPoint;
       var nextRotation = false;
 
-      for (i = 0; i < len; i++) {
-        _char = this.characters[i]; //console.log( this.getWidth() );
-
-        pathPoint = this.pathPoints.getPathPoint(_char.hPosition, hPosition, _char._glyph.offset * _char.size); //console.log( pathPoint )
-        //correct rotation around linesegments
+      for (var _i2 = 0; _i2 < len; _i2++) {
+        _char = this.characters[_i2];
+        pathPoint = this.pathPoints.getPathPoint(_char.hPosition, hPosition, _char._glyph.offset * _char.size); //correct rotation around linesegments
 
         if (nextRotation == true) {
-          this.characters[i - 1].parent.rotation = pathPoint.rotation;
+          this.characters[_i2 - 1].parent.rotation = pathPoint.rotation;
           nextRotation = false;
         }
 
@@ -4072,14 +3668,16 @@ function (_createjs$Container) {
             _char.rotation = pathPoint.rotation;
           }
         } else {
-          var offsetChild = new createjs.Container();
-          offsetChild.x = pathPoint.x;
-          offsetChild.y = pathPoint.y;
-          offsetChild.rotation = pathPoint.rotation;
+          var _offsetChild = new createjs.Container();
+
+          _offsetChild.x = pathPoint.x;
+          _offsetChild.y = pathPoint.y;
+          _offsetChild.rotation = pathPoint.rotation;
 
           _char.parent.removeChild(_char);
 
-          offsetChild.addChild(_char);
+          _offsetChild.addChild(_char);
+
           _char.x = 0; //vertical alignment
 
           if (this.valign == VerticalAlign$1.Top) {
@@ -4101,58 +3699,12 @@ function (_createjs$Container) {
           }
 
           _char.rotation = 0;
-          this.addChild(offsetChild);
+          this.addChild(_offsetChild);
         }
       }
 
       if (this.original.block) {
-        if (this.original.block.added) {
-          this.block.on("added", this.original.block.added);
-        }
-
-        if (this.original.block.click) {
-          this.block.on("click", this.original.block.click);
-        }
-
-        if (this.original.block.dblclick) {
-          this.block.on("dblclick", this.original.block.dblclick);
-        }
-
-        if (this.original.block.mousedown) {
-          this.block.on("mousedown", this.original.block.mousedown);
-        }
-
-        if (this.original.block.mouseout) {
-          this.block.on("mouseout", this.original.block.mouseout);
-        }
-
-        if (this.original.block.mouseover) {
-          this.block.on("mouseover", this.original.block.mouseover);
-        }
-
-        if (this.original.block.pressmove) {
-          this.block.on("pressmove", this.original.block.pressmove);
-        }
-
-        if (this.original.block.pressup) {
-          this.block.on("pressup", this.original.block.pressup);
-        }
-
-        if (this.original.block.removed) {
-          this.block.on("removed", this.original.block.removed);
-        }
-
-        if (this.original.block.rollout) {
-          this.block.on("rollout", this.original.block.rollout);
-        }
-
-        if (this.original.block.rollover) {
-          this.block.on("rollover", this.original.block.rollover);
-        }
-
-        if (this.original.block.tick) {
-          this.block.on("tick", this.original.block.tick);
-        }
+        copyEventListeners(this.original.block, this.block);
       }
 
       return true;
@@ -4167,26 +3719,14 @@ function (_createjs$Container) {
     value: function offsetTracking(offset, size, units) {
       return Math.floor((offset - 2.5 / units - 1 / 900) * 990 / size);
     }
-  }, {
-    key: "getCharCodeAt",
-    value: function getCharCodeAt(index) {
-      if (this.characterCase == Case$1.NORMAL) {
-        return this.text.charAt(index).charCodeAt(0);
-      } else if (this.characterCase == Case$1.UPPER) {
-        return this.text.charAt(index).toUpperCase().charCodeAt(0);
-      } else if (this.characterCase == Case$1.LOWER) {
-        return this.text.charAt(index).toLowerCase().charCodeAt(0);
-      } else if (this.characterCase == Case$1.SMALL_CAPS) {
-        return this.text.charAt(index).toUpperCase().charCodeAt(0);
-      } else {
-        //fallback case for unknown.
-        return this.text.charAt(index).charCodeAt(0);
-      }
-    }
   }]);
 
   return PathText;
-}(createjs.Container);
+}(TextContainer);
 
-export { Accessibility, Align$1 as Align, Case$1 as Case, Character, CharacterText, Font, FontLoader, Glyph, Graphics, Info, Line, Path, PathAlign, PathFit, PathText, Text, VerticalAlign$1 as VerticalAlign, Word };
+var Util = {
+  copyEventListeners: copyEventListeners
+};
+
+export { Accessibility, Align$1 as Align, Case$1 as Case, Character, CharacterText, Font, FontLoader, Glyph, Graphics, Info, Line, Path, PathAlign, PathFit, PathText, Text, Util, VerticalAlign$1 as VerticalAlign, Word };
 //# sourceMappingURL=txt.esm.js.map
