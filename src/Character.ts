@@ -7,12 +7,12 @@ import Font from "./Font";
  * Represents a styled character
  */
 export default class Character extends createjs.Shape {
-  character: string = "";
+  character = "";
   characterCode: number = null;
   font: string = null;
   tracking: number = null;
   characterCase: Case = null;
-  characterCaseOffset: number = 0;
+  characterCaseOffset = 0;
   index: number = null;
   size: number = null;
   fillColor: string = null;
@@ -21,20 +21,17 @@ export default class Character extends createjs.Shape {
   measuredWidth: number = null;
   measuredHeight: number = null;
   hPosition: number = null;
-  missing: boolean = false;
+  missing = false;
 
   _glyph: Glyph;
   _font: Font;
 
-  constructor(
-    character: string,
-    style: {},
-    index: number = null,
-    glyph: Glyph = null
-  ) {
+  constructor(character: string, style: {}, index: number = null) {
     super();
     this.set(style);
     this.index = index;
+
+    let upperSmall;
 
     // flip case depending on characterCase property
     if (this.characterCase == Case.NORMAL) {
@@ -45,7 +42,7 @@ export default class Character extends createjs.Shape {
       this.character = character.toLowerCase();
     } else if (this.characterCase == Case.SMALL_CAPS) {
       this.character = character.toUpperCase();
-      var upperSmall = !(character === this.character);
+      upperSmall = !(character === this.character);
     } else {
       //fallback case for unknown.
       this.character = character;
@@ -112,7 +109,7 @@ export default class Character extends createjs.Shape {
       (this._font.ascent - this._font.descent) * this.scaleX;
     this.measuredWidth = this.scaleX * this._glyph.offset * this._font.units;
 
-    var ha = new createjs.Shape();
+    const ha = new createjs.Shape();
     ha.graphics
       .beginFill("#000")
       .drawRect(

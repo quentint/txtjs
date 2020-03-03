@@ -1,41 +1,31 @@
-import Case from "./Case";
+import TextContainer from "./TextContainer";
 import Align from "./Align";
 import FontLoader from "./FontLoader";
 import Word from "./Word";
 import Line from "./Line";
 import Font from "./Font";
-import Accessibility from "./Accessibility";
-import { Style, ConstructObj } from "./Interfaces";
+import { ConstructObj } from "./Interfaces";
 import Character from "./Character";
+import applyShapeEventListeners from "./utils/apply-shape-event-listeners";
 
-export default class Text extends createjs.Container {
-  text: string = "";
+export default class Text extends TextContainer {
   lineHeight: number = null;
-  width: number = 100;
-  height: number = 20;
+  width = 100;
+  height = 20;
   align: number = Align.TOP_LEFT;
-  characterCase: Case = Case.NORMAL;
-  size: number = 12;
-  font: string = "belinda";
-  tracking: number = 0;
-  ligatures: boolean = false;
-  fillColor: string = "#000";
+  size = 12;
+  tracking = 0;
+  ligatures = false;
+  fillColor = "#000";
   strokeColor: string = null;
   strokeWidth: number = null;
   loaderId: number = null;
-  style: Style[] = null;
-  debug: boolean = false;
-  original: ConstructObj = null;
+  debug = false;
   words: Word[] = [];
   lines: Line[] = [];
   block: createjs.Container;
   missingGlyphs: any[] = null;
-  renderCycle: boolean = true;
-
-  //accessibility
-  accessibilityText: string = null;
-  accessibilityPriority: number = 2;
-  accessibilityId: number = null;
+  renderCycle = true;
 
   constructor(props: ConstructObj = null) {
     super();
@@ -43,30 +33,7 @@ export default class Text extends createjs.Container {
       this.original = props;
       this.set(props);
     }
-    if (this.style == null) {
-      FontLoader.load(this, [this.font]);
-    } else {
-      var fonts = [this.font];
-      var styleLength = this.style.length;
-      for (var i = 0; i < styleLength; ++i) {
-        if (this.style[i] != undefined) {
-          if (this.style[i].font != undefined) {
-            fonts.push(this.style[i].font);
-          }
-        }
-      }
-      FontLoader.load(this, fonts);
-    }
-  }
-
-  render() {
-    this.stage.update();
-  }
-
-  complete() {}
-
-  fontLoaded(font) {
-    this.layout();
+    this.loadFonts();
   }
 
   getBounds(): createjs.Rectangle {
@@ -76,9 +43,7 @@ export default class Text extends createjs.Container {
   }
 
   layout() {
-    //accessibility api
-    Accessibility.set(this);
-
+    this.addAccessibility();
     this.text = this.text.replace(/([\n][ \t]+)/g, "\n");
     this.words = [];
     this.lines = [];
@@ -89,46 +54,8 @@ export default class Text extends createjs.Container {
     this.block = new createjs.Container();
     this.addChild(this.block);
 
-    //debug
-    //draw baseline, ascent, ascender, descender lines
     if (this.debug == true) {
-      var font: Font = FontLoader.getFont(this.font);
-
-      //outline
-      var s = new createjs.Shape();
-      s.graphics.beginStroke("#FF0000");
-      s.graphics.setStrokeStyle(1.2);
-      s.graphics.drawRect(0, 0, this.width, this.height);
-      this.addChild(s);
-
-      //baseline
-      s = new createjs.Shape();
-      s.graphics.beginFill("#000");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = 0;
-      this.block.addChild(s);
-
-      s = new createjs.Shape();
-      s.graphics.beginFill("#F00");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = (-font["cap-height"] / font.units) * this.size;
-      this.block.addChild(s);
-
-      s = new createjs.Shape();
-      s.graphics.beginFill("#0F0");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = (-font.ascent / font.units) * this.size;
-      this.block.addChild(s);
-
-      s = new createjs.Shape();
-      s.graphics.beginFill("#00F");
-      s.graphics.drawRect(0, 0, this.width, 0.2);
-      s.x = 0;
-      s.y = (-font.descent / font.units) * this.size;
-      this.block.addChild(s);
+      this.addDebugLayout();
     }
 
     if (this.text === "" || this.text === undefined) {
@@ -155,14 +82,52 @@ export default class Text extends createjs.Container {
     this.complete();
   }
 
+  /**
+   * Draw baseline, ascent, ascender, and descender lines
+   */
+  private addDebugLayout() {
+    const font: Font = FontLoader.getFont(this.font);
+    //outline
+    let s = new createjs.Shape();
+    s.graphics.beginStroke("#FF0000");
+    s.graphics.setStrokeStyle(1.2);
+    s.graphics.drawRect(0, 0, this.width, this.height);
+    this.addChild(s);
+    //baseline
+    s = new createjs.Shape();
+    s.graphics.beginFill("#000");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = 0;
+    this.block.addChild(s);
+    s = new createjs.Shape();
+    s.graphics.beginFill("#F00");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = (-font["cap-height"] / font.units) * this.size;
+    this.block.addChild(s);
+    s = new createjs.Shape();
+    s.graphics.beginFill("#0F0");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = (-font.ascent / font.units) * this.size;
+    this.block.addChild(s);
+    s = new createjs.Shape();
+    s.graphics.beginFill("#00F");
+    s.graphics.drawRect(0, 0, this.width, 0.2);
+    s.x = 0;
+    s.y = (-font.descent / font.units) * this.size;
+    this.block.addChild(s);
+  }
+
   //place characters in words
   characterLayout(): boolean {
     //characterlayout adds Charcters to words and measures true height. LineHeight is not a factor til Line layout.
 
     //char layout
-    var len = this.text.length;
-    var char: Character;
-    var defaultStyle = {
+    const len = this.text.length;
+    let char: Character;
+    const defaultStyle = {
       size: this.size,
       font: this.font,
       tracking: this.tracking,
@@ -171,19 +136,17 @@ export default class Text extends createjs.Container {
       strokeColor: this.strokeColor,
       strokeWidth: this.strokeWidth
     };
-    var currentStyle = defaultStyle;
-    var hPosition: number = 0;
-    var vPosition: number = 0;
-    var charKern: number;
-    var tracking: number;
+    let currentStyle = defaultStyle;
+    let hPosition = 0;
+    let vPosition = 0;
 
-    var currentWord: Word = new Word();
+    let currentWord: Word = new Word();
     // push a new word to capture characters
     this.words.push(currentWord);
 
     // loop over characters
     // place into words
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       if (this.style !== null && this.style[i] !== undefined) {
         currentStyle = this.style[i];
         // make sure style contains properties needed.
@@ -235,42 +198,7 @@ export default class Text extends createjs.Container {
       char = new Character(this.text.charAt(i), currentStyle, i);
 
       if (this.original.character) {
-        if (this.original.character.added) {
-          char.on("added", this.original.character.added);
-        }
-        if (this.original.character.click) {
-          char.on("click", this.original.character.click);
-        }
-        if (this.original.character.dblclick) {
-          char.on("dblclick", this.original.character.dblclick);
-        }
-        if (this.original.character.mousedown) {
-          char.on("mousedown", this.original.character.mousedown);
-        }
-        if (this.original.character.mouseout) {
-          char.on("mouseout", this.original.character.mouseout);
-        }
-        if (this.original.character.mouseover) {
-          char.on("mouseover", this.original.character.mouseover);
-        }
-        if (this.original.character.pressmove) {
-          char.on("pressmove", this.original.character.pressmove);
-        }
-        if (this.original.character.pressup) {
-          char.on("pressup", this.original.character.pressup);
-        }
-        if (this.original.character.removed) {
-          char.on("removed", this.original.character.removed);
-        }
-        if (this.original.character.rollout) {
-          char.on("rollout", this.original.character.rollout);
-        }
-        if (this.original.character.rollover) {
-          char.on("rollover", this.original.character.rollover);
-        }
-        if (this.original.character.tick) {
-          char.on("tick", this.original.character.tick);
-        }
+        applyShapeEventListeners(this.original.character, char);
       }
 
       if (char.missing) {
@@ -292,7 +220,7 @@ export default class Text extends createjs.Container {
       //ligatures removed if tracking or this.ligatures is false
       if (currentStyle.tracking == 0 && this.ligatures == true) {
         //1 char match
-        var ligTarget = this.text.substr(i, 4);
+        const ligTarget = this.text.substr(i, 4);
         if (char._font.ligatures[ligTarget.charAt(0)]) {
           //2 char match
           if (char._font.ligatures[ligTarget.charAt(0)][ligTarget.charAt(1)]) {
@@ -380,7 +308,6 @@ export default class Text extends createjs.Container {
     }
     //case of empty word at end.
     if (currentWord.children.length == 0) {
-      var lw = this.words.pop();
       currentWord = this.words[this.words.length - 1];
       hPosition = currentWord.measuredWidth;
       vPosition = currentWord.measuredHeight;
@@ -395,63 +322,28 @@ export default class Text extends createjs.Container {
   wordLayout() {
     // loop over words
     // place into lines
-    var len = this.words.length;
-    var currentLine = new Line();
+    const len = this.words.length;
+    let currentLine = new Line();
     this.lines.push(currentLine);
 
     currentLine.y = 0;
 
-    var currentWord: Word;
-    var lastHeight: number;
+    let currentWord: Word;
+    let lastHeight: number;
 
     this.block.addChild(currentLine);
-    var hPosition = 0;
-    var vPosition = 0;
-    var firstLine = true;
+    let hPosition = 0;
+    let vPosition = 0;
+    let firstLine = true;
 
-    var lastLineWord: Word;
+    let lastLineWord: Word;
 
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       currentWord = this.words[i];
       currentWord.x = hPosition;
 
       if (this.original.word) {
-        if (this.original.word.added) {
-          currentWord.on("added", this.original.word.added);
-        }
-        if (this.original.word.click) {
-          currentWord.on("click", this.original.word.click);
-        }
-        if (this.original.word.dblclick) {
-          currentWord.on("dblclick", this.original.word.dblclick);
-        }
-        if (this.original.word.mousedown) {
-          currentWord.on("mousedown", this.original.word.mousedown);
-        }
-        if (this.original.word.mouseout) {
-          currentWord.on("mouseout", this.original.word.mouseout);
-        }
-        if (this.original.word.mouseover) {
-          currentWord.on("mouseover", this.original.word.mouseover);
-        }
-        if (this.original.word.pressmove) {
-          currentWord.on("pressmove", this.original.word.pressmove);
-        }
-        if (this.original.word.pressup) {
-          currentWord.on("pressup", this.original.word.pressup);
-        }
-        if (this.original.word.removed) {
-          currentWord.on("removed", this.original.word.removed);
-        }
-        if (this.original.word.rollout) {
-          currentWord.on("rollout", this.original.word.rollout);
-        }
-        if (this.original.word.rollover) {
-          currentWord.on("rollover", this.original.word.rollover);
-        }
-        if (this.original.word.tick) {
-          currentWord.on("tick", this.original.word.tick);
-        }
+        applyShapeEventListeners(this.original.word, currentWord);
       }
 
       if (firstLine) {
@@ -494,7 +386,7 @@ export default class Text extends createjs.Container {
         currentWord.x = 0;
         this.block.addChild(currentLine);
         //add word
-        var swapWord = this.words[i];
+        const swapWord = this.words[i];
         currentLine.addChild(swapWord);
         if (this.lineHeight != null) {
           currentLine.measuredHeight = this.lineHeight;
@@ -588,7 +480,6 @@ export default class Text extends createjs.Container {
 
     //case of empty word at end.
     if (currentLine.children.length == 0) {
-      var lw = this.lines.pop();
       currentLine = this.lines[this.lines.length - 1];
     }
 
@@ -599,58 +490,17 @@ export default class Text extends createjs.Container {
   lineLayout() {
     // loop over lines
     // place into text
-    var blockHeight = 0;
-    var measuredWidth = 0;
-    var measuredHeight = 0;
-    var line;
-    var a = Align;
-    var fnt: Font = FontLoader.getFont(this.font);
-    var aHeight = (this.size * fnt.ascent) / fnt.units;
-    var cHeight = (this.size * fnt["cap-height"]) / fnt.units;
-    var xHeight = (this.size * fnt["x-height"]) / fnt.units;
-    var dHeight = (this.size * fnt.descent) / fnt.units;
+    let measuredHeight = 0;
+    let line;
+    const a = Align;
+    const fnt: Font = FontLoader.getFont(this.font);
 
-    var len = this.lines.length;
-    for (var i = 0; i < len; i++) {
+    const len = this.lines.length;
+    for (let i = 0; i < len; i++) {
       line = this.lines[i];
 
       if (this.original.line) {
-        if (this.original.line.added) {
-          line.on("added", this.original.line.added);
-        }
-        if (this.original.line.click) {
-          line.on("click", this.original.line.click);
-        }
-        if (this.original.line.dblclick) {
-          line.on("dblclick", this.original.line.dblclick);
-        }
-        if (this.original.line.mousedown) {
-          line.on("mousedown", this.original.line.mousedown);
-        }
-        if (this.original.line.mouseout) {
-          line.on("mouseout", this.original.line.mouseout);
-        }
-        if (this.original.line.mouseover) {
-          line.on("mouseover", this.original.line.mouseover);
-        }
-        if (this.original.line.pressmove) {
-          line.on("pressmove", this.original.line.pressmove);
-        }
-        if (this.original.line.pressup) {
-          line.on("pressup", this.original.line.pressup);
-        }
-        if (this.original.line.removed) {
-          line.on("removed", this.original.line.removed);
-        }
-        if (this.original.line.rollout) {
-          line.on("rollout", this.original.line.rollout);
-        }
-        if (this.original.line.rollover) {
-          line.on("rollover", this.original.line.rollover);
-        }
-        if (this.original.line.tick) {
-          line.on("tick", this.original.line.tick);
-        }
+        applyShapeEventListeners(this.original.line, line);
       }
 
       //correct measuredWidth if last line character contains tracking
@@ -717,42 +567,7 @@ export default class Text extends createjs.Container {
     }
 
     if (this.original.block) {
-      if (this.original.block.added) {
-        this.block.on("added", this.original.block.added);
-      }
-      if (this.original.block.click) {
-        this.block.on("click", this.original.block.click);
-      }
-      if (this.original.block.dblclick) {
-        this.block.on("dblclick", this.original.block.dblclick);
-      }
-      if (this.original.block.mousedown) {
-        this.block.on("mousedown", this.original.block.mousedown);
-      }
-      if (this.original.block.mouseout) {
-        this.block.on("mouseout", this.original.block.mouseout);
-      }
-      if (this.original.block.mouseover) {
-        this.block.on("mouseover", this.original.block.mouseover);
-      }
-      if (this.original.block.pressmove) {
-        this.block.on("pressmove", this.original.block.pressmove);
-      }
-      if (this.original.block.pressup) {
-        this.block.on("pressup", this.original.block.pressup);
-      }
-      if (this.original.block.removed) {
-        this.block.on("removed", this.original.block.removed);
-      }
-      if (this.original.block.rollout) {
-        this.block.on("rollout", this.original.block.rollout);
-      }
-      if (this.original.block.rollover) {
-        this.block.on("rollover", this.original.block.rollover);
-      }
-      if (this.original.block.tick) {
-        this.block.on("tick", this.original.block.tick);
-      }
+      applyShapeEventListeners(this.original.block, this.block);
     }
   }
 }

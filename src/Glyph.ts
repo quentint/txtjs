@@ -4,7 +4,7 @@
 
 export default class Glyph {
   /** SVG path data */
-  path: string = "";
+  path = "";
   offset: number;
   kerning: any = {};
   private _graphic: createjs.Graphics = null;
@@ -45,7 +45,7 @@ export default class Glyph {
   }
 
   getKerning(characterCode: number, size: number) {
-    var out = -(this.kerning[characterCode] * size);
+    const out = -(this.kerning[characterCode] * size);
     if (isNaN(out)) {
       return 0;
     }

@@ -1,53 +1,44 @@
-import Case from "./Case";
-import { Style, ConstructObj } from "./Interfaces";
+import TextContainer from "./TextContainer";
+import { ConstructObj } from "./Interfaces";
 import Path, { PathFit, PathAlign } from "./Path";
 import VerticalAlign from "./VerticalAlign";
 import FontLoader from "./FontLoader";
 import Character from "./Character";
-import Accessibility from "./Accessibility";
 import Font from "./Font";
+import applyShapeEventListeners from "./utils/apply-shape-event-listeners";
 
-export default class PathText extends createjs.Container {
-  text: string = "";
-  characterCase: Case = Case.NORMAL;
-  size: number = 12;
-  font: string = "belinda";
-  tracking: number = 0;
-  ligatures: boolean = false;
+export default class PathText extends TextContainer {
+  size = 12;
+  tracking = 0;
+  ligatures = false;
   minSize: number = null;
   maxTracking: number = null;
-  fillColor: string = "#000";
+  fillColor = "#000";
   strokeColor: string = null;
   strokeWidth: number = null;
-  style: Style[] = null;
-  debug: boolean = false;
+  debug = false;
   characters: Character[];
   block: createjs.Container;
   original: ConstructObj = null;
-  autoExpand: boolean = false;
-  autoReduce: boolean = false;
-  overset: boolean = false;
+  autoExpand = false;
+  autoReduce = false;
+  overset = false;
   oversetIndex: number = null;
   pathPoints: Path = null;
-  path: string = "";
-  start: number = 0;
+  path = "";
+  start = 0;
   end: number = null;
-  flipped: boolean = false;
+  flipped = false;
   fit: PathFit = PathFit.Rainbow;
   align: PathAlign = PathAlign.Center;
   valign: VerticalAlign = VerticalAlign.BaseLine;
   missingGlyphs: any[] = null;
-  renderCycle: boolean = true;
-  valignPercent: number = 1;
-  initialTracking: number = 0;
-  initialOffset: number = 0;
-  measured: boolean = false;
-  oversetPotential: boolean = false;
-
-  //accessibility
-  accessibilityText: string = null;
-  accessibilityPriority: number = 2;
-  accessibilityId: number = null;
+  renderCycle = true;
+  valignPercent = 1;
+  initialTracking = 0;
+  initialOffset = 0;
+  measured = false;
+  oversetPotential = false;
 
   constructor(props: ConstructObj = null) {
     super();
@@ -57,20 +48,7 @@ export default class PathText extends createjs.Container {
       this.set(props);
       this.original.tracking = this.tracking;
     }
-    if (this.style == null) {
-      FontLoader.load(this, [this.font]);
-    } else {
-      var fonts = [this.font];
-      var styleLength = this.style.length;
-      for (var i = 0; i < styleLength; ++i) {
-        if (this.style[i] != undefined) {
-          if (this.style[i].font != undefined) {
-            fonts.push(this.style[i].font);
-          }
-        }
-      }
-      FontLoader.load(this, fonts);
-    }
+    this.loadFonts();
     this.pathPoints = new Path(
       this.path,
       this.start,
@@ -79,10 +57,7 @@ export default class PathText extends createjs.Container {
       this.fit,
       this.align
     );
-    //console.log( this );
   }
-
-  complete() {}
 
   setPath(path: string) {
     this.path = path;
@@ -120,21 +95,12 @@ export default class PathText extends createjs.Container {
     this.pathPoints.update();
   }
 
-  fontLoaded() {
-    this.layout();
-  }
-
-  render() {
-    this.stage.update();
-  }
-
   getWidth(): number {
     return this.pathPoints.realLength;
   }
 
   layout() {
-    //accessibility api
-    Accessibility.set(this);
+    this.addAccessibility();
     this.overset = false;
     this.oversetIndex = null;
     this.removeAllChildren();
@@ -143,45 +109,7 @@ export default class PathText extends createjs.Container {
     this.measured = false;
     this.oversetPotential = false;
     if (this.debug == true) {
-      var s = new createjs.Shape();
-      s.graphics.beginStroke("#FF0000");
-      s.graphics.setStrokeStyle(0.1);
-      s.graphics.decodeSVGPath(this.path);
-      s.graphics.endFill();
-      s.graphics.endStroke();
-      this.addChild(s);
-
-      s = new createjs.Shape();
-      var pp = this.pathPoints.getRealPathPoint(0);
-      s.x = pp.x;
-      s.y = pp.y;
-      s.graphics.beginFill("black");
-      s.graphics.drawCircle(0, 0, 2);
-      this.addChild(s);
-
-      s = new createjs.Shape();
-      var pp = this.pathPoints.getRealPathPoint(this.pathPoints.start);
-      s.x = pp.x;
-      s.y = pp.y;
-      s.graphics.beginFill("green");
-      s.graphics.drawCircle(0, 0, 2);
-      this.addChild(s);
-
-      s = new createjs.Shape();
-      pp = this.pathPoints.getRealPathPoint(this.pathPoints.end);
-      s.x = pp.x;
-      s.y = pp.y;
-      s.graphics.beginFill("red");
-      s.graphics.drawCircle(0, 0, 2);
-      this.addChild(s);
-
-      s = new createjs.Shape();
-      pp = this.pathPoints.getRealPathPoint(this.pathPoints.center);
-      s.x = pp.x;
-      s.y = pp.y;
-      s.graphics.beginFill("blue");
-      s.graphics.drawCircle(0, 0, 2);
-      this.addChild(s);
+      this.addDebugLayout();
     }
 
     if (this.text === "" || this.text === undefined) {
@@ -213,29 +141,64 @@ export default class PathText extends createjs.Container {
     this.complete();
   }
 
+  private addDebugLayout() {
+    let s = new createjs.Shape();
+    s.graphics.beginStroke("#FF0000");
+    s.graphics.setStrokeStyle(0.1);
+    s.graphics.decodeSVGPath(this.path);
+    s.graphics.endFill();
+    s.graphics.endStroke();
+    this.addChild(s);
+    s = new createjs.Shape();
+    let pp = this.pathPoints.getRealPathPoint(0);
+    s.x = pp.x;
+    s.y = pp.y;
+    s.graphics.beginFill("black");
+    s.graphics.drawCircle(0, 0, 2);
+    this.addChild(s);
+    s = new createjs.Shape();
+    pp = this.pathPoints.getRealPathPoint(this.pathPoints.start);
+    s.x = pp.x;
+    s.y = pp.y;
+    s.graphics.beginFill("green");
+    s.graphics.drawCircle(0, 0, 2);
+    this.addChild(s);
+    s = new createjs.Shape();
+    pp = this.pathPoints.getRealPathPoint(this.pathPoints.end);
+    s.x = pp.x;
+    s.y = pp.y;
+    s.graphics.beginFill("red");
+    s.graphics.drawCircle(0, 0, 2);
+    this.addChild(s);
+    s = new createjs.Shape();
+    pp = this.pathPoints.getRealPathPoint(this.pathPoints.center);
+    s.x = pp.x;
+    s.y = pp.y;
+    s.graphics.beginFill("blue");
+    s.graphics.drawCircle(0, 0, 2);
+    this.addChild(s);
+  }
+
   measure(): boolean {
     this.measured = true;
     //Extract orgin sizing from this.original to preserve
     //metrics. autoMeasure will change style properties
     //directly. Change this.original to rerender.
 
-    var size = this.original.size;
-    var len = this.text.length;
-    var width = this.getWidth();
-    var defaultStyle = {
+    let len = this.text.length;
+    const width = this.getWidth();
+    const defaultStyle = {
       size: this.original.size,
       font: this.original.font,
       tracking: this.original.tracking,
       characterCase: this.original.characterCase
     };
-    var currentStyle: any;
-    var charCode: number = null;
-    var font: Font;
-    var charMetrics = [];
-    var largestFontSize = defaultStyle.size;
-    //console.log( "LOOPCHAR===============" );
-    //console.log( " len: " + len );
-    for (var i = 0; i < len; i++) {
+    let currentStyle: any;
+    let charCode: number = null;
+    let font: Font;
+    const charMetrics = [];
+    let largestFontSize = defaultStyle.size;
+    for (let i = 0; i < len; i++) {
       charCode = this.text.charCodeAt(i);
 
       currentStyle = defaultStyle;
@@ -256,9 +219,6 @@ export default class PathText extends createjs.Container {
         largestFontSize = currentStyle.size;
       }
       font = FontLoader.fonts[currentStyle.font];
-
-      //console.log( currentStyle.tracking , font.units );
-
       charMetrics.push({
         char: this.text[i],
         size: currentStyle.size,
@@ -273,11 +233,10 @@ export default class PathText extends createjs.Container {
         ),
         kerning: font.glyphs[charCode].getKerning(this.getCharCodeAt(i + 1), 1)
       });
-      //console.log( this.text[i] );
     }
 
     //save space char using last known width/height
-    var space: any = {
+    const space: any = {
       char: " ",
       size: currentStyle.size,
       charCode: 32,
@@ -294,16 +253,14 @@ export default class PathText extends createjs.Container {
     len = charMetrics.length;
 
     //measured without size
-    var metricBaseWidth = 0;
+    let metricBaseWidth = 0;
     //measured at size
-    var metricRealWidth = 0;
+    let metricRealWidth = 0;
     //measured at size with tracking
-    var metricRealWidthTracking = 0;
+    let metricRealWidthTracking = 0;
 
-    var current = null;
-    //console.log( " len: " + len );
-    //console.log( "LOOPMETRICS===============" );
-    for (var i = 0; i < len; i++) {
+    let current = null;
+    for (let i = 0; i < len; i++) {
       current = charMetrics[i];
       metricBaseWidth = metricBaseWidth + current.offset + current.kerning;
       metricRealWidth =
@@ -311,16 +268,7 @@ export default class PathText extends createjs.Container {
       metricRealWidthTracking =
         metricRealWidthTracking +
         (current.offset + current.kerning + current.tracking) * current.size;
-      //console.log( current.char );
     }
-    //console.log( "METRICS===============" );
-    //console.log( "mbw:  " + metricBaseWidth );
-    //console.log( "mrw:  " + metricRealWidth );
-    //console.log( "mrwt: " + metricRealWidthTracking );
-    //console.log( "widt4: " + this.getWidth() );
-    //console.log( " len: " + len );
-    //console.log( charMetrics );
-    //console.log( "======================" );
 
     //size cases
     if (metricRealWidth > width) {
@@ -337,12 +285,11 @@ export default class PathText extends createjs.Container {
             this.oversetPotential = true;
           }
         }
-        //console.log( "REDUCE SIZE")
         return true;
       }
       //tracking cases
     } else {
-      var trackMetric = this.offsetTracking(
+      let trackMetric = this.offsetTracking(
         (width - metricRealWidth) / len,
         current.size,
         current.units
@@ -358,7 +305,6 @@ export default class PathText extends createjs.Container {
           this.tracking = trackMetric;
         }
         this.size = this.original.size;
-        //console.log( "EXPAND TRACKING")
         return true;
       }
       //autoreduce tracking case
@@ -369,7 +315,6 @@ export default class PathText extends createjs.Container {
           this.tracking = trackMetric;
         }
         this.size = this.original.size;
-        //console.log( "REDUCE TRACKING")
         return true;
       }
     }
@@ -379,9 +324,9 @@ export default class PathText extends createjs.Container {
   //place characters in words
   characterLayout(): boolean {
     //char layout
-    var len = this.text.length;
-    var char: Character;
-    var defaultStyle = {
+    let len = this.text.length;
+    let char: Character;
+    const defaultStyle = {
       size: this.size,
       font: this.font,
       tracking: this.tracking,
@@ -390,15 +335,12 @@ export default class PathText extends createjs.Container {
       strokeColor: this.strokeColor,
       strokeWidth: this.strokeWidth
     };
-    var currentStyle = defaultStyle;
-    var hPosition: number = 0;
-    var charKern: number;
-    var tracking: number;
-    var angle: number;
+    let currentStyle = defaultStyle;
+    let hPosition = 0;
 
     // loop over characters
     // place into lines
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       if (this.style !== null && this.style[i] !== undefined) {
         currentStyle = this.style[i];
         // make sure style contains properties needed.
@@ -443,42 +385,7 @@ export default class PathText extends createjs.Container {
       // create character
       char = new Character(this.text.charAt(i), currentStyle, i);
       if (this.original.character) {
-        if (this.original.character.added) {
-          char.on("added", this.original.character.added);
-        }
-        if (this.original.character.click) {
-          char.on("click", this.original.character.click);
-        }
-        if (this.original.character.dblclick) {
-          char.on("dblclick", this.original.character.dblclick);
-        }
-        if (this.original.character.mousedown) {
-          char.on("mousedown", this.original.character.mousedown);
-        }
-        if (this.original.character.mouseout) {
-          char.on("mouseout", this.original.character.mouseout);
-        }
-        if (this.original.character.mouseover) {
-          char.on("mouseover", this.original.character.mouseover);
-        }
-        if (this.original.character.pressmove) {
-          char.on("pressmove", this.original.character.pressmove);
-        }
-        if (this.original.character.pressup) {
-          char.on("pressup", this.original.character.pressup);
-        }
-        if (this.original.character.removed) {
-          char.on("removed", this.original.character.removed);
-        }
-        if (this.original.character.rollout) {
-          char.on("rollout", this.original.character.rollout);
-        }
-        if (this.original.character.rollover) {
-          char.on("rollover", this.original.character.rollover);
-        }
-        if (this.original.character.tick) {
-          char.on("tick", this.original.character.tick);
-        }
+        applyShapeEventListeners(this.original.character, char);
       }
 
       if (char.missing) {
@@ -496,7 +403,7 @@ export default class PathText extends createjs.Container {
       //ligatures removed if tracking or this.ligatures is false
       if (currentStyle.tracking == 0 && this.ligatures == true) {
         //1 char match
-        var ligTarget = this.text.substr(i, 4);
+        const ligTarget = this.text.substr(i, 4);
         if (char._font.ligatures[ligTarget.charAt(0)]) {
           //2 char match
           if (char._font.ligatures[ligTarget.charAt(0)][ligTarget.charAt(1)]) {
@@ -589,17 +496,15 @@ export default class PathText extends createjs.Container {
     }
 
     len = this.characters.length;
-    var pathPoint: any;
-    var nextRotation = false;
-    for (i = 0; i < len; i++) {
-      char = <Character>this.characters[i];
-      //console.log( this.getWidth() );
+    let pathPoint: any;
+    let nextRotation = false;
+    for (let i = 0; i < len; i++) {
+      char = this.characters[i] as Character;
       pathPoint = this.pathPoints.getPathPoint(
         char.hPosition,
         hPosition,
         char._glyph.offset * char.size
       );
-      //console.log( pathPoint )
       //correct rotation around linesegments
       if (nextRotation == true) {
         this.characters[i - 1].parent.rotation = pathPoint.rotation;
@@ -618,7 +523,7 @@ export default class PathText extends createjs.Container {
 
         //reparent child into offset container
         if (pathPoint.offsetX) {
-          var offsetChild = new createjs.Container();
+          const offsetChild = new createjs.Container();
           offsetChild.x = pathPoint.x;
           offsetChild.y = pathPoint.y;
           offsetChild.rotation = pathPoint.rotation;
@@ -634,7 +539,7 @@ export default class PathText extends createjs.Container {
           char.rotation = pathPoint.rotation;
         }
       } else {
-        var offsetChild = new createjs.Container();
+        const offsetChild = new createjs.Container();
         offsetChild.x = pathPoint.x;
         offsetChild.y = pathPoint.y;
         offsetChild.rotation = pathPoint.rotation;
@@ -667,42 +572,7 @@ export default class PathText extends createjs.Container {
     }
 
     if (this.original.block) {
-      if (this.original.block.added) {
-        this.block.on("added", this.original.block.added);
-      }
-      if (this.original.block.click) {
-        this.block.on("click", this.original.block.click);
-      }
-      if (this.original.block.dblclick) {
-        this.block.on("dblclick", this.original.block.dblclick);
-      }
-      if (this.original.block.mousedown) {
-        this.block.on("mousedown", this.original.block.mousedown);
-      }
-      if (this.original.block.mouseout) {
-        this.block.on("mouseout", this.original.block.mouseout);
-      }
-      if (this.original.block.mouseover) {
-        this.block.on("mouseover", this.original.block.mouseover);
-      }
-      if (this.original.block.pressmove) {
-        this.block.on("pressmove", this.original.block.pressmove);
-      }
-      if (this.original.block.pressup) {
-        this.block.on("pressup", this.original.block.pressup);
-      }
-      if (this.original.block.removed) {
-        this.block.on("removed", this.original.block.removed);
-      }
-      if (this.original.block.rollout) {
-        this.block.on("rollout", this.original.block.rollout);
-      }
-      if (this.original.block.rollover) {
-        this.block.on("rollover", this.original.block.rollover);
-      }
-      if (this.original.block.tick) {
-        this.block.on("tick", this.original.block.tick);
-      }
+      applyShapeEventListeners(this.original.block, this.block);
     }
 
     return true;
@@ -714,29 +584,5 @@ export default class PathText extends createjs.Container {
 
   offsetTracking(offset: number, size: number, units: number): number {
     return Math.floor(((offset - 2.5 / units - 1 / 900) * 990) / size);
-  }
-
-  getCharCodeAt(index: number): number {
-    if (this.characterCase == Case.NORMAL) {
-      return this.text.charAt(index).charCodeAt(0);
-    } else if (this.characterCase == Case.UPPER) {
-      return this.text
-        .charAt(index)
-        .toUpperCase()
-        .charCodeAt(0);
-    } else if (this.characterCase == Case.LOWER) {
-      return this.text
-        .charAt(index)
-        .toLowerCase()
-        .charCodeAt(0);
-    } else if (this.characterCase == Case.SMALL_CAPS) {
-      return this.text
-        .charAt(index)
-        .toUpperCase()
-        .charCodeAt(0);
-    } else {
-      //fallback case for unknown.
-      return this.text.charAt(index).charCodeAt(0);
-    }
   }
 }
