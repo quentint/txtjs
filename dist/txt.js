@@ -2108,11 +2108,9 @@ var txt = (function (exports) {
     _classCallCheck(this, Info);
   };
 
-  _defineProperty(Info, "VERSION", "0.9.5");
+  _defineProperty(Info, "VERSION", "0.10.0");
 
   _defineProperty(Info, "LICENSE", "BSD-2-Clause");
-
-  _defineProperty(Info, "CONTACT", "ted@light.ly");
 
   var Word =
   /*#__PURE__*/

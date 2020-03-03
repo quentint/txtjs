@@ -2,7 +2,7 @@
   "name": "@recreatejs/txtjs",
   "repository": "github:ReCreateJS/txtjs",
   "homepage": "https://recreatejs.github.io/txtjs",
-  "version": "0.9.5",
+  "version": "0.10.0",
   "description": "A <canvas> font and typesetting engine for @CreateJS",
   "author": "Ted Patrick (http://tedpatrick.com)",
   "contributors": [

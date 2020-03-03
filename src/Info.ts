@@ -1,5 +1,4 @@
 export default class Info {
-  static VERSION = "0.9.5";
+  static VERSION = "0.10.0";
   static LICENSE = "BSD-2-Clause";
-  static CONTACT = "ted@light.ly";
 }
