@@ -7,6 +7,8 @@ import Character from "./Character";
 import Line from "./Line";
 import applyShapeEventListeners from "./utils/apply-shape-event-listeners";
 
+const SPACE_CHAR_CODE = 32;
+
 export default class CharacterText extends TextContainer {
   lineHeight: number = null;
   width = 100;
@@ -431,25 +433,23 @@ export default class CharacterText extends TextContainer {
 
       if (this.overset == true) {
         break;
-      } else if (
-        this.singleLine === false &&
-        hPosition + char.measuredWidth > this.width
-      ) {
+      }
+
+      const longerThanWidth = hPosition + char.measuredWidth > this.width;
+      if (this.singleLine === false && longerThanWidth) {
         const lastchar: Character = currentLine.children[
           currentLine.children.length - 1
         ] as Character;
-        if (lastchar.characterCode == 32) {
-          currentLine.measuredWidth =
-            hPosition -
-            lastchar.measuredWidth -
-            lastchar.trackingOffset() -
-            lastchar._glyph.getKerning(this.getCharCodeAt(i), lastchar.size);
-        } else {
-          currentLine.measuredWidth =
-            hPosition -
-            lastchar.trackingOffset() -
-            lastchar._glyph.getKerning(this.getCharCodeAt(i), lastchar.size);
+
+        currentLine.measuredWidth =
+          hPosition -
+          lastchar.trackingOffset() -
+          lastchar._glyph.getKerning(this.getCharCodeAt(i), lastchar.size);
+
+        if (lastchar.characterCode == SPACE_CHAR_CODE) {
+          currentLine.measuredWidth -= lastchar.measuredWidth;
         }
+
         if (firstLine === true) {
           currentLine.measuredHeight = vPosition;
           currentLine.y = 0;
@@ -463,7 +463,7 @@ export default class CharacterText extends TextContainer {
         currentLine = new Line();
         currentLine.addChild(char);
 
-        if (char.characterCode == 32) {
+        if (char.characterCode == SPACE_CHAR_CODE) {
           hPosition = 0;
         } else {
           hPosition =
@@ -481,26 +481,20 @@ export default class CharacterText extends TextContainer {
       } else if (
         this.measured == true &&
         this.singleLine === true &&
-        hPosition + char.measuredWidth > this.width &&
+        longerThanWidth &&
         this.oversetPotential == true
       ) {
-        //char.x = hPosition;
-        //currentLine.addChild( char );
         this.oversetIndex = i;
         this.overset = true;
-        //hPosition = char.x + ( char._glyph.offset * char.size ) + char.characterCaseOffset + char.trackingOffset() + char._glyph.getKerning( this.getCharCodeAt( i + 1 ) , char.size );
 
         //not measured
       } else if (
         this.measured == false &&
         this.singleLine === true &&
-        hPosition + char.measuredWidth > this.width
+        longerThanWidth
       ) {
-        //char.x = hPosition;
-        //currentLine.addChild( char );
         this.oversetIndex = i;
         this.overset = true;
-        //hPosition = char.x + ( char._glyph.offset * char.size ) + char.characterCaseOffset + char.trackingOffset() + char._glyph.getKerning( this.getCharCodeAt( i + 1 ) , char.size );
       } else {
         char.x = hPosition;
         // push character into word
@@ -513,6 +507,7 @@ export default class CharacterText extends TextContainer {
           char._glyph.getKerning(this.getCharCodeAt(i + 1), char.size);
       }
     }
+
     //case of empty word at end.
     if (currentLine.children.length == 0) {
       currentLine = this.lines[this.lines.length - 1];
