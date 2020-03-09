@@ -6,3 +6,5 @@ node_modules
 dist
 docs
 TODO.md
+coverage
+tmp

@@ -4,7 +4,7 @@ import FontLoader from "./FontLoader";
 import Word from "./Word";
 import Line from "./Line";
 import Font from "./Font";
-import { ConstructObj } from "./Interfaces";
+import { ConstructObj, Style } from "./Interfaces";
 import Character from "./Character";
 import applyShapeEventListeners from "./utils/apply-shape-event-listeners";
 
@@ -127,7 +127,7 @@ export default class Text extends TextContainer {
     //char layout
     const len = this.text.length;
     let char: Character;
-    const defaultStyle = {
+    const defaultStyle: Style = {
       size: this.size,
       font: this.font,
       tracking: this.tracking,

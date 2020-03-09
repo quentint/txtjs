@@ -1,3 +1,4 @@
+import * as txt from "../src/index";
 txt.FontLoader.path = "font/";
 
 import circle from "../lib/circle-path";
@@ -80,4 +81,4 @@ function tick(event) {
   stage.update(event);
 }
 
-document.onload = init();
+document.onload = init;

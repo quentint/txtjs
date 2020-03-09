@@ -2,7 +2,7 @@ describe("Examples non-visual", function() {
   const TEST_TIMEOUT = 2000;
 
   afterEach(function() {
-    txtExamples.clearExample();
+    removeCanvas();
   });
 
   describe("Text", function() {

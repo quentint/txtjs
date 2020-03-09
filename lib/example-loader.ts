@@ -1,3 +1,5 @@
+import * as txtExamples from "../examples/index";
+
 function buildExampleInit(examplePath) {
   const parts = examplePath.split("/");
   return txtExamples[parts[0]][parts[1]];
@@ -14,7 +16,7 @@ function buildExampleTitle(examplePath) {
   );
 }
 
-export function clearExample() {
+function clearExample() {
   const canvas = document.getElementsByTagName("canvas")[0];
   if (canvas) {
     document.body.removeChild(canvas);

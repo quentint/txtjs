@@ -1,6 +1,6 @@
 describe("Smoke test", function() {
   afterEach(function() {
-    txtExamples.clearExample();
+    removeCanvas();
   });
 
   it("Loads txt.js library and checks version", function() {

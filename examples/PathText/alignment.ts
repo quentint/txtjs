@@ -1,3 +1,4 @@
+import * as txt from "../../src/index";
 import circle from "../../lib/circle-path";
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {

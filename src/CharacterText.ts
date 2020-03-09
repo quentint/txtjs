@@ -1,7 +1,7 @@
 import TextContainer from "./TextContainer";
 import Align from "./Align";
 import FontLoader from "./FontLoader";
-import { ConstructObj } from "./Interfaces";
+import { ConstructObj, Style } from "./Interfaces";
 import Font from "./Font";
 import Character from "./Character";
 import Line from "./Line";
@@ -302,7 +302,7 @@ export default class CharacterText extends TextContainer {
     //char layout
     const len = this.text.length;
     let char: Character;
-    const defaultStyle = {
+    const defaultStyle: Style = {
       size: this.size,
       font: this.font,
       tracking: this.tracking,

@@ -1,3 +1,4 @@
+import * as txt from "../../src/index";
 import speech from "../fixtures/speech";
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
