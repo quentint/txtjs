@@ -1,3 +1,5 @@
+const coverageServer = require("./testem-coverage-server");
+
 let chromeArgs = ["--disable-gpu", "--remote-debugging-port=9222"];
 let firefoxArgs = [];
 
@@ -7,14 +9,14 @@ if (process.env.HEADLESS) {
 }
 
 let serve_files = [
+  { src: coverageServer.clientFile },
   {
     src:
       "node_modules/@recreatejs/jasmine-pixelmatch/dist/jasmine-pixelmatch.js"
   },
   { src: "dist/easeljs.js" },
   { src: "dist/pathseg.js" },
-  { src: "dist/txt.js" },
-  { src: "examples/examples.js" },
+  { src: "dist/txt.instrumented.js" },
   { src: "dist/examples.js" },
   { src: "tests/*.js" }
 ];
@@ -31,11 +33,17 @@ module.exports = {
     Firefox: firefoxArgs
   },
   test_page: "testem.mustache",
-  before_tests: "npm run build",
   src_files: ["src/*.ts", "examples/**/*.ts"],
   serve_files,
   css_files: [],
   routes: {
     "/images": "images"
+  },
+  proxies: coverageServer.proxies,
+  before_tests: function(config, data, callback) {
+    coverageServer.startCoverageServer(callback);
+  },
+  after_tests: function(config, data, callback) {
+    coverageServer.shutdownCoverageServer(callback);
   }
 };

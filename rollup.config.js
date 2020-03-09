@@ -1,4 +1,5 @@
 import typescript from "@rollup/plugin-typescript";
+import istanbul from "rollup-plugin-istanbul";
 import pkg from "./package.json";
 
 const name = "txt";
@@ -52,4 +53,18 @@ const demoSiteConfig = {
   ]
 };
 
-export default [mainConfig, examplesConfig, demoSiteConfig];
+const coverageConfig = {
+  input: "./src/index.ts",
+  plugins: [typescript({}), istanbul()],
+  external: ["txt"],
+  output: [
+    {
+      name,
+      file: pkg.browser.replace(".js", ".instrumented.js"),
+      format: "iife",
+      sourcemap: true
+    }
+  ]
+};
+
+export default [mainConfig, examplesConfig, demoSiteConfig, coverageConfig];

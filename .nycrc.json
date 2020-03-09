@@ -1,0 +1,6 @@
+{
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "reporter": ["text-summary", "lcov"],
+  "excludeAfterRemap": false,
+  "all": true
+}
