@@ -19,7 +19,7 @@
     "build:js": "rollup -c",
     "build:js:watch": "npm run build:js -- --watch",
     "build:types": "tsc --emitDeclarationOnly --declarationDir dist/types",
-    "build:docs": "typedoc --tsconfig",
+    "build:docs": "typedoc --tsconfig src",
     "serve": "npm run build:js && gulp server",
     "browser": "gulp browser",
     "lint": "eslint . --ext .ts && prettier --check **/*.js",
