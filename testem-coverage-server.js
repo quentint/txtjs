@@ -47,10 +47,7 @@ function shutdownCoverageServer(callback) {
   server.close();
 
   // generate report
-  shell.exec("mkdir -p tmp && npx nyc report --temp-dir=tmp", function(
-    code,
-    output
-  ) {
+  shell.exec("npx nyc report --temp-dir=tmp", function(code, output) {
     if (code) return callback(code, output);
 
     // check on generated report
