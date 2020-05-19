@@ -4,10 +4,15 @@
 import os
 import shutil
 import glob
-import string
+import sys
 from bs4 import BeautifulSoup
 from characters import CHARS
+from ligatures import LIGATURES
 from vertical import VERTICAL_OFFSET
+
+# Merge CHARS and LIGATURES
+if len(sys.argv) > 1 and sys.argv[1] == 'with-ligatures':
+    CHARS.update(LIGATURES)
 
 SVG_PATH = "svg"
 OUT_PATH = "font"
@@ -99,6 +104,7 @@ def gconvert( value ):
 
 def svg_to_txt():
     files = glob.glob( SVG_PATH + os.sep + '*.svg' )
+    # print(files)
     #target = 8
     #target_count = 0
     font_id = ""
@@ -211,9 +217,11 @@ def svg_to_txt():
                 if CHARS.has_key( unicode_str ) == False:
                     #print missing chars for whitelist inclusion
                     if i.has_attr('glyph-name'):
-                        print( 'CHARS[ "' + unicode_str + '" ] = 1' )
+                        print('Skipping character with glyph name: ' + i['glyph-name']+'')
+                        # print( 'CHARS[ "' + unicode_str + '" ] = 1' )
                     else:
-                        print( 'CHARS[ "' + unicode_str + '" ] = 1 ' )
+                        print('Skipping character with NO glyph name')
+                    # print( 'CHARS[ "' + unicode_str + '" ] = 1 ' )
                     continue
 
                 if i.has_attr('d'):
@@ -235,6 +243,7 @@ def svg_to_txt():
 
                 #ligatures
                 else:
+                    # print('>>> Ligature ' + unicode_str)
                     if i.has_attr('d') and i.has_attr('horiz-adv-x'):
                         out += '1|' + CHARS[ unicode_str ] + '|' + i['horiz-adv-x'] + '|' + i['d']  + '\n'
 
