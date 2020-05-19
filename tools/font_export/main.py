@@ -11,7 +11,7 @@ from ligatures import LIGATURES
 from vertical import VERTICAL_OFFSET
 
 # Merge CHARS and LIGATURES
-if len(sys.argv) > 1 and sys.argv[1] == 'with-ligatures':
+if 'with-ligatures' in sys.argv:
     CHARS.update(LIGATURES)
 
 SVG_PATH = "svg"
@@ -127,7 +127,7 @@ def svg_to_txt():
         font_glyphs = {}
         font_ligatures = {}
 
-    #OFFSET EXTRACTION
+        #OFFSET EXTRACTION
         if VERTICAL_OFFSET.has_key( font_id ):
             target = VERTICAL_OFFSET[ font_id ]
             if target.has_key( 'top' ):
@@ -139,7 +139,7 @@ def svg_to_txt():
             if target.has_key( 'bottom' ):
                 out += '0|bottom|' + str( target[ 'bottom' ] ) + '\n'
 
-    #PROPERTY EXTRACTION
+        #PROPERTY EXTRACTION
         default = 0
         #find missing-glyph elements
         target = soup.find_all('missing-glyph')
@@ -200,7 +200,7 @@ def svg_to_txt():
             if i.has_attr('underline-thickness'):
                 out += '0|underline-thickness|' + i['underline-thickness']  + '\n'
 
-    #GLYPH EXTRACTION
+        #GLYPH EXTRACTION
 
         #find glyph elements
         target = soup.find_all('glyph')
@@ -215,13 +215,11 @@ def svg_to_txt():
                         unicode_str = CHARS[ unicode_str ]
 
                 if CHARS.has_key( unicode_str ) == False:
-                    #print missing chars for whitelist inclusion
-                    if i.has_attr('glyph-name'):
-                        print('Skipping character with glyph name: ' + i['glyph-name']+'')
-                        # print( 'CHARS[ "' + unicode_str + '" ] = 1' )
-                    else:
-                        print('Skipping character with NO glyph name')
-                    # print( 'CHARS[ "' + unicode_str + '" ] = 1 ' )
+                    # print missing chars for whitelist inclusion
+                    # if i.has_attr('glyph-name'):
+                    #     print('Skipping character with glyph name: ' + i['glyph-name']+'')
+                    # else:
+                    #     print('Skipping character with NO glyph name')
                     continue
 
                 if i.has_attr('d'):
@@ -258,7 +256,7 @@ def svg_to_txt():
                     font_ligatures[ CHARS[ unicode_str ] ] = 1
                 
 
-    #KERNING EXTRACTION
+        #KERNING EXTRACTION
     
         target = soup.find_all('hkern')
         for i in target:
@@ -359,6 +357,7 @@ def svg_to_txt():
         fonts[ font_id ] = True
         save_data( OUT_PATH + os.sep + font_id.lower() + OUT_NAME , out.encode('utf-8') )
         font_id = ""
+    print('Done')
 
 get_svg()
 svg_to_txt()
