@@ -30,15 +30,17 @@ export default abstract class TextContainer extends createjs.Container {
 
   //called when font has loaded
   fontLoaded() {
+    if (!this.stage) {
+      this.on('added', () => this.layout())
+      return;
+    }
     this.layout();
   }
 
   //call stage.update to render canvas
   //overload to support deferred rendering
   render() {
-    if (this.stage) {
-      this.stage.update();
-    }
+    this.stage.update();
   }
 
   abstract layout();
