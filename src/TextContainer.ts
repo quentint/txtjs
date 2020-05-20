@@ -36,7 +36,9 @@ export default abstract class TextContainer extends createjs.Container {
   //call stage.update to render canvas
   //overload to support deferred rendering
   render() {
-    this.stage.update();
+    if (this.stage) {
+      this.stage.update();
+    }
   }
 
   abstract layout();
