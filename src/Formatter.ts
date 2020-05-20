@@ -2,6 +2,9 @@ import TextContainer from "./TextContainer";
 
 export default class Formatter {
 	
+	static globalShortcuts = {};
+	shortcuts = {};
+	
 	getObject(s: string) {
 		return this._richTextToTextAndStyle(s);
 	}
@@ -49,6 +52,19 @@ export default class Formatter {
 
 				let currentStylesObject = {};
 				const currentStyleProps = [];
+
+				const shortcuts = Object.assign({}, this.shortcuts, Formatter.globalShortcuts);
+				const styleParts = currentStyleString.split(',');
+				const mapped = styleParts.map((part) => {
+					part = part.trim();
+					if (shortcuts.hasOwnProperty(part)) {
+						part = JSON.stringify(shortcuts[part]);
+						part = part.substring(1, part.length - 1);
+					}
+					return part;
+				});
+				currentStyleString = mapped.join(',');
+				
 				try {
 					currentStylesObject = (new Function(`return {${currentStyleString}}`))();
 				} catch (e) {

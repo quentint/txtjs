@@ -9,6 +9,9 @@ export default class RichText extends Text {
 
 	constructor(props: ConstructObj = null) {
 		super(props);
+		if (props.text) {
+			this._richText = props.text;
+		}
 		this._formatter = new Formatter();
 	}
 
@@ -24,6 +27,7 @@ export default class RichText extends Text {
 		if (s === this._richText) {
 			return;
 		}
+		this._richText = s;
 		this._formatter.setRichText(this, s);
 	}
 

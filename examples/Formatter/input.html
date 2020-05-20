@@ -66,7 +66,23 @@
 				y: 80
 			});
 			
+			txt.Formatter.globalShortcuts = {
+				red: {
+					fillColor: 'red'
+				}
+			}
+			
 			formatter = new txt.Formatter();
+			formatter.shortcuts = {
+				fun: {
+					fillColor: '#ce6666',
+					strokeColor: '#34ba23',
+				},
+				smallLobster: {
+					size: 30,
+					font: 'lobster'
+				}
+			}
 			domKeyPress();
 
 			stage.addChild(text);
@@ -78,7 +94,7 @@
 </head>
 <body onload="init()">
 <div>
-	<textarea id="domText" rows="4" cols="60">This part is {fillColor: 'pink', strokeColor: 'red'}pink with a red stroke{/}, and this part is {size: 60}bigger, with {fillColor: '#00ff0088'}green words{/}{/}. Amazing.
+	<textarea id="domText" rows="4" cols="60">{red}This{/} {fun, smallLobster}part{/} is {fillColor: 'pink', strokeColor: 'red'}pink with a red stroke{/}, and this part is {size: 60}bigger, with {fillColor: '#00ff0088'}green words{/}{/}. Amazing.
 	</textarea>
 </div>
 </body>
