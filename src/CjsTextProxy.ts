@@ -13,6 +13,8 @@ export default class CjsTextProxy extends Text {
 	// maxWidth         >    Not supported
 	// outline          >    Not supported
 	// textBaseline     >    Not supported
+	
+	// TODO: getMeasuredHeight
 
 	constructor(text, font, color = null, moreProps: {}) {
 		const fontProps = CjsTextProxy._processFontArgument(font);
