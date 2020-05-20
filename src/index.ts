@@ -18,6 +18,7 @@ export { default as VerticalAlign } from "./VerticalAlign";
 export { default as Word } from "./Word";
 export { default as Formatter } from "./Formatter";
 export { default as RichText } from "./RichText";
+export { default as CjsTextProxy } from "./CjsTextProxy";
 export { default as CjsRichText } from "./CjsRichText";
 
 import copyEventListeners from "./utils/apply-shape-event-listeners";
