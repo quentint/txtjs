@@ -15,20 +15,13 @@ export default class CjsTextProxy extends Text {
 	// textBaseline     >    Not supported
 
 	constructor(text, font, color = null, moreProps: {}) {
-
-		super({text});
-
-		const fontProps = this._processFont(font);
-		this.font = fontProps.font;
-		this.size = fontProps.size;
-		if (color) {
-			this.fillColor = color;
-		}
-
-		this.set(moreProps);
+		const fontProps = CjsTextProxy._processFontArgument(font);
+		const props = {text, font: fontProps.font, size: fontProps.size, fillColor: color};
+		Object.assign(props, moreProps);
+		super(props);
 	}
 
-	protected _processFont(s: string) {
+	protected static _processFontArgument(s: string) {
 		// 30px 'Arial'
 		const parts = s.split('px ');
 		return {
