@@ -8,6 +8,7 @@ export default class CjsRichText extends CjsTextProxy {
 
 	constructor(text, font, color = null, moreProps = {}) {
 		super(text, font, color, moreProps);
+		this._richText = text;
 		this._formatter = new Formatter();
 	}
 
@@ -23,6 +24,7 @@ export default class CjsRichText extends CjsTextProxy {
 		if (s === this._richText) {
 			return;
 		}
+		this._richText = s;
 		this._formatter.setRichText(this, s);
 	}
 
