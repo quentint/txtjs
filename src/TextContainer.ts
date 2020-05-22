@@ -30,7 +30,7 @@ export default abstract class TextContainer extends createjs.Container {
       return;
     }
     this._text = v;
-    this.dispatchEvent(new createjs.Event('textChanged'));
+    this.dispatchEvent(new createjs.Event('textChanged', false, false));
   }
 
   get font() {
@@ -42,7 +42,7 @@ export default abstract class TextContainer extends createjs.Container {
       return;
     }
     this._font = v;
-    this.dispatchEvent(new createjs.Event('fontChanged'));
+    this.dispatchEvent(new createjs.Event('fontChanged', false, false));
   }
 
   protected loadFonts() {

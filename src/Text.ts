@@ -38,7 +38,7 @@ export default class Text extends TextContainer {
       return;
     }
     this._lineHeight = v;
-    this.dispatchEvent(new createjs.Event('lineHeightChanged'));
+    this.dispatchEvent(new createjs.Event('lineHeightChanged', false, false));
   }
 
   constructor(props: ConstructObj = null) {
