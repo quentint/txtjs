@@ -7,16 +7,43 @@ import Accessibility from "./Accessibility";
  * Common aspects of top-level Text classes
  */
 export default abstract class TextContainer extends createjs.Container {
-  text = "";
+  
+  protected _text = '';
+  protected _font = 'belinda';
+  
+  // text = "";
   original: ConstructObj = null;
   style: Style[] = null;
-  font = "belinda";
   characterCase: Case = Case.NORMAL;
 
   //accessibility
   accessibilityText: string = null;
   accessibilityPriority = 2;
   accessibilityId: number = null;
+  
+  get text() {
+    return this._text;
+  }
+  
+  set text(v: string) {
+    if (v === this._text) {
+      return;
+    }
+    this._text = v;
+    this.dispatchEvent(new createjs.Event('textChanged'));
+  }
+
+  get font() {
+    return this._font;
+  }
+
+  set font(v: string) {
+    if (v === this._font) {
+      return;
+    }
+    this._font = v;
+    this.dispatchEvent(new createjs.Event('fontChanged'));
+  }
 
   protected loadFonts() {
     const fonts = [this.font].concat(this.fontsFromCharacterStyles(this.style));

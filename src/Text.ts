@@ -9,7 +9,9 @@ import Character from "./Character";
 import applyShapeEventListeners from "./utils/apply-shape-event-listeners";
 
 export default class Text extends TextContainer {
-  lineHeight: number = null;
+  
+  protected _lineHeight: number = null;
+  
   width = 100;
   height = 20;
   align: number = Align.TOP_LEFT;
@@ -26,6 +28,18 @@ export default class Text extends TextContainer {
   block: createjs.Container;
   missingGlyphs: any[] = null;
   renderCycle = true;
+
+  get lineHeight() {
+    return this._lineHeight;
+  }
+
+  set lineHeight(v: number) {
+    if (v === this._lineHeight) {
+      return;
+    }
+    this._lineHeight = v;
+    this.dispatchEvent(new createjs.Event('lineHeightChanged'));
+  }
 
   constructor(props: ConstructObj = null) {
     super();
