@@ -3,14 +3,25 @@ import Line from "./Line";
 
 export default class CjsTextProxy extends Text {
 	
-	// TODO: maxWidth         >    Not supported?
-	// TODO: outline          >    Not supported?
-	// TODO: textBaseline     >    Not supported?
+	// cjs.Text METHODS
 	
-	// TODO: getMeasuredLineHeight()
-	// TODO: getMeasuredWidth()
-	// TODO: getMetrics()
-
+	// getMeasuredHeight()              : Done
+	// getMeasuredLineHeight()          : TODO
+	// getMeasuredWidth()               : TODO
+	// getMetrics()                     : TODO
+	
+	// cjs.Text PROPERTIES
+	
+	// color                            : mapped to `fillColor`
+	// font                             : watched, will layout
+	// lineHeight                       : watched, will layout
+	// lineWidth                        : mapped to `width`
+	// maxWidth                         : TODO: Not supported?
+	// outline                          : TODO: Not supported?
+	// text                             : watched, will layout
+	// textAlign                        : mapped to `align`
+	// textBaseline                     : TODO: Not supported?
+	
 	constructor(text, font, color = null, moreProps: {}) {
 		if (color === null) {
 			color = "#000";
@@ -19,6 +30,10 @@ export default class CjsTextProxy extends Text {
 		const props = {text, font: fontProps.font, size: fontProps.size, fillColor: color};
 		Object.assign(props, moreProps);
 		super(props);
+		
+		this.on('fontChanged', () => this.layout());
+		this.on('lineHeightChanged', () => this.layout());
+		this.on('textChanged', () => this.layout());
 	}
 
 	protected static _processFontArgument(s: string) {
@@ -36,6 +51,7 @@ export default class CjsTextProxy extends Text {
 
 	set lineWidth(value: number) {
 		this.width = value;
+		this.layout();
 	}
 
 	get color(): string {
@@ -44,6 +60,7 @@ export default class CjsTextProxy extends Text {
 
 	set color(value: string) {
 		this.fillColor = value;
+		this.layout();
 	}
 
 	get textAlign(): number {
@@ -52,10 +69,6 @@ export default class CjsTextProxy extends Text {
 
 	set textAlign(value: number) {
 		this.align = value;
-	}
-	
-	setText(s: string) {
-		this.text = s;
 		this.layout();
 	}
 	
