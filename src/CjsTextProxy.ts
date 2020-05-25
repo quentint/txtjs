@@ -3,6 +3,9 @@ import Line from "./Line";
 
 export default class CjsTextProxy extends Text {
 	
+	static defaultFont = "12px 'belinda'";
+	static defaultColor = "#000";
+	
 	// cjs.Text METHODS
 	
 	// getMeasuredHeight()              : Done
@@ -22,9 +25,12 @@ export default class CjsTextProxy extends Text {
 	// textAlign                        : mapped to `align`
 	// textBaseline                     : TODO: Not supported?
 	
-	constructor(text, font, color = null, moreProps: {}) {
+	constructor(text = '', font = null, color = null, moreProps: {}) {
+		if (font === null) {
+			font = CjsTextProxy.defaultFont;
+		}
 		if (color === null) {
-			color = "#000";
+			color = CjsTextProxy.defaultColor;
 		}
 		const fontProps = CjsTextProxy._processFontArgument(font);
 		const props = {text, font: fontProps.font, size: fontProps.size, fillColor: color};
@@ -37,7 +43,6 @@ export default class CjsTextProxy extends Text {
 	}
 
 	protected static _processFontArgument(s: string) {
-		// 30px 'Arial'
 		const parts = s.split('px ');
 		return {
 			size: parseInt(parts[0]),
