@@ -1,5 +1,6 @@
 import Text from "./Text";
 import Line from "./Line";
+import Align from "./Align";
 
 export default class CjsTextProxy extends Text {
 	
@@ -67,13 +68,30 @@ export default class CjsTextProxy extends Text {
 		this.fillColor = value;
 		this.layout();
 	}
+	
+	// TODO: "start" and "end"
 
-	get textAlign(): number {
-		return this.align;
+	get textAlign(): string {
+		if (this.align === Align.TOP_LEFT) {
+			return 'left';
+		} else if (this.align === Align.TOP_CENTER) {
+			return 'center';
+		} else if (this.align === Align.TOP_RIGHT) {
+			return 'right';
+		}
+		return '?';
 	}
 
-	set textAlign(value: number) {
-		this.align = value;
+	set textAlign(value: string) {
+		if (value === 'left') {
+			this.align = Align.TOP_LEFT;
+		} else if (value === 'center') {
+			this.align = Align.TOP_CENTER;
+		} else if (value === 'right') {
+			this.align = Align.TOP_RIGHT;
+		} else {
+			return;
+		}
 		this.layout();
 	}
 	
@@ -83,6 +101,15 @@ export default class CjsTextProxy extends Text {
 			h += line.measuredHeight;
 		});
 		return h;
+	}
+	
+	setTransform(x?: number, y?: number, scaleX?: number, scaleY?: number, rotation?: number, skewX?: number, skewY?: number, regX?: number, regY?: number): createjs.DisplayObject {
+		if (this.textAlign === 'center') {
+			x -= this.width / 2;
+		} else if (this.textAlign === 'right') {
+			x -= this.width;
+		}
+		return super.setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY);
 	}
 
 }
