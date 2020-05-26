@@ -97,8 +97,6 @@ export default class CjsTextProxy extends Text {
 			this.align = Align.TOP_CENTER;
 		} else if (value === 'right') {
 			this.align = Align.TOP_RIGHT;
-		} else {
-			return;
 		}
 		this.invalidate();
 	}
