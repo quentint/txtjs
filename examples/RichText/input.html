@@ -78,6 +78,9 @@
 			stage.addChild(text2);
 			
 			stage.update();
+
+			createjs.Ticker.framerate = 24;
+			createjs.Ticker.addEventListener("tick", stage);
 		}
 
 	</script>

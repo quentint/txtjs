@@ -7,6 +7,8 @@ export default class CjsTextProxy extends Text {
 	static defaultFont = "12px 'belinda'";
 	static defaultColor = "#000";
 	
+	_invalidated: boolean;
+	
 	// cjs.Text METHODS
 	
 	// getMeasuredHeight()              : Done
@@ -17,12 +19,12 @@ export default class CjsTextProxy extends Text {
 	// cjs.Text PROPERTIES
 	
 	// color                            : mapped to `fillColor`
-	// font                             : watched, will layout
-	// lineHeight                       : watched, will layout
+	// font                             : watched, will invalidate
+	// lineHeight                       : watched, will invalidate
 	// lineWidth                        : mapped to `width`
 	// maxWidth                         : TODO: Not supported?
 	// outline                          : TODO: Not supported?
-	// text                             : watched, will layout
+	// text                             : watched, will invalidate
 	// textAlign                        : mapped to `align`
 	// textBaseline                     : TODO: Not supported?
 	
@@ -38,9 +40,15 @@ export default class CjsTextProxy extends Text {
 		Object.assign(props, moreProps);
 		super(props);
 		
-		this.on('fontChanged', () => this.layout());
-		this.on('lineHeightChanged', () => this.layout());
-		this.on('textChanged', () => this.layout());
+		this.on('fontChanged', () => this.invalidate());
+		this.on('lineHeightChanged', () => this.invalidate());
+		this.on('textChanged', () => this.invalidate());
+		
+		this.on('tick', () => {
+			if (this._invalidated) {
+				this.layout();
+			}
+		});
 	}
 
 	protected static _processFontArgument(s: string) {
@@ -57,7 +65,7 @@ export default class CjsTextProxy extends Text {
 
 	set lineWidth(value: number) {
 		this.width = value;
-		this.layout();
+		this.invalidate();
 	}
 
 	get color(): string {
@@ -66,7 +74,7 @@ export default class CjsTextProxy extends Text {
 
 	set color(value: string) {
 		this.fillColor = value;
-		this.layout();
+		this.invalidate();
 	}
 	
 	// TODO: "start" and "end"
@@ -92,10 +100,11 @@ export default class CjsTextProxy extends Text {
 		} else {
 			return;
 		}
-		this.layout();
+		this.invalidate();
 	}
 	
 	getMeasuredHeight() {
+		super.layout(); // Force it
 		let h = 0;
 		this.lines.forEach((line: Line) => {
 			h += line.measuredHeight;
@@ -110,6 +119,19 @@ export default class CjsTextProxy extends Text {
 			x -= this.width;
 		}
 		return super.setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY);
+	}
+
+	invalidate() {
+		this._invalidated = true;
+	}
+	
+	layout() {
+		this._invalidated = false;
+		super.layout();
+	}
+	
+	render() {
+		// Do not update stage, tick will layout if needed
 	}
 
 }
