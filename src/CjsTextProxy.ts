@@ -6,6 +6,10 @@ export default class CjsTextProxy extends Text {
 	
 	static defaultFont = "12px 'belinda'";
 	static defaultColor = "#000";
+	static stageOffset = {
+		x: 2,
+		y: 4
+	};
 	
 	_invalidated: boolean;
 	
@@ -116,6 +120,14 @@ export default class CjsTextProxy extends Text {
 		} else if (this.textAlign === 'right') {
 			x -= this.width;
 		}
+		
+		if (this.textAlign === 'right') {
+			x -= CjsTextProxy.stageOffset.x;
+		} else if (this.textAlign === 'left') {
+			x += CjsTextProxy.stageOffset.x;
+		}
+		y += CjsTextProxy.stageOffset.y;
+		
 		return super.setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY);
 	}
 
