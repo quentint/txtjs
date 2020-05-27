@@ -51,9 +51,20 @@ export default class Text extends TextContainer {
   }
 
   getBounds(): createjs.Rectangle {
-    // TODO: obtain intersected bounds of the characters/words in here
-
-    return new createjs.Rectangle(this.x, this.y, this.width, this.height);
+    let b = new createjs.Rectangle(/*this.x, this.y*/);
+    
+    if (!this.block) {
+      return b;
+    }
+    
+    this.block.children.forEach((c: Line) => {
+      b = b.union(c.getBounds());
+    })
+    
+    b.x = this.x;
+    b.y = this.y;
+    
+    return b;
   }
 
   layout() {

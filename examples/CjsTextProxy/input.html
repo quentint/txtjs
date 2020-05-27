@@ -18,6 +18,7 @@
 		var stage;
 		var domText;
 		var text;
+		var bounds;
 
 		var PIXEL_RATIO = (function () {
 			var ctx = document.createElement("canvas").getContext("2d"),
@@ -45,6 +46,11 @@
 
 		function domKeyPress() {
 			text.text = domText.value;
+			let b = text.getBounds();
+			console.log(b);
+			bounds.graphics.clear();
+			bounds.graphics.beginFill('red');
+			bounds.graphics.drawRect(b.x, b.y, b.width, b.height);
 		}
 
 		function init() {
@@ -60,9 +66,13 @@
 			text.x = 10;
 			text.y = 80;
 			
-			domKeyPress();
+			bounds = new createjs.Shape();
+			
+			stage.addChild(bounds);
 			stage.addChild(text);
-			stage.update();
+			
+			domKeyPress();
+			// stage.update();
 
 			createjs.Ticker.framerate = 24;
 			createjs.Ticker.addEventListener("tick", stage);

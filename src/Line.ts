@@ -18,4 +18,8 @@ export default class Line extends createjs.Container {
   lastCharacter(): Character {
     return this.children[this.children.length - 1] as Character;
   }
+  
+  getBounds(): createjs.Rectangle {
+    return new createjs.Rectangle(this.x, this.y, this.measuredWidth, this.measuredHeight);
+  }
 }

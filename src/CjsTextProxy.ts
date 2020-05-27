@@ -16,8 +16,8 @@ export default class CjsTextProxy extends Text {
 	// cjs.Text METHODS
 	
 	// getMeasuredHeight()              : Done
-	// getMeasuredLineHeight()          : TODO
-	// getMeasuredWidth()               : TODO
+	// getMeasuredLineHeight()          : Done
+	// getMeasuredWidth()               : Done
 	// getMetrics()                     : TODO
 	
 	// cjs.Text PROPERTIES
@@ -41,7 +41,7 @@ export default class CjsTextProxy extends Text {
 		}
 		const fontProps = CjsTextProxy._processFontArgument(font);
 		const props = {text, font: fontProps.font, size: fontProps.size, fillColor: color};
-		Object.assign(props, moreProps);
+		Object.assign(props, {width: 5000}, moreProps);
 		super(props);
 		
 		this.on('fontChanged', () => this.invalidate());
@@ -129,6 +129,19 @@ export default class CjsTextProxy extends Text {
 		y += CjsTextProxy.stageOffset.y;
 		
 		return super.setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY);
+	}
+
+	getMeasuredWidth() {
+		return this.getBounds().width;
+	}
+
+	getMeasuredLineHeight() {
+		return this.size * 1.2;
+	}
+	
+	getBounds(): createjs.Rectangle {
+		this.layout();
+		return super.getBounds();
 	}
 
 	invalidate() {
