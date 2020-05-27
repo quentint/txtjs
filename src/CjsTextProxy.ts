@@ -11,6 +11,7 @@ export default class CjsTextProxy extends Text {
 		y: 4
 	};
 	
+	protected _isBold;
 	_invalidated: boolean;
 	
 	// cjs.Text METHODS
@@ -43,7 +44,8 @@ export default class CjsTextProxy extends Text {
 		const props = {text, font: fontProps.font, size: fontProps.size, fillColor: color};
 		Object.assign(props, {width: 5000}, moreProps);
 		super(props);
-		
+
+		this._isBold = fontProps.isBold;
 		this.on('fontChanged', () => this.invalidate());
 		this.on('lineHeightChanged', () => this.invalidate());
 		this.on('textChanged', () => this.invalidate());
@@ -56,10 +58,14 @@ export default class CjsTextProxy extends Text {
 	}
 
 	protected static _processFontArgument(s: string) {
+		const boldExpr = /^bold /;
+		const isBold = s.match(boldExpr);
+		s = s.replace(boldExpr, '');
 		const parts = s.split('px ');
 		return {
 			size: parseInt(parts[0]),
-			font: parts[1].substring(1, parts[1].length - 1)
+			font: parts[1].substring(1, parts[1].length - 1),
+			isBold
 		}
 	}
 
