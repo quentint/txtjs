@@ -141,4 +141,8 @@ export default class Character extends createjs.Shape {
   getWidth() {
     return this.size * this._glyph.offset;
   }
+  
+  get str(): string {
+    return this.character;
+  }
 }

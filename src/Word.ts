@@ -16,4 +16,8 @@ export default class Word extends createjs.Container {
   lastCharacter(): Character {
     return this.children[this.children.length - 1] as Character;
   }
+  
+  get str() {
+    return this.children.map((c: Character) => c.str).join('');
+  }
 }

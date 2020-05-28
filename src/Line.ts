@@ -22,4 +22,8 @@ export default class Line extends createjs.Container {
   getBounds(): createjs.Rectangle {
     return new createjs.Rectangle(this.x, this.y, this.measuredWidth, this.measuredHeight);
   }
+
+  get str() {
+    return this.children.map((c: Word) => c.str).join('');
+  }
 }
