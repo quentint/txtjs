@@ -51,7 +51,7 @@ export default class Text extends TextContainer {
   }
 
   getBounds(): createjs.Rectangle {
-    let b = new createjs.Rectangle(/*this.x, this.y*/);
+    let b = new createjs.Rectangle();
     
     if (!this.block) {
       return b;
@@ -334,8 +334,6 @@ export default class Text extends TextContainer {
     //case of empty word at end.
     if (currentWord.children.length == 0) {
       currentWord = this.words[this.words.length - 1];
-      hPosition = currentWord.measuredWidth;
-      vPosition = currentWord.measuredHeight;
     }
     currentWord.measuredWidth = hPosition;
     currentWord.measuredHeight = vPosition;
@@ -372,7 +370,7 @@ export default class Text extends TextContainer {
       }
 
       if (firstLine) {
-        vPosition = currentWord.measuredHeight;
+        vPosition = currentWord.measuredHeight || this.size;
       } else if (this.lineHeight != null) {
         vPosition = this.lineHeight;
       } else if (currentWord.measuredHeight > vPosition) {
