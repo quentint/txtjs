@@ -120,20 +120,26 @@ export default class CjsTextProxy extends Text {
 		return h;
 	}
 	
+	// Because Animate uses this and it has weird text field alignments
 	setTransform(x?: number, y?: number, scaleX?: number, scaleY?: number, rotation?: number, skewX?: number, skewY?: number, regX?: number, regY?: number): createjs.DisplayObject {
+		
+		let xOffset = 0;
+		let yOffset = 0;
+		
 		if (this.textAlign === 'center') {
-			x -= this.width / 2;
+			xOffset -= this.width / 2;
 		} else if (this.textAlign === 'right') {
-			x -= this.width;
+			xOffset -= this.width;
 		}
 		
 		if (this.textAlign === 'right') {
-			x -= CjsTextProxy.stageOffset.x;
+			xOffset -= CjsTextProxy.stageOffset.x;
 		} else if (this.textAlign === 'left') {
-			x += CjsTextProxy.stageOffset.x;
+			xOffset += CjsTextProxy.stageOffset.x;
 		}
-		y += CjsTextProxy.stageOffset.y;
+		yOffset += CjsTextProxy.stageOffset.y;
 		
+		this._blockOffset = {x: xOffset, y: yOffset};
 		return super.setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY);
 	}
 

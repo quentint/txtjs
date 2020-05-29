@@ -11,6 +11,7 @@ import applyShapeEventListeners from "./utils/apply-shape-event-listeners";
 export default class Text extends TextContainer {
   
   protected _lineHeight: number = null;
+  protected _blockOffset = {x: 0, y: 0};
   
   width = 100;
   height = 20;
@@ -77,6 +78,7 @@ export default class Text extends TextContainer {
     this.removeAllChildren();
 
     this.block = new createjs.Container();
+    this.block.set(this._blockOffset);
     this.addChild(this.block);
 
     if (this.debug == true) {
@@ -114,6 +116,7 @@ export default class Text extends TextContainer {
     const font: Font = FontLoader.getFont(this.font);
     //outline
     let s = new createjs.Shape();
+    s.set(this._blockOffset);
     s.graphics.beginStroke("#FF0000");
     s.graphics.setStrokeStyle(1.2);
     s.graphics.drawRect(0, 0, this.width, this.height);
