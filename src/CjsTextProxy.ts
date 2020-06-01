@@ -121,27 +121,27 @@ export default class CjsTextProxy extends Text {
 	}
 	
 	// Because Animate uses this and it has weird text field alignments
-	setTransform(x?: number, y?: number, scaleX?: number, scaleY?: number, rotation?: number, skewX?: number, skewY?: number, regX?: number, regY?: number): createjs.DisplayObject {
-		
-		let xOffset = 0;
-		let yOffset = 0;
-		
-		if (this.textAlign === 'center') {
-			xOffset -= this.width / 2;
-		} else if (this.textAlign === 'right') {
-			xOffset -= this.width;
-		}
-		
-		if (this.textAlign === 'right') {
-			xOffset -= CjsTextProxy.stageOffset.x;
-		} else if (this.textAlign === 'left') {
-			xOffset += CjsTextProxy.stageOffset.x;
-		}
-		yOffset += CjsTextProxy.stageOffset.y;
-		
-		this._blockOffset = {x: xOffset, y: yOffset};
-		return super.setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY);
-	}
+	// setTransform(x?: number, y?: number, scaleX?: number, scaleY?: number, rotation?: number, skewX?: number, skewY?: number, regX?: number, regY?: number): createjs.DisplayObject {
+	//	
+	// 	let xOffset = 0;
+	// 	let yOffset = 0;
+	//	
+	// 	if (this.textAlign === 'center') {
+	// 		xOffset -= this.width / 2;
+	// 	} else if (this.textAlign === 'right') {
+	// 		xOffset -= this.width;
+	// 	}
+	//	
+	// 	if (this.textAlign === 'right') {
+	// 		xOffset -= CjsTextProxy.stageOffset.x;
+	// 	} else if (this.textAlign === 'left') {
+	// 		xOffset += CjsTextProxy.stageOffset.x;
+	// 	}
+	// 	yOffset += CjsTextProxy.stageOffset.y;
+	//	
+	// 	this._blockOffset = {x: xOffset, y: yOffset};
+	// 	return super.setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY);
+	// }
 
 	getMeasuredWidth() {
 		return this.getBounds().width;
