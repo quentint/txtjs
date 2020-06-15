@@ -27,7 +27,13 @@
     "test": "npm run lint && npm run test:ci",
     "test:ci": "HEADLESS=true testem ci",
     "test:dev": "testem",
-    "test:coverage:view": "npx http-server coverage/lcov-report"
+    "test:coverage:instrument": "nyc --require=ts-node/register/transpile-only instrument src instrumented",
+    "test:coverage": "nyc --require=ts-node/register/transpile-only tsc src/index.ts",
+    "coverage": "npm run cov:compile && npm run cov:instrument && npm run cov:iife",
+    "cov:compile": "tsc -b tsconfig-preinstrument.json",
+    "cov:instrument": "nyc instrument tmp/esm instrumented",
+    "cov:iife": "rollup --format=iife --file=dist/txt.instrumented.js --name=txt instrumented/src/index.js",
+    "cov:view": "nyc report && live-server coverage/lcov-report"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
@@ -45,15 +51,16 @@
     "eslint": "^6.8.0",
     "jasmine-core": "^3.5.0",
     "live-server": "^1.2.1",
+    "nyc": "^15.1.0",
     "pathseg": "^1.2.0",
     "prettier": "^1.19.1",
-    "rollup": "^1.31.0",
+    "rollup": "^2.16.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-istanbul": "^2.0.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "testem": "^3.0.2",
     "typedoc": "^0.16.7",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.5"
   },
   "files": [
     "definitions",

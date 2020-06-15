@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "outDir": "./tmp/esm",
+    "module": "ESNext",
+    "target": "ESNEXT"
+  }
+}
