@@ -1,6 +1,9 @@
 {
   "extends": "@istanbuljs/nyc-config-typescript",
-  "reporter": ["text-summary", "lcov"],
+  "cache": false,
+  "compact": false,
+  "reporter": ["text", "lcov"],
   "excludeAfterRemap": false,
-  "all": true
+  "all": true,
+  "temp-dir": "tmp"
 }
