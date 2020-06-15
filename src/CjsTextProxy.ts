@@ -68,6 +68,14 @@ export default class CjsTextProxy extends Text {
 			isBold
 		}
 	}
+	
+	get text(): any {
+		return super.text;
+	}
+
+	set text(v: any) {
+		super.text = v.toString();
+	}
 
 	get lineWidth(): number {
 		return this.width;
