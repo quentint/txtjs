@@ -8,3 +8,5 @@ docs
 TODO.md
 coverage
 tmp
+instrumented
+.nyc_output
