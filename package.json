@@ -14,7 +14,7 @@
   "browser": "dist/txt.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "copy": "gulp copy-vendor-files",
+    "copy": "copyfiles -f ./node_modules/easeljs/lib/easeljs.js ./node_modules/pathseg/pathseg.js dist",
     "build": "mkdir -p tmp && npm run build:js && npm run copy",
     "build:js": "rollup -c",
     "build:js:watch": "npm run build:js -- --watch",
@@ -45,6 +45,7 @@
     "@types/tweenjs": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
+    "copyfiles": "^2.3.0",
     "easeljs": "^1.0.2",
     "eslint": "^6.8.0",
     "gulp": "^3.8.10",
