@@ -47,6 +47,7 @@ const siteConfig = {
     {
       file: "dist/site.js",
       format: "iife",
+      name: "site",
       sourcemap: true
     }
   ]

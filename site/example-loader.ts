@@ -18,22 +18,26 @@ function buildExampleTitle(examplePath) {
 
 function clearExample() {
   const canvas = document.getElementsByTagName("canvas")[0];
-  if (canvas) {
+  if (canvas && canvas.parentNode === document.body) {
     document.body.removeChild(canvas);
   }
 }
 
-const example = location.hash.replace("#", "");
-if (example) {
-  document.title = buildExampleTitle(example);
-  window.onload = function() {
+export default function() {
+
+  const example = location.hash.replace("#", "");
+  if (example) {
+    document.title = buildExampleTitle(example);
+    window.onload = function() {
+      buildExampleInit(example)();
+    };
+  }
+
+  window.onhashchange = function() {
+    const example = location.hash.replace("#", "");
+    clearExample();
+    document.title = buildExampleTitle(example);
     buildExampleInit(example)();
   };
-}
 
-window.onhashchange = function() {
-  const example = location.hash.replace("#", "");
-  clearExample();
-  document.title = buildExampleTitle(example);
-  buildExampleInit(example)();
-};
+}

@@ -1,3 +1,5 @@
+(function(){
+
 const layout = document.getElementById("layout");
 const menu = document.getElementById("menu");
 const menuLink = document.getElementById("menuLink");
@@ -29,3 +31,5 @@ menuLink.onclick = function(e) {
   toggleClass(menu, active);
   toggleClass(menuLink, active);
 };
+
+}())
