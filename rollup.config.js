@@ -40,16 +40,16 @@ const examplesConfig = {
   ]
 };
 
-const demoSiteConfig = {
+const siteConfig = {
   input: "./site/index.ts",
   plugins: [typescript()],
   output: [
     {
-      file: "dist/demo.js",
+      file: "dist/site.js",
       format: "iife",
       sourcemap: true
     }
   ]
 };
 
-export default [mainConfig, examplesConfig, demoSiteConfig];
+export default [mainConfig, examplesConfig, siteConfig];
