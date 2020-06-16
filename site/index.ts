@@ -1,4 +1,5 @@
 import * as txt from "../src/index";
+import "./menu";
 txt.FontLoader.path = "font/";
 
 import circle from "../lib/circle-path";
