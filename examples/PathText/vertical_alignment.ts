@@ -1,4 +1,4 @@
-import * as txt from "../../src/index";
+import * as txt from "txt";
 import circle from "../../lib/circle-path";
 
 import createHiDPICanvas from "../../lib/hidpi-canvas";

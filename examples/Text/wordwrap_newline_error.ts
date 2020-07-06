@@ -1,4 +1,4 @@
-import * as txt from "../../src/index";
+import * as txt from "txt";
 import createHiDPICanvas from "../../lib/hidpi-canvas";
 export default function init() {
   const canvas = createHiDPICanvas(400, 900, 1);

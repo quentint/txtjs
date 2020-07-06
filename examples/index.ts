@@ -1,4 +1,4 @@
-import * as txt from "../src/index";
+import * as txt from "txt";
 
 txt.FontLoader.path = "../font/";
 
