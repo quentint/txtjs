@@ -1,3 +1,6 @@
+import * as txtExamples from "examples";
+import { removeCanvas, imgToImageData, loadImage } from "./helpers";
+
 describe("Examples visual", function() {
   // Font downloading delays renders
   const RENDER_WAIT = 100;
@@ -9,19 +12,21 @@ describe("Examples visual", function() {
 
   describe("Text", function() {
     Object.entries(txtExamples.visualExamples.Text).forEach(function(eg) {
-      let exampleName = eg[0];
-      let runExample = eg[1];
+      const exampleName = eg[0];
+      const runExample = eg[1];
       it(
         exampleName,
         async function(done) {
-          var stage = runExample();
+          const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
-          let referenceImageData = imgToImageData(
+          const referenceImageData = imgToImageData(
             await loadImage("images/Text/" + exampleName + ".png")
           );
           // let referenceImageData = null;
           setTimeout(function() {
-            let canvasImageData = getCanvasImageData(stage.canvas);
+            const canvasImageData = getCanvasImageData(stage.canvas);
+
+            // @ts-ignore TODO: add toVisuallyEqual to ts
             expect(canvasImageData).toVisuallyEqual(referenceImageData);
             done();
           }, RENDER_WAIT);
@@ -35,18 +40,20 @@ describe("Examples visual", function() {
     Object.entries(txtExamples.visualExamples.CharacterText).forEach(function(
       eg
     ) {
-      let exampleName = eg[0];
-      let runExample = eg[1];
+      const exampleName = eg[0];
+      const runExample = eg[1];
       it(
         exampleName,
         async function(done) {
-          var stage = runExample();
+          const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
-          let referenceImageData = imgToImageData(
+          const referenceImageData = imgToImageData(
             await loadImage("images/CharacterText/" + exampleName + ".png")
           );
           setTimeout(function() {
-            let canvasImageData = getCanvasImageData(stage.canvas);
+            const canvasImageData = getCanvasImageData(stage.canvas);
+
+            // @ts-ignore TODO: add toVisuallyEqual to ts
             expect(canvasImageData).toVisuallyEqual(referenceImageData);
             done();
           }, RENDER_WAIT);
@@ -58,19 +65,21 @@ describe("Examples visual", function() {
 
   describe("PathText", function() {
     Object.entries(txtExamples.visualExamples.PathText).forEach(function(eg) {
-      let exampleName = eg[0];
-      let runExample = eg[1];
+      const exampleName = eg[0];
+      const runExample = eg[1];
       it(
         exampleName,
         async function(done) {
-          var stage = runExample();
+          const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
-          let referenceImageData = imgToImageData(
+          const referenceImageData = imgToImageData(
             await loadImage("images/PathText/" + exampleName + ".png")
           );
           // TODO: figure out how to handle async - perhaps preload fonts?
           setTimeout(function() {
-            let canvasImageData = getCanvasImageData(stage.canvas);
+            const canvasImageData = getCanvasImageData(stage.canvas);
+
+            // @ts-ignore TODO: add toVisuallyEqual to ts
             expect(canvasImageData).toVisuallyEqual(referenceImageData);
             done();
           }, RENDER_WAIT);
@@ -82,17 +91,19 @@ describe("Examples visual", function() {
 
   describe("Graphics", function() {
     Object.entries(txtExamples.visualExamples.Graphics).forEach(function(eg) {
-      let exampleName = eg[0];
-      let runExample = eg[1];
+      const exampleName = eg[0];
+      const runExample = eg[1];
       it(
         exampleName,
         async function() {
-          var stage = runExample();
+          const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
-          let referenceImageData = imgToImageData(
+          const referenceImageData = imgToImageData(
             await loadImage("images/Graphics/" + exampleName + ".png")
           );
-          let canvasImageData = getCanvasImageData(stage.canvas);
+          const canvasImageData = getCanvasImageData(stage.canvas);
+
+          // @ts-ignore TODO: add toVisuallyEqual to ts
           expect(canvasImageData).toVisuallyEqual(referenceImageData);
         },
         TEST_TIMEOUT

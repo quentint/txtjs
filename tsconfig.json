@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "dist/esnext",
+    "baseUrl": "./",
+    "paths": {
+      "txt": ["src"],
+      "examples": ["examples"]
+    },
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "declarationDir": "dist/types"
+  },
+  "typedocOptions": {
+    "inputFiles": "src",
+    "mode": "file",
+    "out": "docs/",
+    "name": "mylib"
+  }
+}

@@ -1,7 +1,7 @@
 const coverageServer = require("./testem-coverage-server");
 
-let chromeArgs = ["--disable-gpu", "--remote-debugging-port=9222"];
-let firefoxArgs = [];
+const chromeArgs = ["--disable-gpu", "--remote-debugging-port=9222"];
+const firefoxArgs = [];
 
 if (process.env.HEADLESS) {
   chromeArgs.unshift("--headless");
@@ -16,13 +16,13 @@ let serve_files = [
   },
   { src: "dist/easeljs.js" },
   { src: "dist/pathseg.js" },
-  { src: "dist/txt.instrumented.js" },
-  { src: "dist/examples.js" },
-  { src: "tests/*.js" }
+  { src: "dist/txt.instrumented.umd.js" },
+  { src: "dist/examples.umd.js" },
+  { src: "dist/tests.umd.js" }
 ];
 
 if (!process.env.HEADLESS) {
-  serve_files.push({ src: "!tests/_headless.js" });
+  serve_files.push({ src: "!dist/esnext/tests/_headless.js" });
 }
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
     Firefox: firefoxArgs
   },
   test_page: "testem.mustache",
-  src_files: ["src/*.ts", "examples/**/*.ts"],
+  src_files: ["src/**/*.ts", "examples/**/*.ts"],
   serve_files,
   css_files: [],
   routes: {

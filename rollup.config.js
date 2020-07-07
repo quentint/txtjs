@@ -1,56 +1,6 @@
-import typescript from "@rollup/plugin-typescript";
-import pkg from "./package.json";
+import sourcemaps from 'rollup-plugin-sourcemaps';
 
-const name = "txt";
-
-const mainConfig = {
-  input: "./src/index.ts",
-  plugins: [typescript({})],
-  external: ["txt"],
-  output: [
-    {
-      file: pkg.main,
-      format: "cjs",
-      sourcemap: true
-    },
-    {
-      file: pkg.module,
-      format: "es",
-      sourcemap: true
-    },
-    {
-      name,
-      file: pkg.browser,
-      format: "iife",
-      sourcemap: true
-    }
-  ]
+// since rollup plugins cant be enabled from the command-line
+export default {
+  plugins: [sourcemaps()],
 };
-
-const examplesConfig = {
-  input: "./examples/index.ts",
-  plugins: [typescript()],
-  output: [
-    {
-      file: "dist/examples.js",
-      format: "iife",
-      name: "txtExamples",
-      sourcemap: true
-    }
-  ]
-};
-
-const siteConfig = {
-  input: "./site/index.ts",
-  plugins: [typescript()],
-  output: [
-    {
-      file: "dist/site.js",
-      format: "iife",
-      name: "site",
-      sourcemap: true
-    }
-  ]
-};
-
-export default [mainConfig, examplesConfig, siteConfig];

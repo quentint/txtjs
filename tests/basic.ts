@@ -1,3 +1,6 @@
+import * as txt from "txt";
+import { removeCanvas } from "./helpers";
+
 describe("Smoke test", function() {
   afterEach(function() {
     removeCanvas();

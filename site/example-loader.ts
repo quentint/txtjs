@@ -1,4 +1,4 @@
-import * as txtExamples from "../examples/index";
+import * as txtExamples from "examples";
 
 function buildExampleInit(examplePath) {
   const parts = examplePath.split("/");
