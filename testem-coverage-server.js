@@ -25,7 +25,6 @@ function startCoverageServer(callback) {
           "length"
         );
         // need separate files per browser/client
-        //let outputFile = "coverage-" + Math.random() + ".json";
         let outputFile = ".nyc_output.json";
         req.pipe(fs.createWriteStream(path.join(__dirname, "tmp", outputFile)));
         // make sure we've got it all

@@ -9,4 +9,4 @@ TODO.md
 coverage
 tmp
 instrumented
-.nyc_output
+.nyc_output.json
