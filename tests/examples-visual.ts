@@ -25,8 +25,6 @@ describe("Examples visual", function() {
           // let referenceImageData = null;
           setTimeout(function() {
             const canvasImageData = getCanvasImageData(stage.canvas);
-
-            // @ts-ignore TODO: add toVisuallyEqual to ts
             expect(canvasImageData).toVisuallyEqual(referenceImageData);
             done();
           }, RENDER_WAIT);
@@ -52,8 +50,6 @@ describe("Examples visual", function() {
           );
           setTimeout(function() {
             const canvasImageData = getCanvasImageData(stage.canvas);
-
-            // @ts-ignore TODO: add toVisuallyEqual to ts
             expect(canvasImageData).toVisuallyEqual(referenceImageData);
             done();
           }, RENDER_WAIT);
@@ -78,8 +74,6 @@ describe("Examples visual", function() {
           // TODO: figure out how to handle async - perhaps preload fonts?
           setTimeout(function() {
             const canvasImageData = getCanvasImageData(stage.canvas);
-
-            // @ts-ignore TODO: add toVisuallyEqual to ts
             expect(canvasImageData).toVisuallyEqual(referenceImageData);
             done();
           }, RENDER_WAIT);
@@ -102,8 +96,6 @@ describe("Examples visual", function() {
             await loadImage("images/Graphics/" + exampleName + ".png")
           );
           const canvasImageData = getCanvasImageData(stage.canvas);
-
-          // @ts-ignore TODO: add toVisuallyEqual to ts
           expect(canvasImageData).toVisuallyEqual(referenceImageData);
         },
         TEST_TIMEOUT
