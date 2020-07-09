@@ -1,6 +1,9 @@
+import * as txt from "txt";
+import { removeCanvas } from "./helpers";
+
 describe("Smoke test", function() {
   afterEach(function() {
-    txtExamples.clearExample();
+    removeCanvas();
   });
 
   it("Loads txt.js library and checks version", function() {

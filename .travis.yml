@@ -14,7 +14,14 @@ jobs:
       addons:
         chrome: stable
         firefox: latest
+        code_climate:
+          repo_token: $CC_TEST_REPORTER_ID
+      before_script:
+        - npm install --global codeclimate-test-reporter
+        - npm run build
       script: npm test
+      after_script:
+        - codeclimate-test-reporter < ./coverage/lcov.info
     - stage: npm release
       script: "echo releasing npm package..."
       deploy:
@@ -26,7 +33,7 @@ jobs:
         on:
           tags: true
     - stage: github pages publish
-      script: "npm run build:docs"
+      script: "npm run docs:build"
       before_deploy: # allow dist an docs in git
         - sed -i '/dist/d' .gitignore
         - sed -i '/docs/d' .gitignore

@@ -1,6 +1,8 @@
+import * as txt from "txt";
+
 describe("Unit tests", function() {
   it("Util: applyShapeEventListeners", function() {
-    let knownEvents = [
+    const knownEvents = [
       "click",
       "dblclick",
       "mousedown",
@@ -15,14 +17,14 @@ describe("Unit tests", function() {
       "tick"
     ];
 
-    let shapeEvents = knownEvents.reduce((prev, cur) => {
-      prev[cur] = function() {};
+    const shapeEvents = knownEvents.reduce((prev, cur) => {
+      prev[cur] = () => {};
       return prev;
     }, {});
 
     shapeEvents["unknown"] = function() {};
 
-    let eventDispatcher = new createjs.EventDispatcher();
+    const eventDispatcher = new createjs.EventDispatcher();
 
     knownEvents.forEach(eventName => {
       expect(eventDispatcher.hasEventListener(eventName)).toBe(
