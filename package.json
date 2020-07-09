@@ -15,7 +15,7 @@
   "types": "dist/types/src/index.d.ts",
   "scripts": {
     "start": "run-p server watch",
-    "build": "mkdir -p tmp && run-s build:compile bundle copy",
+    "build": "mkdir -p tmp && run-s lint build:compile bundle copy",
     "build:compile": "tsc --project .",
     "bundle": "run-s bundle:lib bundle:lib:cjs bundle:lib:esm bundle:examples bundle:tests bundle:site",
     "bundle:lib": "rollup -f umd dist/esnext/src/index.js --name=txt --file=dist/txt.umd.js --sourcemap",
