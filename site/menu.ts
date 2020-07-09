@@ -1,12 +1,12 @@
-(function(window, document) {
-  var layout = document.getElementById("layout"),
-    menu = document.getElementById("menu"),
-    menuLink = document.getElementById("menuLink");
+(function() {
+  const layout = document.getElementById("layout");
+  const menu = document.getElementById("menu");
+  const menuLink = document.getElementById("menuLink");
 
   function toggleClass(element, className) {
-    var classes = element.className.split(/\s+/),
-      length = classes.length,
-      i = 0;
+    const classes = element.className.split(/\s+/);
+    const length = classes.length;
+    let i = 0;
 
     for (; i < length; i++) {
       if (classes[i] === className) {
@@ -23,11 +23,11 @@
   }
 
   menuLink.onclick = function(e) {
-    var active = "active";
+    const active = "active";
 
     e.preventDefault();
     toggleClass(layout, active);
     toggleClass(menu, active);
     toggleClass(menuLink, active);
   };
-})(this, this.document);
+})();

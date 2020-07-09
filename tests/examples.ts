@@ -1,18 +1,21 @@
+import * as txtExamples from "examples";
+import { removeCanvas } from "./helpers";
+
 describe("Examples non-visual", function() {
   const TEST_TIMEOUT = 2000;
 
   afterEach(function() {
-    txtExamples.clearExample();
+    removeCanvas();
   });
 
   describe("Text", function() {
     Object.entries(txtExamples.nonVisualExamples.Text).forEach(function(eg) {
-      let exampleName = eg[0];
-      let runExample = eg[1];
+      const exampleName = eg[0];
+      const runExample = eg[1];
       it(
         exampleName,
         function() {
-          var stage = runExample();
+          const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
         },
         TEST_TIMEOUT
@@ -23,12 +26,12 @@ describe("Examples non-visual", function() {
   describe("CharacterText", function() {
     Object.entries(txtExamples.nonVisualExamples.CharacterText).forEach(
       function(eg) {
-        let exampleName = eg[0];
-        let runExample = eg[1];
+        const exampleName = eg[0];
+        const runExample = eg[1];
         it(
           exampleName,
           function() {
-            var stage = runExample();
+            const stage = runExample();
             expect(stage.children.length).toBeGreaterThan(0);
           },
           TEST_TIMEOUT
@@ -41,12 +44,12 @@ describe("Examples non-visual", function() {
     Object.entries(txtExamples.nonVisualExamples.PathText).forEach(function(
       eg
     ) {
-      let exampleName = eg[0];
-      let runExample = eg[1];
+      const exampleName = eg[0];
+      const runExample = eg[1];
       it(
         exampleName,
         function() {
-          var stage = runExample();
+          const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
         },
         TEST_TIMEOUT
@@ -58,12 +61,12 @@ describe("Examples non-visual", function() {
     Object.entries(txtExamples.nonVisualExamples.Graphics).forEach(function(
       eg
     ) {
-      let exampleName = eg[0];
-      let runExample = eg[1];
+      const exampleName = eg[0];
+      const runExample = eg[1];
       it(
         exampleName,
         function() {
-          var stage = runExample();
+          const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
         },
         TEST_TIMEOUT
