@@ -1,10 +1,11 @@
 import { VerticalAlign } from "./index";
+import Case from "./Case";
 
 export interface Style {
   size?: number;
   font?: string;
   tracking?: number;
-  characterCase?: number;
+  characterCase?: Case;
   fillColor?: string;
   strokeColor?: string;
   strokeWidth?: number;
@@ -21,7 +22,7 @@ export interface ConstructObj {
   lineHeight?: number;
   font?: string;
   tracking?: number;
-  characterCase?: number;
+  characterCase?: Case;
   fillColor?: string;
   strokeColor?: string;
   strokeWidth?: number;

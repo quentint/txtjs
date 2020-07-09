@@ -1,6 +1,8 @@
 import * as txtExamples from "examples";
 import { removeCanvas, imgToImageData, loadImage } from "./helpers";
 
+const REF_IMAGES_PATH = "images/";
+
 describe("Examples visual", function() {
   // Font downloading delays renders
   const RENDER_WAIT = 100;
@@ -20,9 +22,8 @@ describe("Examples visual", function() {
           const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
           const referenceImageData = imgToImageData(
-            await loadImage("images/Text/" + exampleName + ".png")
+            await loadImage(REF_IMAGES_PATH + "Text/" + exampleName + ".png")
           );
-          // let referenceImageData = null;
           setTimeout(function() {
             const canvasImageData = getCanvasImageData(stage.canvas);
             expect(canvasImageData).toVisuallyEqual(referenceImageData);
@@ -46,7 +47,7 @@ describe("Examples visual", function() {
           const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
           const referenceImageData = imgToImageData(
-            await loadImage("images/CharacterText/" + exampleName + ".png")
+            await loadImage(REF_IMAGES_PATH + "CharacterText/" + exampleName + ".png")
           );
           setTimeout(function() {
             const canvasImageData = getCanvasImageData(stage.canvas);
@@ -69,7 +70,7 @@ describe("Examples visual", function() {
           const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
           const referenceImageData = imgToImageData(
-            await loadImage("images/PathText/" + exampleName + ".png")
+            await loadImage(REF_IMAGES_PATH + "PathText/" + exampleName + ".png")
           );
           // TODO: figure out how to handle async - perhaps preload fonts?
           setTimeout(function() {
@@ -93,7 +94,7 @@ describe("Examples visual", function() {
           const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
           const referenceImageData = imgToImageData(
-            await loadImage("images/Graphics/" + exampleName + ".png")
+            await loadImage(REF_IMAGES_PATH + "Graphics/" + exampleName + ".png")
           );
           const canvasImageData = getCanvasImageData(stage.canvas);
           expect(canvasImageData).toVisuallyEqual(referenceImageData);
