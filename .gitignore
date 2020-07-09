@@ -6,3 +6,7 @@ node_modules
 dist
 docs
 TODO.md
+coverage
+tmp
+instrumented
+.nyc_output.json
