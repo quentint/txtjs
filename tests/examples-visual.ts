@@ -47,7 +47,9 @@ describe("Examples visual", function() {
           const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
           const referenceImageData = imgToImageData(
-            await loadImage(REF_IMAGES_PATH + "CharacterText/" + exampleName + ".png")
+            await loadImage(
+              REF_IMAGES_PATH + "CharacterText/" + exampleName + ".png"
+            )
           );
           setTimeout(function() {
             const canvasImageData = getCanvasImageData(stage.canvas);
@@ -70,7 +72,9 @@ describe("Examples visual", function() {
           const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
           const referenceImageData = imgToImageData(
-            await loadImage(REF_IMAGES_PATH + "PathText/" + exampleName + ".png")
+            await loadImage(
+              REF_IMAGES_PATH + "PathText/" + exampleName + ".png"
+            )
           );
           // TODO: figure out how to handle async - perhaps preload fonts?
           setTimeout(function() {
@@ -94,7 +98,9 @@ describe("Examples visual", function() {
           const stage = runExample();
           expect(stage.children.length).toBeGreaterThan(0);
           const referenceImageData = imgToImageData(
-            await loadImage(REF_IMAGES_PATH + "Graphics/" + exampleName + ".png")
+            await loadImage(
+              REF_IMAGES_PATH + "Graphics/" + exampleName + ".png"
+            )
           );
           const canvasImageData = getCanvasImageData(stage.canvas);
           expect(canvasImageData).toVisuallyEqual(referenceImageData);

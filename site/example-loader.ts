@@ -24,7 +24,6 @@ function clearExample() {
 }
 
 export default function() {
-
   const example = location.hash.replace("#", "");
   if (example) {
     document.title = buildExampleTitle(example);
@@ -39,5 +38,4 @@ export default function() {
     document.title = buildExampleTitle(example);
     buildExampleInit(example)();
   };
-
 }

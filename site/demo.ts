@@ -14,14 +14,14 @@ export default function createDemo(exampleElement) {
     text: "This is TxtJS",
     font: "lobster",
     align: txt.Align.MIDDLE_CENTER,
-    style: Array.from(Array(14).keys()).map(val => {
+    style: Array.from(Array(14).keys()).map((val) => {
       const hex = val.toString(16);
       const unhex = (14 - val).toString(16);
       return {
         fillColor:
           val % 2 == 0
             ? "#FF" + hex + hex + unhex + unhex
-            : "#" + hex + hex + unhex + unhex + "FF"
+            : "#" + hex + hex + unhex + unhex + "FF",
       };
     }),
     strokeWidth: 1,
@@ -32,7 +32,7 @@ export default function createDemo(exampleElement) {
     start: 2700,
     x: 250,
     y: 150,
-    debug: true
+    debug: true,
   });
 
   stage.addChild(text);
@@ -49,7 +49,7 @@ export default function createDemo(exampleElement) {
     size: 50,
     start: 2700,
     x: 500,
-    y: 300
+    y: 300,
   });
 
   stage.addChild(pathText);
@@ -78,4 +78,3 @@ function tick(event) {
   pathText.layout();
   stage.update(event);
 }
-
