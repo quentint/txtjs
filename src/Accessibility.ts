@@ -28,7 +28,12 @@ export default class Accessibility {
     });
     const len = data.length;
     let out = "";
-    let currentCanvas = data[0].stage.canvas;
+    const currentStage = data[0].stage;
+    if (!currentStage) {
+      Accessibility.clear();
+      return;
+    }
+    let currentCanvas = currentStage.canvas;
     for (let i = 0; i < len; i++) {
       if (data[i].stage == null) {
         continue;
